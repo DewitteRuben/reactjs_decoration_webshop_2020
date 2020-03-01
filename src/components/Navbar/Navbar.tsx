@@ -2,10 +2,10 @@ import { observer } from "mobx-react";
 import { lighten, rem } from "polished";
 import React from "react";
 import styled from "styled-components";
-import navData from "../../data/nav.json";
 import { useStores } from "../../hooks/use-stores";
 import NavigationStore from "../../store/NavigationStore";
 import NavPositionCircle from "../NavPositionCircle/NavPositionCircle";
+import PopupCard from "../PopupCard/PopupCard";
 
 const StyledNavbar = styled.nav`
   height: ${rem(50)};
@@ -57,6 +57,16 @@ const StyledCircle = styled(NavPositionCircle)<IStyledCircleProps>`
   transition: left 0.5s ease-out;
 `;
 
+interface IStyledPopupCard {
+  offset: number;
+}
+
+const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
+  position: absolute;
+  top: ${rem(49)};
+  left: ${props => rem(props.offset)};
+`;
+
 const computeCirclePosition = (navElement?: HTMLElement) => {
   if (!navElement) return 0;
   return navElement.offsetLeft + navElement.offsetWidth / 2;
@@ -66,14 +76,33 @@ const handleNavChange = (store: NavigationStore, key: string) => (
   event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 ) => {
   event.preventDefault();
-  store.navElement = event.target as HTMLElement;
-  store.setCurrentPosition(key);
+  store.setSelectedElement(event.target as HTMLElement);
+};
+
+const handleOnMouseEnter = (store: NavigationStore, key: string) => (
+  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+) => {
+  event.preventDefault();
+  store.setHoverState(true);
+  store.setHoverElement(event.target as HTMLElement);
+};
+
+const handleOnMouseLeave = (store: NavigationStore) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  event.preventDefault();
+  store.setHoverState(false);
 };
 
 const data2li = (store: NavigationStore) =>
-  navData.map(e => (
+  store.data.map(e => (
     <li key={e.key}>
-      <Anchor data-item={e.key} selected={store.currentNav === e.key} href="#" onClick={handleNavChange(store, e.key)}>
+      <Anchor
+        onMouseLeave={handleOnMouseLeave(store)}
+        onMouseOver={handleOnMouseEnter(store, e.key)}
+        data-item={e.key}
+        selected={store.getCurrentSelectedPosition() === e.key}
+        href="#"
+        onClick={handleNavChange(store, e.key)}
+      >
         {e.name}
       </Anchor>
     </li>
@@ -82,20 +111,21 @@ const data2li = (store: NavigationStore) =>
 const Navbar: React.FC = observer(() => {
   const { navStore } = useStores();
   const navRef = React.useRef<HTMLUListElement | null>(null);
-  const [offset, setOffset] = React.useState(0);
+  const [circleOffset, setCircleOffset] = React.useState(0);
+  const [popupOffset, setPopupOffset] = React.useState(0);
 
   React.useEffect(() => {
     if (navRef?.current && !navStore.navElement && navRef?.current?.firstChild) {
       const firstLI = navRef?.current?.firstChild as HTMLElement;
       const firstAnchor = firstLI.firstChild as HTMLElement;
-      navStore.setElement(firstLI);
-      navStore.setCurrentPosition(firstAnchor.dataset.item || "");
+      navStore.setSelectedElement(firstAnchor);
     }
-    setOffset(computeCirclePosition(navStore.navElement));
-  }, [navStore.navElement, navStore.currentNav, navRef]);
+    setCircleOffset(computeCirclePosition(navStore.navElement));
+    setPopupOffset(computeCirclePosition(navStore.hoverElement));
+  }, [navStore.navElement, navStore.hoverElement, navRef]);
 
   React.useEffect(() => {
-    const onResize = () => setOffset(computeCirclePosition(navStore.navElement));
+    const onResize = () => setCircleOffset(computeCirclePosition(navStore.navElement));
 
     window.addEventListener("resize", onResize);
     return () => {
@@ -108,7 +138,10 @@ const Navbar: React.FC = observer(() => {
       <StyledNavbar>
         <NavUL ref={navRef}>{data2li(navStore)}</NavUL>
       </StyledNavbar>
-      <StyledCircle offset={offset} />
+      <StyledCircle offset={circleOffset} />
+      {navStore.hoverState && (
+        <StyledPopupCard offset={popupOffset} categories={navStore.getHoveredCategories()} />
+      )}
     </StyledNavContainer>
   );
 });

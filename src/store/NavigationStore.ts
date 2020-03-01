@@ -1,17 +1,50 @@
 import { action, observable } from "mobx";
+import navData from "../data/nav.json";
 
 export default class NavigationStore {
-  @observable currentNav: string = "";
-
+  @observable data = navData;
   @observable navElement: HTMLElement | undefined = undefined;
+  @observable hoverElement: HTMLElement | undefined = undefined;
+  @observable hoverState: boolean = false;
 
   @action
-  setCurrentPosition(name: string) {
-    this.currentNav = name;
+  setSelectedElement(e: HTMLElement) {
+    this.navElement = e;
   }
 
   @action
-  setElement(e: HTMLElement) {
-    this.navElement = e;
+  setHoverElement(e: HTMLElement) {
+    this.hoverElement = e;
+  }
+
+  @action
+  setHoverState(state: boolean) {
+    this.hoverState = state;
+  }
+
+  getCurrentSelectedPosition() {
+    if (this.navElement) {
+      return this.navElement.dataset.item;
+    }
+    return "";
+  }
+
+  getCurrentHoverPosition() {
+    if (this.hoverElement) {
+      return this.hoverElement.dataset.item;
+    }
+    return "";
+  }
+
+  getHoveredCategories() {
+    const hoverPos = this.getCurrentHoverPosition();
+    if (this.data && hoverPos) {
+      const hoveredCategory = this.data.filter(e => e.key === hoverPos);
+      if (hoveredCategory.length > 0) {
+        const subcategories = hoveredCategory[0].categories;
+        return subcategories; 
+      }
+    }
+    return [];
   }
 }
