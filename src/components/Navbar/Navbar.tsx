@@ -59,12 +59,14 @@ const StyledCircle = styled(NavPositionCircle)<IStyledCircleProps>`
 
 interface IStyledPopupCard {
   offset: number;
+  display: boolean;
 }
 
 const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
   position: absolute;
   top: ${rem(49)};
   left: ${props => rem(props.offset)};
+  display: ${props => (!props.display ? "none" : "grid")};
 `;
 
 const computeCirclePosition = (navElement?: HTMLElement) => {
@@ -139,9 +141,7 @@ const Navbar: React.FC = observer(() => {
         <NavUL ref={navRef}>{data2li(navStore)}</NavUL>
       </StyledNavbar>
       <StyledCircle offset={circleOffset} />
-      {navStore.hoverState && (
-        <StyledPopupCard offset={popupOffset} categories={navStore.getHoveredCategories()} />
-      )}
+      <StyledPopupCard display={navStore.hoverState} offset={popupOffset} categories={navStore.getHoveredCategories()} />
     </StyledNavContainer>
   );
 });
