@@ -1,8 +1,15 @@
 import React from "react";
+import { ThemeProvider } from "styled-components";
+import Container from "./components/Container/Container";
+import Header from "./components/Header/Header";
+import themes from "./styles/theme";
 
 function App() {
   return (
-    <div className="App"></div>
+    <ThemeProvider theme={themes.primary}>
+      <Header />
+      <Container></Container>
+    </ThemeProvider>
   );
 }
 
