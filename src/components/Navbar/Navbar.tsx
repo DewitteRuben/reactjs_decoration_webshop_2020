@@ -64,7 +64,7 @@ interface IStyledPopupCard {
 
 const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
   position: absolute;
-  top: ${rem(49)};
+  top: ${rem(53)};
   left: ${props => rem(props.offset)};
   display: ${props => (!props.display ? "none" : "grid")};
 `;
@@ -89,7 +89,7 @@ const handleOnMouseEnter = (store: NavigationStore, key: string) => (
   store.setHoverElement(event.target as HTMLElement);
 };
 
-const handleOnMouseLeave = (store: NavigationStore) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+const handleOnMouseLeave = (store: NavigationStore) => (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
   event.preventDefault();
   store.setHoverState(false);
 };
@@ -98,7 +98,6 @@ const data2li = (store: NavigationStore) =>
   store.data.map(e => (
     <li key={e.key}>
       <Anchor
-        onMouseLeave={handleOnMouseLeave(store)}
         onMouseOver={handleOnMouseEnter(store, e.key)}
         data-item={e.key}
         selected={store.getCurrentSelectedPosition() === e.key}
@@ -113,8 +112,19 @@ const data2li = (store: NavigationStore) =>
 const Navbar: React.FC = observer(() => {
   const { navStore } = useStores();
   const navRef = React.useRef<HTMLUListElement | null>(null);
+  const popupRef = React.useRef<HTMLDivElement | null>(null);
   const [circleOffset, setCircleOffset] = React.useState(0);
   const [popupOffset, setPopupOffset] = React.useState(0);
+
+  React.useEffect(() => {
+    const handleMouseDown = (ev: MouseEvent) => {
+      if (!popupRef?.current?.contains(ev.target as HTMLElement)) {
+        navStore.setHoverState(false);
+      }
+    };
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => document.removeEventListener("mousedown", handleMouseDown);
+  }, []);
 
   React.useEffect(() => {
     if (navRef?.current && !navStore.navElement && navRef?.current?.firstChild) {
@@ -127,7 +137,10 @@ const Navbar: React.FC = observer(() => {
   }, [navStore.navElement, navStore.hoverElement, navRef]);
 
   React.useEffect(() => {
-    const onResize = () => setCircleOffset(computeCirclePosition(navStore.navElement));
+    const onResize = () => {
+      setCircleOffset(computeCirclePosition(navStore.navElement));
+      setPopupOffset(computeCirclePosition(navStore.hoverElement));
+    };
 
     window.addEventListener("resize", onResize);
     return () => {
@@ -141,7 +154,13 @@ const Navbar: React.FC = observer(() => {
         <NavUL ref={navRef}>{data2li(navStore)}</NavUL>
       </StyledNavbar>
       <StyledCircle offset={circleOffset} />
-      <StyledPopupCard display={navStore.hoverState} offset={popupOffset} categories={navStore.getHoveredCategories()} />
+      <StyledPopupCard
+        ref={popupRef}
+        onMouseLeave={handleOnMouseLeave(navStore)}
+        display={navStore.hoverState}
+        offset={popupOffset}
+        categories={navStore.getHoveredCategories()}
+      />
     </StyledNavContainer>
   );
 });

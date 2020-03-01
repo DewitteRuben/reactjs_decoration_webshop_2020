@@ -23,14 +23,24 @@ interface IProps {
   categories: Category[];
 }
 
-const PopupCard: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ categories, className }) => {
-  return (
-    <StyledPopupCard className={className}>
-      {categories.map(e => (
-        <div>{e.name}</div>
-      ))}
-    </StyledPopupCard>
-  );
-};
+const PopupCard = React.forwardRef(
+  (
+    props: IProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+    ref: React.Ref<HTMLDivElement | null>
+  ) => {
+    const { onMouseLeave, className, categories } = props;
+    return (
+      <StyledPopupCard
+        ref={ref as ((instance: HTMLDivElement | null) => void) | React.RefObject<HTMLDivElement> | null | undefined}
+        onMouseLeave={onMouseLeave}
+        className={className}
+      >
+        {categories.map(e => (
+          <div key={e.key}>{e.name}</div>
+        ))}
+      </StyledPopupCard>
+    );
+  }
+);
 
 export default PopupCard;
