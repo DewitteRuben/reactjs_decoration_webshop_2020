@@ -67,7 +67,7 @@ const handleNavChange = (store: NavigationStore, key: string) => (
 ) => {
   event.preventDefault();
   store.navElement = event.target as HTMLElement;
-  store.setNav(key);
+  store.setCurrentPosition(key);
 };
 
 const data2li = (store: NavigationStore) =>
@@ -88,8 +88,8 @@ const Navbar: React.FC = observer(() => {
     if (navRef?.current && !navStore.navElement && navRef?.current?.firstChild) {
       const firstLI = navRef?.current?.firstChild as HTMLElement;
       const firstAnchor = firstLI.firstChild as HTMLElement;
-      navStore.navElement = firstLI;
-      navStore.currentNav = firstAnchor.dataset.item || "";
+      navStore.setElement(firstLI);
+      navStore.setCurrentPosition(firstAnchor.dataset.item || "");
     }
     setOffset(computeCirclePosition(navStore.navElement));
   }, [navStore.navElement, navStore.currentNav, navRef]);

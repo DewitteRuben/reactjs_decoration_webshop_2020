@@ -6,7 +6,12 @@ export default class NavigationStore {
   @observable navElement: HTMLElement | undefined = undefined;
 
   @action
-  setNav(name: string) {
+  setCurrentPosition(name: string) {
     this.currentNav = name;
+  }
+
+  @action
+  setElement(e: HTMLElement) {
+    this.navElement = e;
   }
 }
