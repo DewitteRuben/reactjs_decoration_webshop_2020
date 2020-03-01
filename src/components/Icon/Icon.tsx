@@ -6,13 +6,17 @@ interface IProps {
   size?: number;
 }
 
-const Icon: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ name, size = 28, className }) => {
-  const StyledIcon = styled.img`
-    width: ${size}px;
-    height: ${size}px;
-  `;
+interface IStyledIconProps {
+  size: number;
+}
 
-  return <StyledIcon className={className} src={require(`icons/${name}.svg`)} />;
+const StyledIcon = styled.img<IStyledIconProps>`
+  width: ${props => props.size}px;
+  height: ${props => props.size}px;
+`;
+
+const Icon: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ name, size = 28, className }) => {
+  return <StyledIcon className={className} src={require(`icons/${name}.svg`)} size={size} />;
 };
 
 export default Icon;
