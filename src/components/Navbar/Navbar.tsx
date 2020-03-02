@@ -160,7 +160,7 @@ const Navbar: React.FC = observer(() => {
         onMouseLeave={handleOnMouseLeave(navStore)}
         display={navStore.hoverState}
         offset={popupOffset}
-        categories={navStore.getHoveredCategories()}
+        category={navStore.getHoveredCategory()}
       />
     </StyledNavContainer>
   );

@@ -36,7 +36,7 @@ const ItemContainer = styled.div`
 const ItemList: React.FC<IProps> = ({ items }) => {
   return (
     <ItemContainer>
-      {items.map(e => (
+      {items?.map(e => (
         <ItemCard
           price={e.price}
           currency="€"

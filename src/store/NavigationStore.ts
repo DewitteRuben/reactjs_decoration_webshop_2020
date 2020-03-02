@@ -7,6 +7,18 @@ export default class NavigationStore {
   @observable hoverElement: HTMLElement | undefined = undefined;
   @observable hoverState: boolean = false;
 
+  @observable current = { category: "", subcategory: "" };
+
+  @action
+  setCategory(c: string) {
+    this.current.category = c;
+  }
+
+  @action
+  setSubcategory(c: string) {
+    this.current.subcategory = c;
+  }
+
   @action
   setSelectedElement(e: HTMLElement) {
     this.navElement = e;
@@ -36,7 +48,7 @@ export default class NavigationStore {
     return "";
   }
 
-  getHoveredCategories() {
+  getHoveredCategory() {
     const hoverPos = this.getCurrentHoverPosition();
     if (this.data && hoverPos) {
       const hoveredCategory = this.data.filter(e => e.key === hoverPos);

@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import Container from "./components/Container/Container";
@@ -10,15 +11,19 @@ import themes from "./styles/theme";
 
 function App() {
   return (
-    <ThemeProvider theme={themes.primary}>
-      <Header />
-      <Navbar />
-      <Container>
-        <Breadcrumbs />
-        <Sidebar />
-        <Feed />
-      </Container>
-    </ThemeProvider>
+    <Router>
+      <ThemeProvider theme={themes.primary}>
+        <Header />
+        <Navbar />
+        <Container>
+          <Breadcrumbs />
+          <Sidebar />
+          <Route path="/:category/:subcategory">
+            <Feed />
+          </Route>
+        </Container>
+      </ThemeProvider>
+    </Router>
   );
 }
 
