@@ -10,7 +10,7 @@ import themes from "./styles/theme";
 
 const ItemContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 260px);
+  grid-template-columns: repeat(auto-fill, 260px);
   grid-row-gap: 30px;
   grid-column-gap: 10px;
   justify-items: center;

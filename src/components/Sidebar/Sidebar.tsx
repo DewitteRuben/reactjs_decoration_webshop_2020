@@ -1,9 +1,7 @@
-import { rem } from "polished";
 import React from "react";
 import styled from "styled-components";
 
 const SidebarContainer = styled.div`
-  width: ${rem(290)};
   grid-area: aside;
 `;
 
