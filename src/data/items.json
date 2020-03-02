@@ -1,0 +1,218 @@
+{
+  "categories": {
+    "decoration": {
+      "subcategories": {
+        "vase-and-flowers": [
+          {
+            "id": "DatabaseIdHere1",
+            "name": "Vase 1",
+            "description": "This ol' vase is pretty ol'",
+            "price": 23.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere2",
+            "name": "Vase 2",
+            "description": "This ol' vase is pretty ol'",
+            "price": 54.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere3",
+            "name": "Vase 3",
+            "description": "This ol' vase is pretty ol'",
+            "price": 71.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere4",
+            "name": "Vase 4",
+            "description": "This ol' vase is pretty ol'",
+            "price": 10.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere5",
+            "name": "Vase 5",
+            "description": "This ol' vase is pretty ol'",
+            "price": 8.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere6",
+            "name": "Vase 6",
+            "description": "This ol' vase is pretty ol'",
+            "price": 4.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere7",
+            "name": "Vase 7",
+            "description": "This ol' vase is pretty ol'",
+            "price": 56.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere8",
+            "name": "Vase 8",
+            "description": "This ol' vase is pretty ol'",
+            "price": 77.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere9",
+            "name": "Vase 9",
+            "description": "This ol' vase is pretty ol'",
+            "price": 69.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere10",
+            "name": "Vase 10",
+            "description": "This ol' vase is pretty ol'",
+            "price": 42.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere11",
+            "name": "Vase 11",
+            "description": "This ol' vase is pretty ol'",
+            "price": 1.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere12",
+            "name": "Vase 12",
+            "description": "This ol' vase is pretty ol'",
+            "price": 3.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere13",
+            "name": "Vase 13",
+            "description": "This ol' vase is pretty ol'",
+            "price": 4.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere14",
+            "name": "Vase 14",
+            "description": "This ol' vase is pretty ol'",
+            "price": 8.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere15",
+            "name": "Vase 15",
+            "description": "This ol' vase is pretty ol'",
+            "price": 45.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          },
+          {
+            "id": "DatabaseIdHere16",
+            "name": "Vase 16",
+            "description": "This ol' vase is pretty ol'",
+            "price": 12.2,
+            "stateOfProduct": "used",
+            "images": {
+              "small": "",
+              "medium": "",
+              "larqe": "",
+              "thumb:": ""
+            }
+          }
+        ]
+      }
+    }
+  }
+}

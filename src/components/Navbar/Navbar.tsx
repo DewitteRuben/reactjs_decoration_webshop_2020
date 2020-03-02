@@ -65,6 +65,7 @@ interface IStyledPopupCard {
 const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
   position: absolute;
   top: ${rem(53)};
+  background-color: ${props => props.theme.white};
   left: ${props => rem(props.offset)};
   display: ${props => (!props.display ? "none" : "grid")};
 `;
@@ -124,7 +125,7 @@ const Navbar: React.FC = observer(() => {
     };
     document.addEventListener("mousedown", handleMouseDown);
     return () => document.removeEventListener("mousedown", handleMouseDown);
-  }, []);
+  }, [navStore]);
 
   React.useEffect(() => {
     if (navRef?.current && !navStore.navElement && navRef?.current?.firstChild) {
@@ -134,7 +135,7 @@ const Navbar: React.FC = observer(() => {
     }
     setCircleOffset(computeCirclePosition(navStore.navElement));
     setPopupOffset(computeCirclePosition(navStore.hoverElement));
-  }, [navStore.navElement, navStore.hoverElement, navRef]);
+  }, [navStore, navStore.navElement, navStore.hoverElement, navRef]);
 
   React.useEffect(() => {
     const onResize = () => {
@@ -146,7 +147,7 @@ const Navbar: React.FC = observer(() => {
     return () => {
       window.removeEventListener("resize", onResize);
     };
-  }, [navStore.navElement]);
+  }, [navStore.hoverElement, navStore.navElement]);
 
   return (
     <StyledNavContainer>
