@@ -7,19 +7,20 @@ const CardContainer = styled.div`
 `;
 
 const CardDetailContainer = styled.div`
-  height: ${rem(92)};
+  height: ${rem(64)};
   padding: ${rem(10)};
 `;
 
 const Image = styled.img`
   height: ${rem(360)};
+  width: ${rem(260)};
   box-shadow: 0 ${rem(4)} ${rem(4)} rgba(0, 0, 0, 0.25);
 `;
 
 const ItemBody = styled.div`
   display: flex;
   justify-content: space-between;
-  height: ${rem(40)};
+  height: ${rem(32)};
 `;
 
 const Title = styled.span`
@@ -40,7 +41,7 @@ const SubParagraph = styled.span`
 const ItemFooter = styled.div`
   display: flex;
   justify-content: space-between;
-  height: ${rem(18)};
+  height: ${rem(16)};
 `;
 
 interface IProps {
@@ -49,12 +50,13 @@ interface IProps {
   price: number;
   currency: string;
   state: string;
+  image: string;
 }
 
-const ItemCard: React.FC<IProps> = ({ title, description, price, state, currency, ...other }) => {
+const ItemCard: React.FC<IProps> = ({ title, description, price, state, currency, image, ...other }) => {
   return (
     <CardContainer>
-      <Image src="https://via.placeholder.com/260x360.png?text=Placeholder" alt="" />
+      <Image src={image} alt="" />
       <CardDetailContainer>
         <ItemBody>
           <Title>{title}</Title>
