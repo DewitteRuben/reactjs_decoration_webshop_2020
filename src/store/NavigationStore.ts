@@ -41,10 +41,10 @@ export default class NavigationStore {
     if (this.data && hoverPos) {
       const hoveredCategory = this.data.filter(e => e.key === hoverPos);
       if (hoveredCategory.length > 0) {
-        const subcategories = hoveredCategory[0].categories;
-        return subcategories; 
+        const subcategories = hoveredCategory[0];
+        return subcategories;
       }
     }
-    return [];
+    return undefined;
   }
 }

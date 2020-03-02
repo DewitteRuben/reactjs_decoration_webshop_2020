@@ -2,7 +2,7 @@
   {
     "name": "Decoration",
     "key": "decoration",
-    "categories": [
+    "subcategories": [
       {
         "id": 1,
         "name": "Vases & flowers",
@@ -58,21 +58,21 @@
   {
     "name": "Kitchen",
     "key": "kitchen",
-    "categories": []
+    "subcategories": []
   },
   {
     "name": "Furniture",
     "key": "furniture",
-    "categories": []
+    "subcategories": []
   },
   {
     "name": "Lighting",
     "key": "lighting",
-    "categories": []
+    "subcategories": []
   },
   {
     "name": "Outdoor",
     "key": "outdoor",
-    "categories": []
+    "subcategories": []
   }
 ]

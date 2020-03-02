@@ -13,14 +13,20 @@ const StyledPopupCard = styled.div`
   box-shadow: 0 ${rem(14)} ${rem(28)} rgba(0, 0, 0, 0.25), 0 ${rem(10)} ${rem(10)} rgba(0, 0, 0, 0.22);
 `;
 
-export interface Category {
+export interface Subcategory {
   id: number;
   name: string;
   key: string;
 }
 
+export interface Category {
+  name: string;
+  key: string;
+  subcategories: Subcategory[];
+}
+
 interface IProps {
-  categories: Category[];
+  categories?: Category;
 }
 
 const PopupCard = React.forwardRef(
@@ -35,7 +41,7 @@ const PopupCard = React.forwardRef(
         onMouseLeave={onMouseLeave}
         className={className}
       >
-        {categories.map(e => (
+        {categories?.subcategories.map(e => (
           <div key={e.key}>{e.name}</div>
         ))}
       </StyledPopupCard>
