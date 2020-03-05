@@ -15,8 +15,8 @@ function App() {
       <ThemeProvider theme={themes.primary}>
         <Header />
         <Navbar />
+        <Breadcrumbs />
         <Container>
-          <Breadcrumbs />
           <Sidebar />
           <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
             <Feed />

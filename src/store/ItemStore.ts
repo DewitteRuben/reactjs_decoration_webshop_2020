@@ -4,7 +4,7 @@ import itemData from "../data/items.json";
 
 export type Categories = "decoration";
 
-export type Subcategories = "vase-and-flowers";
+export type Subcategories = "vases-and-flowers";
 
 export type ItemCategories = "vases" | "flowers";
 
@@ -32,6 +32,9 @@ export default class ItemStore {
   @observable
   items = itemData.categories;
 
+  @observable
+  breadcrumbs: string[] = [];
+
   @action
   getItems() {
     return this.items;
@@ -39,8 +42,9 @@ export default class ItemStore {
 
   @action
   getAllItems(cat?: string, subcat?: string, itemCategory?: string, specificCategory?: string) {
+    this.breadcrumbs = [...arguments].filter(e => e);
+    
     let items: any = [];
-
     if (cat && !subcat) {
       items = this.items[cat as Categories];
     } else if (cat && subcat && !itemCategory) {
