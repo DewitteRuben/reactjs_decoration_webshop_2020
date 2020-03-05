@@ -9,6 +9,7 @@ const StyledPopupCard = styled(Card)`
   grid-template-columns: repeat(2, 1fr);
   grid-auto-flow: dense;
   grid-row-gap: ${rem(10)};
+  grid-column-gap: ${rem(15)};
   max-width: ${rem(390)};
 `;
 
@@ -49,7 +50,7 @@ const PopupCard = React.forwardRef(
         className={className}
       >
         {category?.subcategories.map(subcategory => (
-          <div key={subcategory.key}> 
+          <div key={subcategory.key}>
             <Anchor to={`/${category.key}/${subcategory.key}`}>{subcategory.name}</Anchor>
           </div>
         ))}
