@@ -15,8 +15,8 @@ const StyledIcon = styled.img<IStyledIconProps>`
   height: ${props => props.size}px;
 `;
 
-const Icon: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ name, size = 28, className }) => {
-  return <StyledIcon className={className} src={require(`icons/${name}.svg`)} size={size} />;
+const Icon: React.FC<IProps & React.HTMLAttributes<HTMLDivElement>> = ({ name, size = 28, ...props }) => {
+  return <StyledIcon src={require(`icons/${name}.svg`)} size={size} {...props} />;
 };
 
 export default Icon;
