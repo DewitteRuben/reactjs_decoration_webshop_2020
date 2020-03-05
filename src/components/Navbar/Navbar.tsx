@@ -113,6 +113,9 @@ const Navbar: React.FC = observer(() => {
   const [popupOffset, setPopupOffset] = React.useState(0);
 
   React.useEffect(() => {
+    const hoverAreaXOffset = -60;
+    const hoverAreaYOffset = -50;
+
     const onMouseMove = function(e: MouseEvent) {
       if (navStore.hoverState && popupRef.current) {
         const { top, left, width, height } = popupRef.current.getBoundingClientRect();
@@ -124,7 +127,12 @@ const Navbar: React.FC = observer(() => {
 
         if (
           navStore.hoverState &&
-          !(xPosInContainer >= -60 && xPosInContainer <= width && yPosInContainer >= -50 && yPosInContainer <= height)
+          !(
+            xPosInContainer >= hoverAreaXOffset &&
+            xPosInContainer <= width &&
+            yPosInContainer >= hoverAreaYOffset &&
+            yPosInContainer <= height
+          )
         ) {
           navStore.setHoverState(false);
         }
