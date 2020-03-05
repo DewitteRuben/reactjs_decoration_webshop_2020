@@ -13,7 +13,6 @@ const StyledPopupCard = styled(Card)`
 `;
 
 export interface Subcategory {
-  id: number;
   name: string;
   key: string;
 }

@@ -44,11 +44,11 @@ export default class ItemStore {
     if (cat && !subcat) {
       items = this.items[cat as Categories];
     } else if (cat && subcat && !itemCategory) {
-      items = this.items[cat as Categories].subcategories[subcat as Subcategories];
+      items = this.items[cat as Categories]?.subcategories[subcat as Subcategories];
     } else if (cat && subcat && itemCategory && !specificCategory) {
-      return this.items[cat as Categories].subcategories[subcat as Subcategories][itemCategory as ItemCategories];
+      return this.items[cat as Categories]?.subcategories[subcat as Subcategories][itemCategory as ItemCategories];
     } else if (cat && subcat && itemCategory && specificCategory) {
-      return this.items[cat as Categories].subcategories[subcat as Subcategories][itemCategory as ItemCategories];
+      return this.items[cat as Categories]?.subcategories[subcat as Subcategories][itemCategory as ItemCategories];
     }
 
     if (!items) return items;

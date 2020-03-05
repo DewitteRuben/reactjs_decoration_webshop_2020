@@ -4,52 +4,42 @@
     "key": "decoration",
     "subcategories": [
       {
-        "id": 1,
         "name": "Vases & flowers",
         "key": "vase-and-flowers"
       },
       {
-        "id": 2,
         "name": "Fabrics & pillows",
         "key": "fabrics-and-pillows"
       },
       {
-        "id": 3,
         "name": "Wall decoration",
         "key": "wall-decoration"
       },
       {
-        "id": 4,
         "name": "Candles, lanterns & more",
         "key": "candles-lanterns-more"
       },
       {
-        "id": 5,
         "name": "Party decoration",
         "key": "party-decoration"
       },
       {
-        "id": 6,
         "name": "Home fragrence",
         "key": "home-fragrence"
       },
       {
-        "id": 7,
         "name": "Storage",
         "key": "storage"
       },
       {
-        "id": 8,
         "name": "Handcrafting materials",
         "key": "handcrafting-materials"
       },
       {
-        "id": 9,
         "name": "Bathroom accessories",
         "key": "bathroom-accessories"
       },
       {
-        "id": 10,
         "name": "Other",
         "key": "other"
       }
@@ -58,21 +48,130 @@
   {
     "name": "Kitchen",
     "key": "kitchen",
-    "subcategories": []
+    "subcategories": [
+      {
+        "name": "Table linen & decoration",
+        "key": "table-linen-and-decoration"
+      },
+      {
+        "name": "Drinking glasses & Decanters",
+        "key": "drinking-glasses-and-decanters"
+      },
+      {
+        "name": "Kitchen utensils",
+        "key": "kitchen-utensils"
+      },
+
+      {
+        "name": "Tableware",
+        "key": "tableware"
+      },
+      {
+        "name": "Cutlery",
+        "key": "cutlery"
+      },
+      {
+        "name": "Other",
+        "key": "other"
+      }
+    ]
   },
   {
     "name": "Furniture",
     "key": "furniture",
-    "subcategories": []
+    "subcategories": [
+      {
+        "name": "Tables",
+        "key": "tables"
+      },
+      {
+        "name": "Chairs",
+        "key": "chairs"
+      },
+      {
+        "name": "Outdoor furniture",
+        "key": "outdoor-furniture"
+      },
+      {
+        "name": "Mirrors",
+        "key": "mirrors"
+      },
+      {
+        "name": "Other",
+        "key": "other"
+      }
+    ]
   },
   {
     "name": "Lighting",
     "key": "lighting",
-    "subcategories": []
+    "subcategories": [
+      {
+        "name": "Floor lamps",
+        "key": "floor-lamps"
+      },
+      {
+        "name": "Hanging lamps",
+        "key": "hanging-lamps"
+      },
+      {
+        "name": "Solar lamps",
+        "key": "solar-lamps"
+      },
+      {
+        "name": "Table lamps",
+        "key": "table-lamps"
+      },
+      {
+        "name": "Light bulbs",
+        "key": "light-bulbs"
+      },
+      {
+        "name": "Outdoor",
+        "key": "outdoor"
+      },
+      {
+        "name": "String lights & Paper lanterns",
+        "key": "string-lights-and-paper-lanterns"
+      },
+      {
+        "name": "Other",
+        "key": "other"
+      }
+    ]
   },
   {
     "name": "Outdoor",
     "key": "outdoor",
-    "subcategories": []
+    "subcategories": [
+      {
+        "name": "Balcony & Garden Furniture",
+        "key": "balcony-and-garden-furniture"
+      },
+      {
+        "name": "Bath towels, bags and accessoires",
+        "key": "bath-towels-bags-and-accessoires"
+      },
+      {
+        "name": "Balcony & Garden Decoration",
+        "key": "balcony-and-Garden-decoration"
+      },
+      {
+        "name": "Kitchen & supplies",
+        "key": "kitchen-and-supplies"
+      },
+      {
+        "name": "Lighting",
+        "key": "lighting"
+      },
+      {
+        "name": "Pool air mattresses",
+        "key": "pool-air-mattresses"
+      },
+      {
+        "name": "Paddling pools & toys",
+        "key": "paddling-pools-and-toys"
+      }
+    ]
   }
 ]
