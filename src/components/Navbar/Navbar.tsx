@@ -70,9 +70,9 @@ const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
   display: ${props => (!props.display ? "none" : "grid")};
 `;
 
-const computeCenterPosOfElement = (navElement?: HTMLElement) => {
-  if (!navElement) return 0;
-  return navElement.offsetLeft + navElement.offsetWidth / 2;
+const computeCenterPosOfElement = (el?: HTMLElement) => {
+  if (!el) return 0;
+  return el.offsetLeft + el.offsetWidth / 2;
 };
 
 const handleNavChange = (store: NavigationStore, key: string) => (
