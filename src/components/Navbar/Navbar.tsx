@@ -1,8 +1,7 @@
-import { History } from "history";
 import { observer } from "mobx-react";
 import { lighten, rem } from "polished";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useStores } from "../../hooks/use-stores";
 import NavigationStore from "../../store/NavigationStore";
@@ -77,15 +76,13 @@ const computeCenterPosOfElement = (el?: HTMLElement) => {
   return el.offsetLeft + el.offsetWidth / 2;
 };
 
-const handleNavChange = (store: NavigationStore, key: string, history: History) => (
+const handleNavChange = (store: NavigationStore) => (
   event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 ) => {
-  event.preventDefault();
   store.setSelectedElement(event.target as HTMLElement);
-  history?.push(`/${key}`);
 };
 
-const handleOnMouseEnter = (store: NavigationStore, key: string) => (
+const handleOnMouseEnter = (store: NavigationStore) => (
   event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
 ) => {
   event.preventDefault();
@@ -93,15 +90,15 @@ const handleOnMouseEnter = (store: NavigationStore, key: string) => (
   store.setHoverElement(event.target as HTMLElement);
 };
 
-const data2li = (store: NavigationStore, history: History) =>
+const data2li = (store: NavigationStore) =>
   store.data.map(e => (
     <li key={e.key}>
       <Anchor
-        onMouseOver={handleOnMouseEnter(store, e.key)}
+        onMouseOver={handleOnMouseEnter(store)}
         data-item={e.key}
         selected={store.getCurrentSelectedPosition() === e.key}
         to={`/${e.key}`}
-        onClick={handleNavChange(store, e.key, history)}
+        onClick={handleNavChange(store)}
       >
         {e.name}
       </Anchor>
@@ -114,7 +111,6 @@ const Navbar: React.FC = observer(() => {
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const [circleOffset, setCircleOffset] = React.useState(0);
   const [popupOffset, setPopupOffset] = React.useState(0);
-  const history = useHistory();
 
   React.useEffect(() => {
     const hoverAreaXOffset = -60;
@@ -176,7 +172,7 @@ const Navbar: React.FC = observer(() => {
   return (
     <StyledNavContainer>
       <StyledNavbar>
-        <NavUL ref={navRef}>{data2li(navStore, history)}</NavUL>
+        <NavUL ref={navRef}>{data2li(navStore)}</NavUL>
       </StyledNavbar>
       <StyledCircle offset={circleOffset} />
       <StyledPopupCard
