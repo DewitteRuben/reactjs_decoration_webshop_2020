@@ -18,7 +18,7 @@ function App() {
         <Container>
           <Breadcrumbs />
           <Sidebar />
-          <Route path="/:category/:subcategory">
+          <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
             <Feed />
           </Route>
         </Container>

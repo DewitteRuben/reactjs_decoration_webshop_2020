@@ -2,248 +2,301 @@
   "categories": {
     "decoration": {
       "subcategories": {
-        "vase-and-flowers": [
-          {
-            "id": "DatabaseIdHere1",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 1",
-            "description": "This ol' vase is pretty ol'",
-            "price": 23.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1554577621-1a3def0b656c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+        "vase-and-flowers": {
+          "vases": [
+            {
+              "id": "DatabaseIdHere1",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 1",
+              "description": "This ol' vase is pretty ol'",
+              "price": 23.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1554577621-1a3def0b656c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere2",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 2",
+              "description": "This ol' vase is pretty ol'",
+              "price": 54.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1529088065352-38829cd9968b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere3",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 3",
+              "description": "This ol' vase is pretty ol'",
+              "price": 71.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1529079091004-2b0ed179f9f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere4",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 4",
+              "description": "This ol' vase is pretty ol'",
+              "price": 10.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1565192673117-c88f9f68edd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere5",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 5",
+              "description": "This ol' vase is pretty ol'",
+              "price": 8.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1572186192734-e82b57dc4435?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere6",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 6",
+              "description": "This ol' vase is pretty ol'",
+              "price": 4.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1532204182725-d0f67855ac87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere7",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 7",
+              "description": "This ol' vase is pretty ol'",
+              "price": 56.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1533616688419-b7a585564566?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere8",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 8",
+              "description": "This ol' vase is pretty ol'",
+              "price": 77.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1531879385813-f8d895f4580b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere9",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 9",
+              "description": "This ol' vase is pretty ol'",
+              "price": 69.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1581705161966-71b8e3a7f985?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere10",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 10",
+              "description": "This ol' vase is pretty ol'",
+              "price": 42.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1569172891349-83ff6c6f7035?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere11",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 11",
+              "description": "This ol' vase is pretty ol'",
+              "price": 1.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1574775939849-a9a0f9d3aa6c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere12",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 12",
+              "description": "This ol' vase is pretty ol'",
+              "price": 3.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1575038417731-57f6cc0c0bb8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere13",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 13",
+              "description": "This ol' vase is pretty ol'",
+              "price": 4.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1544174397-630a8c4346c6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere14",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 14",
+              "description": "This ol' vase is pretty ol'",
+              "price": 8.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1560106421-4f46330ac4d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere15",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 15",
+              "description": "This ol' vase is pretty ol'",
+              "price": 45.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1563219641-4d5e91ba52ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=260"
+              }
+            },
+            {
+              "id": "DatabaseIdHere16",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "vase",
+              "specific_category": "keramic-vase",
+              "name": "Vase 16",
+              "description": "This ol' vase is pretty ol'",
+              "price": 12.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.unsplash.com/photo-1580149207045-d4625a166fae?ixlib=rb-1.2.1&auto=format&fit=crop&w=260"
+              }
             }
-          },
-          {
-            "id": "DatabaseIdHere2",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 2",
-            "description": "This ol' vase is pretty ol'",
-            "price": 54.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1529088065352-38829cd9968b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
+          ],
+          "flowers": [
+            {
+              "id": "uniqueFlowerId",
+              "category": "decoration",
+              "subcategory": "vase-and-flowers",
+              "item_category": "flower",
+              "specific_category": "fake-flower",
+              "name": "Flower 1",
+              "description": "This ol' flower is pretty ol'",
+              "price": 12.2,
+              "stateOfProduct": "used",
+              "images": {
+                "small": "",
+                "medium": "",
+                "larqe": "",
+                "thumb": "https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=260"
+              }
             }
-          },
-          {
-            "id": "DatabaseIdHere3",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 3",
-            "description": "This ol' vase is pretty ol'",
-            "price": 71.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1529079091004-2b0ed179f9f2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere4",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 4",
-            "description": "This ol' vase is pretty ol'",
-            "price": 10.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1565192673117-c88f9f68edd1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere5",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 5",
-            "description": "This ol' vase is pretty ol'",
-            "price": 8.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1572186192734-e82b57dc4435?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere6",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 6",
-            "description": "This ol' vase is pretty ol'",
-            "price": 4.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1532204182725-d0f67855ac87?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere7",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 7",
-            "description": "This ol' vase is pretty ol'",
-            "price": 56.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1533616688419-b7a585564566?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere8",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 8",
-            "description": "This ol' vase is pretty ol'",
-            "price": 77.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1531879385813-f8d895f4580b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere9",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 9",
-            "description": "This ol' vase is pretty ol'",
-            "price": 69.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1581705161966-71b8e3a7f985?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere10",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 10",
-            "description": "This ol' vase is pretty ol'",
-            "price": 42.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1569172891349-83ff6c6f7035?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere11",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 11",
-            "description": "This ol' vase is pretty ol'",
-            "price": 1.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1574775939849-a9a0f9d3aa6c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere12",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 12",
-            "description": "This ol' vase is pretty ol'",
-            "price": 3.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1575038417731-57f6cc0c0bb8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere13",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 13",
-            "description": "This ol' vase is pretty ol'",
-            "price": 4.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1544174397-630a8c4346c6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere14",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 14",
-            "description": "This ol' vase is pretty ol'",
-            "price": 8.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1560106421-4f46330ac4d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere15",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 15",
-            "description": "This ol' vase is pretty ol'",
-            "price": 45.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1563219641-4d5e91ba52ff?ixlib=rb-1.2.1&auto=format&fit=crop&w=260"
-            }
-          },
-          {
-            "id": "DatabaseIdHere16",
-            "category": "decoration",
-            "subcategory": "vase-and-flowers",
-            "name": "Vase 16",
-            "description": "This ol' vase is pretty ol'",
-            "price": 12.2,
-            "stateOfProduct": "used",
-            "images": {
-              "small": "",
-              "medium": "",
-              "larqe": "",
-              "thumb": "https://images.unsplash.com/photo-1580149207045-d4625a166fae?ixlib=rb-1.2.1&auto=format&fit=crop&w=260"
-            }
-          }
-        ]
+          ]
+        }
       }
     }
   }

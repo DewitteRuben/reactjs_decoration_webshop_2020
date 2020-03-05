@@ -1,9 +1,12 @@
+import flatten from "flat";
 import { action, observable } from "mobx";
 import itemData from "../data/items.json";
 
 export type Categories = "decoration";
 
 export type Subcategories = "vase-and-flowers";
+
+export type ItemCategories = "vases" | "flowers";
 
 export interface Images {
   small: string;
@@ -12,10 +15,12 @@ export interface Images {
   thumb: string;
 }
 
-export interface ItemSubcategory {
+export interface Item {
   id: string;
   category: string;
   subcategory: string;
+  item_category: string;
+  specific_category: string;
   name: string;
   description: string;
   price: number;
@@ -33,11 +38,24 @@ export default class ItemStore {
   }
 
   @action
-  getAllItems(cat?: string, subcat?: string) {
-    let items: ItemSubcategory[] = [];
-    if (cat && subcat) {
+  getAllItems(cat?: string, subcat?: string, itemCategory?: string, specificCategory?: string) {
+    let items: any = [];
+
+    if (cat && !subcat) {
+      items = this.items[cat as Categories];
+    } else if (cat && subcat && !itemCategory) {
       items = this.items[cat as Categories].subcategories[subcat as Subcategories];
+    } else if (cat && subcat && itemCategory && !specificCategory) {
+      return this.items[cat as Categories].subcategories[subcat as Subcategories][itemCategory as ItemCategories];
+    } else if (cat && subcat && itemCategory && specificCategory) {
+      return this.items[cat as Categories].subcategories[subcat as Subcategories][itemCategory as ItemCategories];
     }
-    return items;
+
+    if (!items) return items;
+
+    const flattedItems: { [key: string]: any } = flatten(items, { safe: true });
+    const keys = Object.keys(flattedItems);
+
+    return keys.flatMap(key => flattedItems[key]).filter(obj => Object.keys(obj).length);
   }
 }

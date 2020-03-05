@@ -5,9 +5,10 @@ import ItemList from "../ItemList/ItemList";
 
 const Feed: React.FC = () => {
   const { itemStore } = useStores();
-  const { category, subcategory } = useParams();
+  const { category, subCategory, itemCategory, specificCategory } = useParams();
+  const items = itemStore.getAllItems(category, subCategory, itemCategory, specificCategory);
 
-  return <ItemList items={itemStore.getAllItems(category, subcategory)} />;
+  return <ItemList items={items} />;
 };
 
 export default Feed;
