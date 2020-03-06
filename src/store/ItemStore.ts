@@ -1,6 +1,4 @@
-import flatten from "flat";
-import { action, observable } from "mobx";
-import itemData from "../data/items.json";
+import { flow, observable } from "mobx";
 
 export type Categories = "decoration";
 
@@ -28,38 +26,39 @@ export interface Item {
   images: Images;
 }
 
+interface IQuery {
+  [key: string]: string | undefined;
+  category?: string;
+  subCategory?: string;
+  itemCategory?: string;
+  specificCategory?: string;
+}
+
 export default class ItemStore {
   @observable
-  items = itemData.categories;
+  items = [];
+
+  @observable status = { state: "inactive", error: {} };
+  @observable error = {};
 
   @observable
   breadcrumbs: string[] = [];
 
-  @action
-  getItems() {
-    return this.items;
-  }
+  fetchItems = flow(function*(this: ItemStore, query: IQuery) {
+    const filters = Object.keys(query)
+      .filter(key => query[key])
+      .map(key => `${key}=${query[key]}`)
+      .join("&");
 
-  @action
-  getAllItems(cat?: string, subcat?: string, itemCategory?: string, specificCategory?: string) {
-    this.breadcrumbs = [...arguments].filter(e => e);
-    
-    let items: any = [];
-    if (cat && !subcat) {
-      items = this.items[cat as Categories];
-    } else if (cat && subcat && !itemCategory) {
-      items = this.items[cat as Categories]?.subcategories[subcat as Subcategories];
-    } else if (cat && subcat && itemCategory && !specificCategory) {
-      return this.items[cat as Categories]?.subcategories[subcat as Subcategories][itemCategory as ItemCategories];
-    } else if (cat && subcat && itemCategory && specificCategory) {
-      return this.items[cat as Categories]?.subcategories[subcat as Subcategories][itemCategory as ItemCategories];
+    this.items = [];
+    this.status.state = "pending";
+    try {
+      const promiseItems = yield fetch(`http://localhost:3000/api/shopitem?${filters}`);
+      const fetchedItems = yield promiseItems.json();
+      this.items = fetchedItems;
+      this.status.state = "done";
+    } catch (error) {
+      this.status = { state: "error", error };
     }
-
-    if (!items) return items;
-
-    const flattedItems: { [key: string]: any } = flatten(items, { safe: true });
-    const keys = Object.keys(flattedItems);
-
-    return keys.flatMap(key => flattedItems[key]).filter(obj => Object.keys(obj).length);
-  }
+  });
 }

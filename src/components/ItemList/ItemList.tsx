@@ -10,7 +10,7 @@ export interface Images {
 }
 
 export interface ListItem {
-  id: string;
+  _id: string;
   category: string;
   subcategory: string;
   name: string;
@@ -42,7 +42,7 @@ const ItemList: React.FC<IProps> = ({ items }) => {
           currency="€"
           state={e.stateOfProduct}
           description={e.description}
-          key={e.id}
+          key={e._id}
           title={e.name}
           image={e.images.thumb}
         />
