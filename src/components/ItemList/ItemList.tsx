@@ -1,27 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import ItemCard from "../ItemCard/ItemCard";
-
-export interface Images {
-  small: string;
-  medium: string;
-  larqe: string;
-  thumb: string;
-}
-
-export interface ListItem {
-  _id: string;
-  category: string;
-  subcategory: string;
-  name: string;
-  description: string;
-  price: number;
-  stateOfProduct: string;
-  images: Images;
-}
+import { ShopItem } from "../../store/ItemStore";
 
 interface IProps {
-  items: ListItem[];
+  items: ShopItem[];
 }
 
 const ItemContainer = styled.div`

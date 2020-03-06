@@ -1,4 +1,5 @@
 import { flow, observable } from "mobx";
+import { getItemByCategory } from "../api/api";
 
 export type Categories = "decoration";
 
@@ -13,12 +14,12 @@ export interface Images {
   thumb: string;
 }
 
-export interface Item {
-  id: string;
+export interface ShopItem {
+  _id: string;
   category: string;
-  subcategory: string;
-  item_category: string;
-  specific_category: string;
+  subCategory: string;
+  itemCategory: string;
+  specificCategory: string;
   name: string;
   description: string;
   price: number;
@@ -26,7 +27,7 @@ export interface Item {
   images: Images;
 }
 
-interface IQuery {
+export interface ICategoryQuery {
   [key: string]: string | undefined;
   category?: string;
   subCategory?: string;
@@ -36,7 +37,7 @@ interface IQuery {
 
 export default class ItemStore {
   @observable
-  items = [];
+  items: ShopItem[] = [];
 
   @observable status = { state: "inactive", error: {} };
   @observable error = {};
@@ -44,16 +45,11 @@ export default class ItemStore {
   @observable
   breadcrumbs: string[] = [];
 
-  fetchItems = flow(function*(this: ItemStore, query: IQuery) {
-    const filters = Object.keys(query)
-      .filter(key => query[key])
-      .map(key => `${key}=${query[key]}`)
-      .join("&");
-
+  fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery) {
     this.items = [];
     this.status.state = "pending";
     try {
-      const promiseItems = yield fetch(`http://localhost:3000/api/shopitem?${filters}`);
+      const promiseItems = yield getItemByCategory(categoryQuery);
       const fetchedItems = yield promiseItems.json();
       this.items = fetchedItems;
       this.status.state = "done";
