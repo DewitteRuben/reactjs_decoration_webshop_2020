@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import Priceslider from "../Priceslider/Priceslider";
+import Icon from "../Icon/Icon";
 
 const SidebarContainer = styled.div`
   grid-area: aside;
@@ -8,7 +10,7 @@ const SidebarContainer = styled.div`
 const Sidebar: React.FC = () => {
   return (
     <SidebarContainer>
-      <p>Sample</p>
+      <Priceslider onChangeValue={(range: number[]) => console.log(range)} />
     </SidebarContainer>
   );
 };
