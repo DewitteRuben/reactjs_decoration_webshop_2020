@@ -2,11 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 
-const SliderContainer = styled.div`
+interface ISliderContainer {
+  width: number;
+  height: number;
+}
+
+const SliderContainer = styled.div<ISliderContainer>`
   user-select: none;
-  width: ${rem(300)};
-  border: 1px solid black;
-  height: ${rem(40)};
+  width: ${props => rem(props.width)};
+  height: ${props => rem(props.height)};
   position: relative;
 `;
 
@@ -18,8 +22,23 @@ const SliderCircle = styled.div<ISliderCircle>`
   display: inline-block;
   border-radius: 50%;
   z-index: 10;
-  border: 1px solid ${props => props.theme.darkGrey};
+  border: 1px solid ${props => props.theme.darkGray};
   transform: translateX(${props => props.startPos || 0}px);
+  background-color: ${props => props.theme.white};
+`;
+
+interface ILine {
+  sliderSize: number;
+  width: number;
+}
+
+const Line = styled.div<ILine>`
+  position: absolute;
+  z-index: 5;
+  top: ${props => rem(props.sliderSize / 2)};
+  left: ${props => rem(props.sliderSize / 2)};
+  width: ${props => rem(props.width)};
+  border-bottom: 1px dashed ${props => props.theme.darkGray};
 `;
 
 interface ISliderLabel {
@@ -43,6 +62,7 @@ interface IProps {
   sliderSize?: number;
   labelHeight?: number;
   xOffsetLabel?: number;
+  width?: number;
   onChangeValue?: (range: number[]) => void;
 }
 
@@ -50,17 +70,17 @@ interface CircleValue {
   [key: string]: number;
 }
 
-const CIRCLE_DIMENSION = 20;
 const Priceslider: React.FC<IProps> = ({
   onChangeValue,
-  min = 25,
-  max = 2413,
-  sliderSize = CIRCLE_DIMENSION,
+  min = 0,
+  max = 10,
+  sliderSize = 20,
   labelHeight = sliderSize + 2,
-  xOffsetLabel = sliderSize / 4 + 1
+  xOffsetLabel = 0,
+  width = 250
 }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const [value, setValue] = React.useState<CircleValue>({ min: min, max: max });
+  const [value, setValue] = React.useState<CircleValue>({ min, max });
   const [containerWidth, setContainerWidth] = React.useState(0);
   const [selectedCircle, setSelectedCircle] = React.useState<HTMLDivElement>();
 
@@ -81,31 +101,40 @@ const Priceslider: React.FC<IProps> = ({
 
   React.useEffect(() => {
     const mouseMove = (event: MouseEvent) => {
-      if (containerRef.current) {
-        const { left, width } = containerRef.current?.getBoundingClientRect();
-        const currentXPosInContainer = event.pageX - left - CIRCLE_DIMENSION / 2;
-        if (selectedCircle && currentXPosInContainer >= 0 && currentXPosInContainer < width - sliderSize) {
-          selectedCircle.style.transform = `translateX(${currentXPosInContainer}px)`;
+      if (!selectedCircle || !containerRef.current) return;
+      const { left, width } = containerRef.current?.getBoundingClientRect();
 
-          const prev = selectedCircle.previousElementSibling as HTMLLabelElement;
-          if (prev?.nodeName === "LABEL" && prev.htmlFor === selectedCircle.id) {
-            prev.style.transform = `translate(${currentXPosInContainer + xOffsetLabel}px, ${selectedCircle.offsetTop -
-              labelHeight}px)`;
-          }
+      const currentXPosInContainer = event.pageX - left - sliderSize / 2;
 
-          const respectiveSliderValue = currentXPosInContainer;
-          const step = max / (width - sliderSize);
-          const value = currentXPosInContainer * step;
-          // const respectiveSliderValue = currentXPosInContainer / (width ;
+      const sliderXStart = left;
+      const sliderXOffset = selectedCircle.getBoundingClientRect().x - sliderXStart;
 
-          setValue(prevValue => ({
-            ...prevValue,
-            [selectedCircle.id]: value
-          }));
-        }
+      const maximumXOffset = width - sliderSize;
+      const minimumXOffset = 0;
+
+      if (sliderXOffset < minimumXOffset || sliderXOffset > maximumXOffset) return;
+
+      const sliderPos =
+        currentXPosInContainer <= minimumXOffset
+          ? minimumXOffset
+          : currentXPosInContainer >= maximumXOffset
+          ? maximumXOffset
+          : currentXPosInContainer;
+
+      selectedCircle.style.transform = `translateX(${sliderPos}px)`;
+      const prev = selectedCircle.previousElementSibling as HTMLLabelElement;
+      if (prev?.nodeName === "LABEL" && prev.htmlFor === selectedCircle.id) {
+        prev.style.transform = `translate(${sliderPos + xOffsetLabel}px, ${selectedCircle.offsetTop - labelHeight}px)`;
       }
-    };
 
+      const respectiveSliderValue = sliderPos;
+      const valueInRange = Math.floor(((respectiveSliderValue - 0) / maximumXOffset) * (max - min) + min);
+
+      setValue(prevValue => ({
+        ...prevValue,
+        [selectedCircle.id]: valueInRange
+      }));
+    };
     document.addEventListener("mousemove", mouseMove);
 
     return () => document.removeEventListener("mousemove", mouseMove);
@@ -113,7 +142,8 @@ const Priceslider: React.FC<IProps> = ({
 
   React.useEffect(() => {
     if (onChangeValue) {
-      onChangeValue(Object.values(value || {}).sort((a, b) => a - b));
+      const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
+      onChangeValue(sortedRange);
     }
   }, [value, onChangeValue]);
 
@@ -123,20 +153,16 @@ const Priceslider: React.FC<IProps> = ({
   }, []);
 
   return (
-    <SliderContainer ref={containerRef}>
+    <SliderContainer width={width} height={sliderSize + 2} ref={containerRef}>
       <SliderLabel htmlFor="min" startX={xOffsetLabel} startY={labelHeight}>
         {value?.min}
       </SliderLabel>
       <SliderCircle id="min" onMouseDown={handleMouseDown} sliderSize={sliderSize} />
-      <SliderLabel htmlFor="max" startX={containerWidth - sliderSize - xOffsetLabel} startY={labelHeight}>
+      <SliderLabel htmlFor="max" startX={containerWidth - sliderSize + xOffsetLabel} startY={labelHeight}>
         {value?.max}
       </SliderLabel>
-      <SliderCircle
-        id="max"
-        onMouseDown={handleMouseDown}
-        sliderSize={sliderSize}
-        startPos={containerWidth - sliderSize - xOffsetLabel}
-      />
+      <SliderCircle id="max" onMouseDown={handleMouseDown} sliderSize={sliderSize} startPos={containerWidth - sliderSize} />
+      <Line sliderSize={sliderSize} width={width - sliderSize} />
     </SliderContainer>
   );
 };
