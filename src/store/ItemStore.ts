@@ -46,6 +46,8 @@ export default class ItemStore {
   breadcrumbs: string[] = [];
 
   fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery) {
+    this.breadcrumbs = Object.values(categoryQuery).filter(e => e) as string[];
+
     this.items = [];
     this.status.state = "pending";
     try {
