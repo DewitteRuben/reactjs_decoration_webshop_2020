@@ -7,15 +7,7 @@ import { useStores } from "../../hooks/use-stores";
 import themes from "../../styles/theme";
 import { parseStoreItemKey } from "../../utils/string";
 
-const BreadcrumbsContainer = styled.div`
-  height: ${rem(140)};
-  grid-area: breadcrumbs;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: grid;
-  align-items: center;
-  grid-template-columns: 290px 1fr;
-`;
+const BreadcrumbsContainer = styled.div``;
 
 const BreadCrumbsUL = styled.ul`
   padding-inline-start: 0;
@@ -60,11 +52,8 @@ const Breadcrumbs: React.FC = observer(() => {
 
   return (
     <BreadcrumbsContainer>
-      <div>&nbsp;</div>
-      <div>
-        {renderCrumbsList(itemStore.breadcrumbs)}
-        <Title>{currentItem}</Title>
-      </div>
+      {renderCrumbsList(itemStore.breadcrumbs)}
+      <Title>{currentItem}</Title>
     </BreadcrumbsContainer>
   );
 });
