@@ -7,14 +7,14 @@ export type Subcategories = "vases-and-flowers";
 
 export type ItemCategories = "vases" | "flowers";
 
-export interface Images {
+export interface IImages {
   small: string;
   medium: string;
   larqe: string;
   thumb: string;
 }
 
-export interface ShopItem {
+export interface IShopItem {
   _id: string;
   category: string;
   subCategory: string;
@@ -24,7 +24,7 @@ export interface ShopItem {
   description: string;
   price: number;
   stateOfProduct: string;
-  images: Images;
+  images: IImages;
 }
 
 export interface ICategoryQuery {
@@ -37,7 +37,7 @@ export interface ICategoryQuery {
 
 export default class ItemStore {
   @observable
-  items: ShopItem[] = [];
+  items: IShopItem[] = [];
 
   @observable status = { state: "inactive", error: {} };
   @observable error = {};

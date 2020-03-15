@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import ItemCard from "../ItemCard/ItemCard";
-import { ShopItem } from "../../store/ItemStore";
+import { IShopItem } from "../../store/ItemStore";
 
 interface IProps {
-  items: ShopItem[];
+  items: IShopItem[];
 }
 
 const ItemContainer = styled.div`

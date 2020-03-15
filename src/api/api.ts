@@ -23,4 +23,4 @@ const getItemByCategory = (query: ICategoryQuery) => {
   return request("shopitem", "GET", filters);
 };
 
-export { getItemByCategory  };
+export { getItemByCategory };
