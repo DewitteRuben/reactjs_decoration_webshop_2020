@@ -65,18 +65,18 @@ const ItemButton = styled.a`
   }
 `;
 
-interface IItem {
+export interface IItem {
   name: string;
   value: any;
 }
 
 interface IProps {
   items: IItem[];
-  onChange?: (item: IItem) => void;
+  onValueChange?: (item: IItem) => void;
   label?: string;
 }
 
-const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label, items, onChange, ...props }) => {
+const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label, items, onValueChange, ...props }) => {
   const [isVisible, setVisbility] = React.useState(false);
   const [selectedItem, setSelectedItem] = React.useState<IItem>();
 
@@ -87,8 +87,8 @@ const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label
   const handleItemClick = (item: IItem) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     setSelectedItem(item);
-    if (onChange) {
-      onChange(item);
+    if (onValueChange) {
+      onValueChange(item);
     }
     setVisbility(false);
   };

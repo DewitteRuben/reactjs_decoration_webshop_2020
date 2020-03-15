@@ -26,7 +26,7 @@ const Feed: React.FC = () => {
     [itemStore, query]
   );
 
-  return useObserver(() => <ItemList items={itemStore.items} />);
+  return useObserver(() => <ItemList items={itemStore.getItems()} />);
 };
 
 export default Feed;

@@ -10,6 +10,7 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import themes from "./styles/theme";
 import { rem } from "polished";
 import Select from "./components/Select/Select";
+import SortBySelect from "./components/SortBySelect/SortBySelect";
 
 const Titlebar = styled.div`
   height: ${rem(140)};
@@ -28,15 +29,6 @@ const MiddleTitlebar = styled.div`
   align-items: flex-end;
 `;
 
-const items = [
-  { name: "test", value: "test" },
-  { name: "test1", value: "test" },
-  { name: "test2", value: "test" },
-  { name: "test3", value: "test" },
-  { name: "test4", value: "test" },
-  { name: "test5", value: "test" }
-];
-
 function App() {
   return (
     <Router>
@@ -47,7 +39,7 @@ function App() {
           <MiddleTitlebar>
             <Breadcrumbs />
             <div>
-              <Select items={items} label="Sort" />
+              <SortBySelect />
             </div>
           </MiddleTitlebar>
         </Titlebar>
