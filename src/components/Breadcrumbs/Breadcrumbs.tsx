@@ -10,6 +10,7 @@ import { parseStoreItemKey } from "../../utils/string";
 const BreadcrumbsContainer = styled.div``;
 
 const BreadCrumbsUL = styled.ul`
+  min-height: 18px;
   padding-inline-start: 0;
   & > li {
     padding: 0;
@@ -34,17 +35,12 @@ const Title = styled.h2`
   font-size: ${rem(34)};
 `;
 
-const renderCrumbsList = (breadcrumbs: string[]) => {
-  return (
-    <BreadCrumbsUL>
-      {breadcrumbs.map((key, index) => (
-        <li key={key}>
-          <Anchor to={`/${breadcrumbs.slice(0, index + 1).join("/")}`}>{parseStoreItemKey(key)}</Anchor>
-        </li>
-      ))}
-    </BreadCrumbsUL>
-  );
-};
+const renderCrumbsList = (breadcrumbs: string[]) =>
+  breadcrumbs.map((key, index) => (
+    <li key={key}>
+      <Anchor to={`/${breadcrumbs.slice(0, index + 1).join("/")}`}>{parseStoreItemKey(key)}</Anchor>
+    </li>
+  ));
 
 const Breadcrumbs: React.FC = observer(() => {
   const { itemStore } = useStores();
@@ -52,7 +48,7 @@ const Breadcrumbs: React.FC = observer(() => {
 
   return (
     <BreadcrumbsContainer>
-      {renderCrumbsList(itemStore.breadcrumbs)}
+      <BreadCrumbsUL>{itemStore.breadcrumbs.length > 1 ? renderCrumbsList(itemStore.breadcrumbs) : null}</BreadCrumbsUL>
       <Title>{currentItem}</Title>
     </BreadcrumbsContainer>
   );
