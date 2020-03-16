@@ -23,7 +23,12 @@ const ItemContainer = styled.div`
   background: #fff;
 `;
 
-const Span = styled.span`
+interface ILabel {
+  selected?: boolean;
+}
+
+const Label = styled.span<ILabel>`
+  font-weight: ${props => (props.selected ? "bold" : "normal")};
   margin-right: ${rem(5)};
 `;
 
@@ -109,7 +114,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
   return (
     <>
       <SelectContainer onClick={handleToggle} {...props}>
-        <Span>{selectedItem?.name || label}</Span>
+        <Label selected={Boolean(selectedItem)}>{selectedItem?.name || label}</Label>
         <Caret toggled={isVisible} name="arrow-down" size={11} />
       </SelectContainer>
       {isVisible && (
