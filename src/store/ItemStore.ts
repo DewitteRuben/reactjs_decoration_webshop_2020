@@ -46,27 +46,11 @@ export default class ItemStore {
   @observable
   sortType: SortTypes = SortTypes.NONE;
 
-  @observable
-  filtered?: IShopItem[] = undefined;
-
   @observable status = { state: "inactive", error: {} };
   @observable error = {};
 
   @observable
   breadcrumbs: string[] = [];
-
-  constructor() {
-    observe(this, change => {
-      console.log(toJS(this));
-      if (change.name === "sortType") {
-        if (this.sortType !== SortTypes.NONE) {
-          this.filtered = getSortedItems(this.sortType, this.items);
-        } else {
-          this.filtered = undefined;
-        }
-      }
-    });
-  }
 
   @action
   fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery) {
@@ -90,7 +74,9 @@ export default class ItemStore {
   };
 
   getItems() {
-    if (this.filtered) return this.filtered;
+    if (this.sortType !== SortTypes.NONE) {
+      return getSortedItems(this.sortType, this.items);
+    }
     return this.items;
   }
 }
