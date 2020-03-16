@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { IItem } from "../Select/Select";
+import Select, { IItem, ISelectProps } from "../Select/Select";
 import { useStores } from "../../hooks/use-stores";
 import ItemStore from "../../store/ItemStore";
 
@@ -19,13 +19,14 @@ const items: IItem[] = [
 ];
 
 const handleSortTypeChange = (itemStore: ItemStore) => (item: IItem) => {
-  itemStore.setSortType(item.value as SortTypes);
+  const value = item.value ?? SortTypes.NONE;
+  itemStore.setSortType(value);
 };
 
 const SortBySelect: React.FC = () => {
   const { itemStore } = useStores();
 
-  return <Select items={items} onValueChange={handleSortTypeChange(itemStore)} label="Sort" />;
+  return <Select items={items} onValueChange={handleSortTypeChange(itemStore)} clear label="Sort" />;
 };
 
 export default SortBySelect;

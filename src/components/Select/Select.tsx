@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 import Icon from "../Icon/Icon";
+import _ from "lodash";
 
 const SelectContainer = styled.div`
   padding: 7px 12px;
@@ -37,6 +38,7 @@ const Caret = styled(Icon)<ICaret>`
 `;
 
 const ItemList = styled.ul`
+  postion: relative;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -65,20 +67,31 @@ const ItemButton = styled.a`
   }
 `;
 
+const ClearIcon = styled.span`
+  position: absolute;
+  bottom: 8px;
+  right: 23px;
+  font-size: 19px;
+  user-select: none;
+  cursor: pointer;
+  pointer-events: none;
+`;
+
 export interface IItem {
   name: string;
   value: any;
 }
 
-interface IProps {
+export interface ISelectProps extends React.HTMLAttributes<HTMLDivElement> {
   items: IItem[];
   onValueChange?: (item: IItem) => void;
-  label?: string;
+  label: string;
+  clear?: boolean;
 }
 
-const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label, items, onValueChange, ...props }) => {
-  const [isVisible, setVisbility] = React.useState(false);
+const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ...props }) => {
   const [selectedItem, setSelectedItem] = React.useState<IItem>();
+  const [isVisible, setVisbility] = React.useState(false);
 
   const handleToggle = () => {
     setVisbility(prev => !prev);
@@ -86,7 +99,8 @@ const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label
 
   const handleItemClick = (item: IItem) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
-    setSelectedItem(item);
+    setSelectedItem(item.value?.clearSelectState ? undefined : item);
+
     if (onValueChange) {
       onValueChange(item);
     }
@@ -107,6 +121,16 @@ const Select: React.FC<React.HTMLAttributes<HTMLDivElement> & IProps> = ({ label
                 <ItemButton onClick={handleItemClick(item)}>{item.name}</ItemButton>
               </ListItem>
             ))}
+            {clear && selectedItem && (
+              <>
+                <ListItem key={"clearSelectOption"}>
+                  <ItemButton onClick={handleItemClick({ name: "Clear", value: { clearSelectState: true } })}>
+                    {"Clear"}
+                  </ItemButton>
+                </ListItem>
+                <ClearIcon>x</ClearIcon>
+              </>
+            )}
           </ItemList>
         </ItemContainer>
       )}
