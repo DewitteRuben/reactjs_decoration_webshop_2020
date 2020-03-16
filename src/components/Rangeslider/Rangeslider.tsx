@@ -11,6 +11,8 @@ const SliderContainer = styled.div<ISliderContainer>`
   user-select: none;
   width: ${props => rem(props.width)};
   height: ${props => rem(props.height)};
+  display: flex;
+  align-items: flex-end;
   position: relative;
 `;
 
@@ -30,12 +32,13 @@ const SliderCircle = styled.div<ISliderCircle>`
 interface ILine {
   sliderSize: number;
   width: number;
+  height: number;
 }
 
 const Line = styled.div<ILine>`
   position: absolute;
   z-index: 5;
-  top: ${props => rem(props.sliderSize / 2)};
+  bottom: ${props => rem(props.height / 3.5)};
   left: ${props => rem(props.sliderSize / 2)};
   width: ${props => rem(props.width)};
   border-bottom: 1px dashed ${props => props.theme.darkGray};
@@ -66,21 +69,21 @@ interface IProps {
   onChangeValue?: (range: number[]) => void;
 }
 
-interface CircleValue {
+interface ICircleValue {
   [key: string]: number;
 }
 
-const Priceslider: React.FC<IProps> = ({
+const Rangeslider: React.FC<IProps> = ({
   onChangeValue,
   min = 0,
   max = 10,
   sliderSize = 20,
-  labelHeight = sliderSize + 2,
+  labelHeight = sliderSize + 5,
   xOffsetLabel = 0,
-  width = 250
+  width = 225
 }) => {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
-  const [value, setValue] = React.useState<CircleValue>({ min, max });
+  const [value, setValue] = React.useState<ICircleValue>({ min, max });
   const [containerWidth, setContainerWidth] = React.useState(0);
   const [selectedCircle, setSelectedCircle] = React.useState<HTMLDivElement>();
 
@@ -124,7 +127,7 @@ const Priceslider: React.FC<IProps> = ({
       selectedCircle.style.transform = `translateX(${sliderPos}px)`;
       const prev = selectedCircle.previousElementSibling as HTMLLabelElement;
       if (prev?.nodeName === "LABEL" && prev.htmlFor === selectedCircle.id) {
-        prev.style.transform = `translate(${sliderPos + xOffsetLabel}px, ${selectedCircle.offsetTop - labelHeight}px)`;
+        prev.style.transform = `translate(${sliderPos + xOffsetLabel}px, ${-labelHeight}px)`;
       }
 
       const respectiveSliderValue = sliderPos;
@@ -153,7 +156,7 @@ const Priceslider: React.FC<IProps> = ({
   }, []);
 
   return (
-    <SliderContainer width={width} height={sliderSize + 2} ref={containerRef}>
+    <SliderContainer width={width} height={sliderSize + labelHeight} ref={containerRef}>
       <SliderLabel htmlFor="min" startX={xOffsetLabel} startY={labelHeight}>
         {value?.min}
       </SliderLabel>
@@ -162,9 +165,9 @@ const Priceslider: React.FC<IProps> = ({
         {value?.max}
       </SliderLabel>
       <SliderCircle id="max" onMouseDown={handleMouseDown} sliderSize={sliderSize} startPos={containerWidth - sliderSize} />
-      <Line sliderSize={sliderSize} width={width - sliderSize} />
+      <Line height={labelHeight + sliderSize} sliderSize={sliderSize} width={width - sliderSize} />
     </SliderContainer>
   );
 };
 
-export default Priceslider;
+export default Rangeslider;
