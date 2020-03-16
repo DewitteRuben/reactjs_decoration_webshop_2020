@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { IItem, ISelectProps } from "../Select/Select";
+import Select, { IItem } from "../Select/Select";
 import { useStores } from "../../hooks/use-stores";
 import ItemStore from "../../store/ItemStore";
 

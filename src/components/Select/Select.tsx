@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 import Icon from "../Icon/Icon";
-import _ from "lodash";
 
 const SelectContainer = styled.div`
   padding: 7px 12px;

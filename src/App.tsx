@@ -9,7 +9,6 @@ import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
 import themes from "./styles/theme";
 import { rem } from "polished";
-import Select from "./components/Select/Select";
 import SortBySelect from "./components/SortBySelect/SortBySelect";
 
 const Titlebar = styled.div`
