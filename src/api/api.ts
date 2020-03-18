@@ -1,7 +1,7 @@
 import { ICategoryQuery } from "../store/ItemStore";
 const baseURL = process.env["REACT_APP_BASE_URL"] || "http://localhost:3000/api";
 
-interface IParams {
+export interface IParams {
   key: string;
   value?: string;
 }
@@ -23,4 +23,8 @@ const getItemByCategory = (query: ICategoryQuery) => {
   return request("shopitem", "GET", filters);
 };
 
-export { getItemByCategory };
+const getItemsWithFilters = (filters: IParams[]) => {
+  return request("shopitem", "GET", filters);
+};
+
+export { getItemByCategory, getItemsWithFilters };

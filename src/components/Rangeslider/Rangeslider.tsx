@@ -88,6 +88,10 @@ const Rangeslider: React.FC<IProps> = ({
   const [selectedCircle, setSelectedCircle] = React.useState<HTMLDivElement>();
 
   React.useEffect(() => {
+    setValue({ min, max });
+  }, [min, max]);
+
+  React.useEffect(() => {
     if (containerRef?.current) {
       setContainerWidth(containerRef.current.offsetWidth);
     }
@@ -95,12 +99,18 @@ const Rangeslider: React.FC<IProps> = ({
 
   React.useEffect(() => {
     const mouseUp = (event: MouseEvent) => {
+      if (selectedCircle) {
+        const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
+        if (onChangeValue) {
+          onChangeValue(sortedRange);
+        }
+      }
       setSelectedCircle(undefined);
     };
     document.addEventListener("mouseup", mouseUp);
 
     return () => document.removeEventListener("mouseup", mouseUp);
-  }, []);
+  }, [selectedCircle, onChangeValue, value]);
 
   React.useEffect(() => {
     const mouseMove = (event: MouseEvent) => {
@@ -143,12 +153,12 @@ const Rangeslider: React.FC<IProps> = ({
     return () => document.removeEventListener("mousemove", mouseMove);
   }, [containerRef, selectedCircle, min, max, labelHeight, xOffsetLabel, sliderSize]);
 
-  React.useEffect(() => {
-    if (onChangeValue) {
-      const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
-      onChangeValue(sortedRange);
-    }
-  }, [value, onChangeValue]);
+  // React.useEffect(() => {
+  //   if (onChangeValue) {
+  //     const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
+  //     onChangeValue(sortedRange);
+  //   }
+  // }, [value, onChangeValue]);
 
   const handleMouseDown = React.useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const el = event.target as HTMLDivElement;

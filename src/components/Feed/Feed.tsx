@@ -4,11 +4,12 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useStores } from "../../hooks/use-stores";
 import ItemList from "../ItemList/ItemList";
+import { ICategoryQuery } from "../../store/ItemStore";
 
 const Feed: React.FC = () => {
   const { itemStore } = useStores();
   const { category, subCategory, itemCategory, specificCategory } = useParams();
-  const query = React.useMemo(
+  const query: ICategoryQuery = React.useMemo(
     () => ({
       category,
       subCategory,

@@ -1,7 +1,9 @@
-import { flow, observable, action, observe, toJS } from "mobx";
-import { getItemByCategory } from "../api/api";
+import { flow, observable, action, computed } from "mobx";
+import { getItemsWithFilters } from "../api/api";
 import { SortTypes } from "../components/SortBySelect/SortBySelect";
 import { getSortedItems } from "../utils/sort";
+import _ from "lodash";
+import { IParams } from "../api/api";
 
 export type Categories = "decoration";
 
@@ -31,6 +33,12 @@ export interface IShopItem {
   images: IImages;
 }
 
+export interface IShopItemData {
+  items: IShopItem[];
+  minPrice: number;
+  maxPrice: number;
+}
+
 export interface ICategoryQuery {
   [key: string]: string | undefined;
   category?: string;
@@ -39,9 +47,13 @@ export interface ICategoryQuery {
   specificCategory?: string;
 }
 
+type Filters = "minPrice" | "maxPrice";
+type FiltersMap<T> = { [filter in Filters]?: T };
+
+const initShopItemDetails = { items: [], minPrice: 0, maxPrice: 0 };
 export default class ItemStore {
   @observable
-  items: IShopItem[] = [];
+  shopItemData: IShopItemData = _.cloneDeep(initShopItemDetails);
 
   @observable
   sortType: SortTypes = SortTypes.NONE;
@@ -52,16 +64,26 @@ export default class ItemStore {
   @observable
   breadcrumbs: string[] = [];
 
-  @action
-  fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery) {
-    this.breadcrumbs = Object.values(categoryQuery).filter(e => e) as string[];
+  @observable
+  filters: FiltersMap<string | number> = {};
 
-    this.items = [];
+  currentCategories: ICategoryQuery = {};
+
+  @action
+  fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery = this.currentCategories) {
+    if (categoryQuery) {
+      this.currentCategories = categoryQuery;
+    }
+
+    this.breadcrumbs = Object.values(categoryQuery).filter(e => e) as string[];
+    const categories: IParams[] = Object.keys(categoryQuery).map((key: string) => ({ value: categoryQuery[key], key }));
+    const queryParams = [...categories, ...this.filters2Params(this.filters)];
+
     this.status.state = "pending";
     try {
-      const promiseItems = yield getItemByCategory(categoryQuery);
+      const promiseItems = yield getItemsWithFilters(queryParams);
       const fetchedItems = yield promiseItems.json();
-      this.items = fetchedItems;
+      this.shopItemData = fetchedItems;
       this.status.state = "done";
     } catch (error) {
       this.status = { state: "error", error };
@@ -73,10 +95,44 @@ export default class ItemStore {
     this.sortType = sortType;
   };
 
+  @action
+  setFilter = (key: Filters, value: any) => {
+    this.filters[key] = value;
+    this.fetchItems();
+  };
+
+  @action
+  setFilters = (filters: FiltersMap<string | number>) => {
+    this.filters = { ...this.filters, ...filters };
+    this.fetchItems();
+  };
+
+  @action
+  clearFilters = () => {
+    this.filters = {};
+  };
+
+  filters2Params = (obj: FiltersMap<string | number>): IParams[] => {
+    return Object.keys(obj).map((key: Filters | string) => ({
+      key: String(key),
+      value: String(this.filters[key as Filters])
+    }));
+  };
+
   getItems() {
     if (this.sortType !== SortTypes.NONE) {
-      return getSortedItems(this.sortType, this.items);
+      return getSortedItems(this.sortType, this.shopItemData.items);
     }
-    return this.items;
+    return this.shopItemData.items;
+  }
+
+  @computed
+  get minPrice() {
+    return this.shopItemData.minPrice || 0;
+  }
+
+  @computed
+  get maxPrice() {
+    return this.shopItemData.maxPrice || 0;
   }
 }
