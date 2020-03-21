@@ -21,7 +21,7 @@ const Feed: React.FC = () => {
 
   React.useEffect(() => {
     const disposer = reaction(
-      () => itemStore.categories || itemStore.filters,
+      () => ({ ...itemStore.categories, ...itemStore.filters }),
       () => {
         itemStore.fetchItems();
       }
