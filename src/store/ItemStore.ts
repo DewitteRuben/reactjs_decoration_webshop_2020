@@ -35,8 +35,8 @@ export interface IShopItem {
 
 export interface IShopItemData {
   items: IShopItem[];
-  minPrice: number;
-  maxPrice: number;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 export interface ICategoryQuery {
@@ -50,7 +50,7 @@ export interface ICategoryQuery {
 type Filters = "minPrice" | "maxPrice";
 type FiltersMap<T> = { [filter in Filters]?: T };
 
-const initShopItemDetails = { items: [], minPrice: 0, maxPrice: 0 };
+const initShopItemDetails = { items: [] };
 export default class ItemStore {
   @observable
   shopItemData: IShopItemData = _.cloneDeep(initShopItemDetails);
@@ -67,16 +67,18 @@ export default class ItemStore {
   @observable
   filters: FiltersMap<string | number> = {};
 
-  currentCategories: ICategoryQuery = {};
+  @observable
+  categories: ICategoryQuery = {};
 
   @action
-  fetchItems = flow(function*(this: ItemStore, categoryQuery: ICategoryQuery = this.currentCategories) {
-    if (categoryQuery) {
-      this.currentCategories = categoryQuery;
-    }
+  fetchItems = flow(function*(this: ItemStore) {
+    this.breadcrumbs = Object.values(this.categories).filter(e => e) as string[];
 
-    this.breadcrumbs = Object.values(categoryQuery).filter(e => e) as string[];
-    const categories: IParams[] = Object.keys(categoryQuery).map((key: string) => ({ value: categoryQuery[key], key }));
+    const categories: IParams[] = Object.keys(this.categories).map((key: string) => ({
+      value: this.categories[key],
+      key
+    }));
+
     const queryParams = [...categories, ...this.filters2Params(this.filters)];
 
     this.status.state = "pending";
@@ -98,18 +100,22 @@ export default class ItemStore {
   @action
   setFilter = (key: Filters, value: any) => {
     this.filters[key] = value;
-    this.fetchItems();
   };
 
   @action
   setFilters = (filters: FiltersMap<string | number>) => {
     this.filters = { ...this.filters, ...filters };
-    this.fetchItems();
   };
 
   @action
   clearFilters = () => {
     this.filters = {};
+  };
+
+  @action
+  setCategories = (categories: ICategoryQuery) => {
+    this.clearFilters();
+    this.categories = categories;
   };
 
   filters2Params = (obj: FiltersMap<string | number>): IParams[] => {
@@ -128,11 +134,11 @@ export default class ItemStore {
 
   @computed
   get minPrice() {
-    return this.shopItemData.minPrice || 0;
+    return this.shopItemData.minPrice;
   }
 
   @computed
   get maxPrice() {
-    return this.shopItemData.maxPrice || 0;
+    return this.shopItemData.maxPrice;
   }
 }

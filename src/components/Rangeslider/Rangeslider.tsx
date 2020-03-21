@@ -25,7 +25,7 @@ const SliderCircle = styled.div<ISliderCircle>`
   border-radius: 50%;
   z-index: 10;
   border: 1px solid ${props => props.theme.darkGray};
-  transform: translateX(${props => props.startPos || 0}px);
+  transform: translateX(${props => props.startX}px);
   background-color: ${props => props.theme.white};
 `;
 
@@ -51,12 +51,12 @@ interface ISliderLabel {
 
 const SliderLabel = styled.label<ISliderLabel>`
   position: absolute;
-  transform: translate(${props => props.startX || 0}px, ${props => (props.startY && -props.startY) || 0}px);
+  transform: translate(${props => props.startX}px, ${props => (props.startY && -props.startY) || 0}px);
 `;
 
 interface ISliderCircle {
   sliderSize: number;
-  startPos?: number;
+  startX?: number;
 }
 
 interface IProps {
@@ -73,6 +73,10 @@ interface ICircleValue {
   [key: string]: number;
 }
 
+const convertValueToRange = (value: number, min: number, max: number, oldMax: number) => {
+  return Math.floor(((value - 0) / oldMax) * (max - min) + min);
+};
+
 const Rangeslider: React.FC<IProps> = ({
   onChangeValue,
   min = 0,
@@ -87,9 +91,34 @@ const Rangeslider: React.FC<IProps> = ({
   const [containerWidth, setContainerWidth] = React.useState(0);
   const [selectedCircle, setSelectedCircle] = React.useState<HTMLDivElement>();
 
+  const triggerValues = React.useCallback(() => {
+    const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
+    if (onChangeValue) {
+      onChangeValue(sortedRange);
+    }
+  }, [onChangeValue, value]);
+
+  const resetPositions = React.useCallback(() => {
+    if (containerRef.current) {
+      const labels = Array.from(containerRef.current.querySelectorAll("label"));
+      const sliders = Array.from(containerRef.current.querySelectorAll("div"));
+
+      const minLabel = labels.filter(label => label.htmlFor === "min")[0];
+      const maxLabel = labels.filter(label => label.htmlFor === "max")[0];
+      const minSlider = sliders.filter(slider => slider.id === "min")[0];
+      const maxSlider = sliders.filter(slider => slider.id === "max")[0];
+
+      minLabel.style.transform = `translate(${xOffsetLabel}px, ${-labelHeight}px)`;
+      maxLabel.style.transform = `translate(${containerWidth - sliderSize + xOffsetLabel}px, ${-labelHeight}px)`;
+      minSlider.style.transform = `translateX(${0}px)`;
+      maxSlider.style.transform = `translateX(${containerWidth - sliderSize}px)`;
+    }
+  }, [containerWidth, labelHeight, sliderSize, xOffsetLabel]);
+
   React.useEffect(() => {
     setValue({ min, max });
-  }, [min, max]);
+    resetPositions();
+  }, [min, max, resetPositions]);
 
   React.useEffect(() => {
     if (containerRef?.current) {
@@ -98,19 +127,16 @@ const Rangeslider: React.FC<IProps> = ({
   }, [containerRef]);
 
   React.useEffect(() => {
-    const mouseUp = (event: MouseEvent) => {
+    const mouseUp = () => {
       if (selectedCircle) {
-        const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
-        if (onChangeValue) {
-          onChangeValue(sortedRange);
-        }
+        triggerValues();
       }
       setSelectedCircle(undefined);
     };
     document.addEventListener("mouseup", mouseUp);
 
     return () => document.removeEventListener("mouseup", mouseUp);
-  }, [selectedCircle, onChangeValue, value]);
+  }, [selectedCircle, triggerValues]);
 
   React.useEffect(() => {
     const mouseMove = (event: MouseEvent) => {
@@ -140,8 +166,7 @@ const Rangeslider: React.FC<IProps> = ({
         prev.style.transform = `translate(${sliderPos + xOffsetLabel}px, ${-labelHeight}px)`;
       }
 
-      const respectiveSliderValue = sliderPos;
-      const valueInRange = Math.floor(((respectiveSliderValue - 0) / maximumXOffset) * (max - min) + min);
+      const valueInRange = convertValueToRange(sliderPos, min, max, maximumXOffset);
 
       setValue(prevValue => ({
         ...prevValue,
@@ -153,13 +178,6 @@ const Rangeslider: React.FC<IProps> = ({
     return () => document.removeEventListener("mousemove", mouseMove);
   }, [containerRef, selectedCircle, min, max, labelHeight, xOffsetLabel, sliderSize]);
 
-  // React.useEffect(() => {
-  //   if (onChangeValue) {
-  //     const sortedRange = Object.values(value || {}).sort((a, b) => a - b);
-  //     onChangeValue(sortedRange);
-  //   }
-  // }, [value, onChangeValue]);
-
   const handleMouseDown = React.useCallback((event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const el = event.target as HTMLDivElement;
     setSelectedCircle(el);
@@ -170,11 +188,11 @@ const Rangeslider: React.FC<IProps> = ({
       <SliderLabel htmlFor="min" startX={xOffsetLabel} startY={labelHeight}>
         {value?.min}
       </SliderLabel>
-      <SliderCircle id="min" onMouseDown={handleMouseDown} sliderSize={sliderSize} />
+      <SliderCircle id="min" onMouseDown={handleMouseDown} startX={0} sliderSize={sliderSize} />
       <SliderLabel htmlFor="max" startX={containerWidth - sliderSize + xOffsetLabel} startY={labelHeight}>
         {value?.max}
       </SliderLabel>
-      <SliderCircle id="max" onMouseDown={handleMouseDown} sliderSize={sliderSize} startPos={containerWidth - sliderSize} />
+      <SliderCircle id="max" onMouseDown={handleMouseDown} sliderSize={sliderSize} startX={containerWidth - sliderSize} />
       <Line height={labelHeight + sliderSize} sliderSize={sliderSize} width={width - sliderSize} />
     </SliderContainer>
   );

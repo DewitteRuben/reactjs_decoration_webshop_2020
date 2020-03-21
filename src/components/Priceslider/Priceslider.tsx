@@ -14,11 +14,15 @@ const Priceslider = observer(() => {
   );
 
   return (
-    <Rangeslider
-      onChangeValue={handleRangeChange}
-      min={Math.floor(itemStore.minPrice)}
-      max={Math.ceil(itemStore.maxPrice)}
-    />
+    <>
+      {itemStore.minPrice && itemStore.maxPrice && (
+        <Rangeslider
+          onChangeValue={handleRangeChange}
+          min={Math.floor(itemStore.minPrice)}
+          max={Math.ceil(itemStore.maxPrice)}
+        />
+      )}
+    </>
   );
 });
 

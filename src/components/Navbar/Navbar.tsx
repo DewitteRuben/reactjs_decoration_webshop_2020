@@ -76,15 +76,11 @@ const computeCenterPosOfElement = (el?: HTMLElement) => {
   return el.offsetLeft + el.offsetWidth / 2;
 };
 
-const handleNavChange = (store: NavigationStore) => (
-  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-) => {
+const handleNavChange = (store: NavigationStore) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
   store.setSelectedElement(event.target as HTMLElement);
 };
 
-const handleOnMouseEnter = (store: NavigationStore) => (
-  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>
-) => {
+const handleOnMouseEnter = (store: NavigationStore) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
   event.preventDefault();
   store.setHoverState(true);
   store.setHoverElement(event.target as HTMLElement);
