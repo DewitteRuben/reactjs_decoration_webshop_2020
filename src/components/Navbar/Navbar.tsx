@@ -66,6 +66,7 @@ interface IStyledPopupCard {
 const StyledPopupCard = styled(PopupCard)<IStyledPopupCard>`
   position: absolute;
   top: ${rem(53)};
+  z-index: 10;
   background-color: ${props => props.theme.white};
   left: ${props => rem(props.offset)};
   display: ${props => (!props.display ? "none" : "grid")};
