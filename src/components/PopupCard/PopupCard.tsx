@@ -13,19 +13,19 @@ const StyledPopupCard = styled(Card)`
   max-width: ${rem(390)};
 `;
 
-export interface Subcategory {
+export interface ISubcategory {
   name: string;
   key: string;
 }
 
-export interface Category {
+export interface ICategory {
   name: string;
   key: string;
-  subcategories: Subcategory[];
+  subcategories: ISubcategory[];
 }
 
 interface IProps {
-  category?: Category;
+  category?: ICategory;
 }
 
 const Anchor = styled(Link)`
@@ -58,5 +58,7 @@ const PopupCard = React.forwardRef(
     );
   }
 );
+
+PopupCard.displayName = "PopupCard";
 
 export default PopupCard;
