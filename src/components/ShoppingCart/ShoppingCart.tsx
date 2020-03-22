@@ -51,6 +51,19 @@ const renderItems = (items: IShopItem[], cartStore: CartStore) => {
 const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
   const [isVisible, setVisibility] = React.useState(false);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
+
+  React.useEffect(() => {
+    const handleOutsideClick = (evt: MouseEvent) => {
+      const target = evt.target as HTMLElement;
+      if (!containerRef.current?.contains(target)) {
+        setVisibility(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   const toggleVisbility = () => {
     setVisibility(prev => !prev);
@@ -60,7 +73,7 @@ const ShoppingCart: React.FC = observer(() => {
     <ShoppingCartContainer>
       <NavbarIcon onClick={toggleVisbility} name="cart" />
       {isVisible && (
-        <ShoppingCartCard>
+        <ShoppingCartCard ref={containerRef}>
           <Headline>{cartStore.items.length ? "Your shopping cart" : "Your shopping cart is empty."}</Headline>
           {renderItems(cartStore.items, cartStore)}
         </ShoppingCartCard>
