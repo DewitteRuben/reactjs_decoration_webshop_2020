@@ -97,12 +97,13 @@ export interface ISelectProps extends React.HTMLAttributes<HTMLDivElement> {
 const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ...props }) => {
   const [selectedItem, setSelectedItem] = React.useState<IItem>();
   const [isVisible, setVisbility] = React.useState(false);
+  const toggler = React.useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = () => {
     setVisbility(false);
   };
 
-  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside);
+  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside, toggler.current);
 
   const handleToggle = () => {
     setVisbility(prev => !prev);
@@ -120,7 +121,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
 
   return (
     <>
-      <SelectContainer onClick={handleToggle} {...props}>
+      <SelectContainer ref={toggler} onClick={handleToggle} {...props}>
         <Label selected={Boolean(selectedItem)}>{selectedItem?.name || label}</Label>
         <Caret toggled={isVisible} name="arrow-down" size={11} />
       </SelectContainer>

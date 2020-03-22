@@ -52,20 +52,20 @@ const renderItems = (items: IShopItem[], cartStore: CartStore) => {
 const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
   const [isVisible, setVisibility] = React.useState(false);
+  const toggler = React.useRef<HTMLImageElement | null>(null);
 
   const handleClickOutside = () => {
     setVisibility(false);
   };
 
-  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside);
-
   const toggleVisbility = () => {
     setVisibility(prev => !prev);
   };
 
+  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside, toggler.current);
   return (
     <ShoppingCartContainer>
-      <NavbarIcon onClick={toggleVisbility} name="cart" />
+      <NavbarIcon ref={toggler} onClick={toggleVisbility} name="cart" />
       {isVisible && (
         <ShoppingCartCard ref={containerRef}>
           <Headline>{cartStore.items.length ? "Your shopping cart" : "Your shopping cart is empty."}</Headline>
