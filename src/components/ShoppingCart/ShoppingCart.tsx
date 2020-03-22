@@ -8,6 +8,7 @@ import { IShopItem } from "../../store/ItemStore";
 import { observer } from "mobx-react";
 import { CartStore } from "../../store/CartStore";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
+import useClickOutside from "../../hooks/use-clickoutside";
 
 const ShoppingCartContainer = styled.div`
   position: relative;
@@ -51,19 +52,12 @@ const renderItems = (items: IShopItem[], cartStore: CartStore) => {
 const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
   const [isVisible, setVisibility] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    const handleOutsideClick = (evt: MouseEvent) => {
-      const target = evt.target as HTMLElement;
-      if (!containerRef.current?.contains(target)) {
-        setVisibility(false);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
+  const handleClickOutside = () => {
+    setVisibility(false);
+  };
 
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, []);
+  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside);
 
   const toggleVisbility = () => {
     setVisibility(prev => !prev);

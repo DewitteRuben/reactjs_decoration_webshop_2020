@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 import Icon from "../Icon/Icon";
+import useClickOutside from "../../hooks/use-clickoutside";
 
 const SelectContainer = styled.div`
   padding: 7px 12px;
@@ -96,19 +97,12 @@ export interface ISelectProps extends React.HTMLAttributes<HTMLDivElement> {
 const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ...props }) => {
   const [selectedItem, setSelectedItem] = React.useState<IItem>();
   const [isVisible, setVisbility] = React.useState(false);
-  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
-    const handleOutsideClick = (evt: MouseEvent) => {
-      const target = evt.target as HTMLElement;
-      if (!containerRef.current?.contains(target)) {
-        setVisbility(false);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
+  const handleClickOutside = () => {
+    setVisbility(false);
+  };
 
-    return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, []);
+  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside);
 
   const handleToggle = () => {
     setVisbility(prev => !prev);
