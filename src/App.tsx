@@ -1,8 +1,8 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
-import Container from "./components/Container/Container";
+import FeedLayoutContainer from "./components/Container/Container";
 import Feed from "./components/Feed/Feed";
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
@@ -10,6 +10,8 @@ import Sidebar from "./components/Sidebar/Sidebar";
 import themes from "./styles/theme";
 import { rem } from "polished";
 import SortBySelect from "./components/SortBySelect/SortBySelect";
+import Detail from "./components/Detail/Detail";
+import DetailContainer from "./components/DetailContainer/DetailContainer";
 
 const Titlebar = styled.div`
   height: ${rem(140)};
@@ -34,20 +36,30 @@ function App() {
       <ThemeProvider theme={themes.primary}>
         <Header />
         <Navbar />
-        <Titlebar>
-          <MiddleTitlebar>
-            <Breadcrumbs />
-            <div>
-              <SortBySelect />
-            </div>
-          </MiddleTitlebar>
-        </Titlebar>
-        <Container>
-          <Sidebar />
-          <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
-            <Feed />
+        <Switch>
+          {/* Detail Route */}
+          <Route path="/:category/:subCategory/:itemCategory/:specificCategory/detail/:id">
+            <DetailContainer>
+              <Detail />
+            </DetailContainer>
           </Route>
-        </Container>
+
+          {/* Feed Route */}
+          <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
+            <Titlebar>
+              <MiddleTitlebar>
+                <Breadcrumbs />
+                <div>
+                  <SortBySelect />
+                </div>
+              </MiddleTitlebar>
+            </Titlebar>
+            <FeedLayoutContainer>
+              <Sidebar />
+              <Feed />
+            </FeedLayoutContainer>
+          </Route>
+        </Switch>
       </ThemeProvider>
     </Router>
   );
