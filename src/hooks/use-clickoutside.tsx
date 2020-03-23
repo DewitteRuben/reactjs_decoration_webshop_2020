@@ -1,6 +1,9 @@
 import React from "react";
 
-function useClickOutside<T extends HTMLElement>(action: Function, ignoreElement?: HTMLElement | null) {
+function useClickOutside<T extends HTMLElement | SVGSVGElement>(
+  action: Function,
+  ignoreElement?: HTMLElement | SVGSVGElement | null
+) {
   const ref = React.useRef<T | null>(null);
 
   React.useEffect(() => {
