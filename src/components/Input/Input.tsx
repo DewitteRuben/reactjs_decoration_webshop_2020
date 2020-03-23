@@ -1,7 +1,7 @@
 import { rem } from "polished";
 import React from "react";
 import styled from "styled-components";
-import Icon from "../Icon/Icon";
+import Icon, { IconTypes } from "../Icon/Icon";
 
 const Item = styled.input`
   background: none;
@@ -31,7 +31,7 @@ interface IInputContainerProps {
 }
 
 interface IProps extends IInputContainerProps {
-  icon?: string;
+  icon?: IconTypes;
   iconSize?: number;
   label?: string;
   placeholder: string;
