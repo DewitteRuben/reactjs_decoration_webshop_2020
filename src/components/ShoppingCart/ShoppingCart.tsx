@@ -52,7 +52,7 @@ const renderItems = (items: IShopItem[], cartStore: CartStore) => {
 const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
   const [isVisible, setVisibility] = React.useState(false);
-  const toggler = React.useRef<HTMLImageElement | null>(null);
+  const toggler = React.useRef<SVGSVGElement | null>(null);
 
   const handleClickOutside = () => {
     setVisibility(false);
