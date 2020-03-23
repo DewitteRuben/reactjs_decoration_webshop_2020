@@ -28,7 +28,7 @@ interface IStyledIconProps {
 
 type CombinedProps = IProps & Omit<React.SVGProps<SVGSVGElement>, "ref">;
 
-const Icon: React.FC<CombinedProps> = React.forwardRef(({ name, ...props }, ref: React.Ref<SVGSVGElement>) => {
+const Icon = React.forwardRef(({ name, ...props }: CombinedProps, ref: React.Ref<SVGSVGElement>) => {
   const IconComponent = iconMap[name];
   return <IconComponent {...props} ref={ref} />;
 });
