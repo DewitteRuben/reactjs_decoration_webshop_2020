@@ -1,9 +1,33 @@
 import { rem } from "polished";
 import React from "react";
 import styled from "styled-components";
+import { IShopItem } from "../../store/ItemStore";
+import Icon from "../Icon/Icon";
+import FavoriteIcon from "../FavoriteIcon/FavoriteIcon";
+
+const ActionBar = styled.div`
+  position: absolute;
+  top: 0;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  opacity: 0;
+  transition: opacity 0.25s ease-in;
+`;
 
 const CardContainer = styled.div`
+  position: relative;
   height: ${rem(462)};
+
+  &:hover {
+    cursor: pointer;
+
+    ${ActionBar} {
+      opacity: 1;
+    }
+  }
 `;
 
 const CardDetailContainer = styled.div`
@@ -45,28 +69,28 @@ const ItemFooter = styled.div`
 `;
 
 interface IProps {
-  title: string;
-  description: string;
-  price: number;
-  currency: string;
-  state: string;
-  image: string;
+  item: IShopItem;
 }
 
-const ItemCard: React.FC<IProps> = ({ title, description, price, state, currency, image, ...other }) => {
+const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
+  const { images, name, description, stateOfProduct, price } = item;
+
   return (
     <CardContainer>
-      <Image src={image} alt="" />
+      <Image src={images.thumb} alt={name} />
       <CardDetailContainer>
         <ItemBody>
-          <Title>{title}</Title>
-          <Price>{currency + price.toFixed(2)}</Price>
+          <Title>{name}</Title>
+          <Price>{"€" + price.toFixed(2)}</Price>
         </ItemBody>
         <ItemFooter>
           <SubParagraph>{description}</SubParagraph>
-          <SubParagraph>{state}</SubParagraph>
+          <SubParagraph>{stateOfProduct}</SubParagraph>
         </ItemFooter>
       </CardDetailContainer>
+      <ActionBar>
+        <FavoriteIcon />
+      </ActionBar>
     </CardContainer>
   );
 };

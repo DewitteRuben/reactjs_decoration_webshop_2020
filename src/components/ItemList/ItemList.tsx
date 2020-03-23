@@ -19,16 +19,8 @@ const ItemContainer = styled.div`
 const ItemList: React.FC<IProps> = ({ items }) => {
   return (
     <ItemContainer>
-      {items?.map(e => (
-        <ItemCard
-          price={e.price}
-          currency="€"
-          state={e.stateOfProduct}
-          description={e.description}
-          key={e._id}
-          title={e.name}
-          image={e.images.thumb}
-        />
+      {items?.map(item => (
+        <ItemCard key={item._id} item={item} />
       ))}
     </ItemContainer>
   );
