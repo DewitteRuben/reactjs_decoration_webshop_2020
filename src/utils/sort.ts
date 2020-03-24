@@ -1,6 +1,6 @@
-import { IShopItem } from "../store/ItemStore";
 import _ from "lodash";
 import { SortTypes } from "../components/SortBySelect/SortBySelect";
+import { IShopItem } from "../io-ts-types";
 
 const sortByPriceAsc = (arr: IShopItem[]) => {
   return _.orderBy(arr, ["price"], "asc");

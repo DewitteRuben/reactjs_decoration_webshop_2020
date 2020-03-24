@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ItemCard from "../ItemCard/ItemCard";
-import { IShopItem } from "../../store/ItemStore";
+import { IShopItem } from "../../io-ts-types";
 
 interface IProps {
   items: IShopItem[];

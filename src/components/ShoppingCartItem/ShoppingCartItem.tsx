@@ -1,7 +1,7 @@
 import React from "react";
-import { IShopItem } from "../../store/ItemStore";
 import styled from "styled-components";
 import { rem } from "polished";
+import { IShopItem } from "../../io-ts-types";
 
 interface IShoppingCartItemProps {
   item: IShopItem;

@@ -4,34 +4,13 @@ import { SortTypes } from "../components/SortBySelect/SortBySelect";
 import { getSortedItems } from "../utils/sort";
 import _ from "lodash";
 import { IParams } from "../api/api";
+import { IShopItem } from "../io-ts-types";
 
 export type Categories = "decoration";
 
 export type Subcategories = "vases-and-flowers";
 
 export type ItemCategories = "vases" | "flowers";
-
-export interface IImages {
-  small: string;
-  medium: string;
-  larqe: string;
-  thumb: string;
-}
-
-export interface IShopItem {
-  _id: string;
-  category: string;
-  subCategory: string;
-  itemCategory: string;
-  specificCategory: string;
-  name: string;
-  description: string;
-  price: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-  stateOfProduct: string;
-  images: IImages;
-}
 
 export interface IShopItemData {
   items: IShopItem[];

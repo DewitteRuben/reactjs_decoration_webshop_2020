@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { rem } from "polished";
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
 import { useStores } from "../../hooks/use-stores";
-import { IShopItem } from "../../store/ItemStore";
 import { observer } from "mobx-react";
 import { CartStore } from "../../store/CartStore";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
 import useClickOutside from "../../hooks/use-clickoutside";
+import { IShopItem } from "../../io-ts-types";
 
 const ShoppingCartContainer = styled.div`
   position: relative;

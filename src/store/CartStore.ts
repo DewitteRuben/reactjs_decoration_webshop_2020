@@ -1,11 +1,12 @@
 import { observable, action } from "mobx";
-import { IShopItem } from "./ItemStore";
 import _ from "lodash";
+import { IShopItem } from "../io-ts-types";
 
 export class CartStore {
   @observable
   items: IShopItem[] = [
     {
+      id: "3KDSKQSL",
       _id: "0",
       description: "Beautiful plant",
       images: {
@@ -24,6 +25,7 @@ export class CartStore {
       specificCategory: "keramic-vase"
     },
     {
+      id: "KDJS@32DSK",
       _id: "1",
       description: "Beautiful plant",
       images: {
