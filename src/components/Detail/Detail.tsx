@@ -1,20 +1,55 @@
 import React from "react";
 import { useParams, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import { isRight } from "fp-ts/lib/Either";
+import { IShopItemRuntime, IShopItem } from "../../io-ts-types";
+import { useStores } from "../../hooks/use-stores";
+import ItemCard from "../ItemCard/ItemCard";
+import { observer } from "mobx-react";
 
-const StyledDetail = styled.div`
-  grid-area: detail;
-`;
+const parseLocationState = (jsonString: string): IShopItem | undefined => {
+  let data;
+  try {
+    data = JSON.parse(jsonString);
+  } catch (error) {
+    return undefined;
+  }
 
-const Detail: React.FC = () => {
-  const { category, subCategory, itemCategory, specificCategory, id } = useParams();
-  const { state } = useLocation();
+  if (typeof data !== "object") return undefined;
 
-  return (
-    <>
-      <div>{id}</div>
-    </>
-  );
+  const { createdAt, updatedAt } = data;
+  const parsed = {
+    ...data,
+    createdAt: createdAt ? new Date(createdAt) : undefined,
+    updatedAt: updatedAt ? new Date(updatedAt) : undefined
+  };
+  return parsed;
 };
+
+const Detail: React.FC = observer(() => {
+  const { id } = useParams();
+  const { state } = useLocation<string>();
+  const { detailStore } = useStores();
+  const status = detailStore.status.state;
+  const error = detailStore.status.error;
+
+  React.useEffect(() => {
+    const parsedShopItemData = parseLocationState(state);
+    if (parsedShopItemData && isRight(IShopItemRuntime.decode(parsedShopItemData))) {
+      detailStore.setItem(parsedShopItemData);
+    } else {
+      detailStore.fetchItem(id as string);
+    }
+  }, [detailStore, id, state]);
+
+  if (status === "error") {
+    return <p>{error.message}</p>;
+  }
+
+  if (status === "pending" || status === "inactive") {
+    return <p>Loading...</p>;
+  }
+
+  return <>{detailStore.item && <ItemCard item={detailStore.item} />}</>;
+});
 
 export default Detail;

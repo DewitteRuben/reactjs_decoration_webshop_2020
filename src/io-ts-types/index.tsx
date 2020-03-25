@@ -25,6 +25,24 @@ const optionalShopItemFields = t.partial({
   updatedAt: date
 });
 
-export const IShopItemRuntime = t.intersection([mainShopItemFields, optionalShopItemFields]);
+const optionalStringifiedShopItemFields = t.partial({
+  createdAt: t.string,
+  updatedAt: t.string
+});
 
+export const IShopItemNotFoundErrorResponseRuntime = t.interface({
+  error: t.interface({
+    message: t.string,
+    status: t.number,
+    type: t.string,
+    itemId: t.string
+  }),
+  message: t.string
+});
+
+export const IShopItemRuntime = t.intersection([mainShopItemFields, optionalShopItemFields]);
+export const IShopItemStringifiedRuntime = t.intersection([mainShopItemFields, optionalStringifiedShopItemFields]);
+
+export type IShopItemNotFoundErrorResponse = t.TypeOf<typeof IShopItemNotFoundErrorResponseRuntime>;
 export type IShopItem = t.TypeOf<typeof IShopItemRuntime>;
+export type IShopItemStringified = t.TypeOf<typeof IShopItemStringifiedRuntime>;

@@ -27,4 +27,9 @@ const getItemsWithFilters = (filters: IParams[]) => {
   return request("shopitem", "GET", filters);
 };
 
-export { getItemByCategory, getItemsWithFilters };
+const getItemById = (id: string) => {
+  const filter: IParams = { key: "id", value: id };
+  return request("shopitem", "GET", [filter]);
+};
+
+export { getItemByCategory, getItemsWithFilters, getItemById };

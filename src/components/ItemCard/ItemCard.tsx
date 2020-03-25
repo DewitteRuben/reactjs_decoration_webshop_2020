@@ -1,9 +1,10 @@
 import { rem } from "polished";
 import React from "react";
 import styled from "styled-components";
-import { IShopItem } from "../../store/ItemStore";
-import Icon from "../Icon/Icon";
 import FavoriteIcon from "../FavoriteIcon/FavoriteIcon";
+import { useHistory } from "react-router-dom";
+import * as H from "history";
+import { IShopItem } from "../../io-ts-types";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -72,11 +73,25 @@ interface IProps {
   item: IShopItem;
 }
 
+const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) => (
+  evt: React.MouseEvent<HTMLDivElement, MouseEvent>
+) => {
+  evt.preventDefault();
+  const { category, subCategory, itemCategory, specificCategory, id, name } = item;
+  const parsedName = name.replace(/\s+/g, "").toLowerCase();
+  const location: H.LocationDescriptorObject = {
+    pathname: `/${category}/${subCategory}/${itemCategory}/${specificCategory}/detail/${parsedName}-${id}`,
+    state: JSON.stringify(item)
+  };
+  history.push(location);
+};
+
 const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
   const { images, name, description, stateOfProduct, price } = item;
+  const history = useHistory();
 
   return (
-    <CardContainer>
+    <CardContainer onClick={viewItemDetail(item, history)}>
       <Image src={images.thumb} alt={name} />
       <CardDetailContainer>
         <ItemBody>
