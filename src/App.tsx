@@ -1,7 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
-import Breadcrumbs from "./components/Breadcrumbs/Breadcrumbs";
 import FeedLayoutContainer from "./components/Container/Container";
 import Feed from "./components/Feed/Feed";
 import Header from "./components/Header/Header";
@@ -12,6 +11,7 @@ import { rem } from "polished";
 import SortBySelect from "./components/SortBySelect/SortBySelect";
 import Detail from "./components/Detail/Detail";
 import DetailContainer from "./components/DetailContainer/DetailContainer";
+import CategoryBreadcrumbs from "./components/CategoryBreadcrumbs/CategoryBreadcrumbs";
 
 const Titlebar = styled.div`
   height: ${rem(140)};
@@ -48,7 +48,7 @@ function App() {
           <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
             <Titlebar>
               <MiddleTitlebar>
-                <Breadcrumbs />
+                <CategoryBreadcrumbs />
                 <div>
                   <SortBySelect />
                 </div>

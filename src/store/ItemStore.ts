@@ -41,9 +41,6 @@ export default class ItemStore {
   @observable error = {};
 
   @observable
-  breadcrumbs: string[] = [];
-
-  @observable
   filters: FiltersMap<string | number> = {};
 
   @observable
@@ -51,8 +48,6 @@ export default class ItemStore {
 
   @action
   fetchItems = flow(function*(this: ItemStore) {
-    this.breadcrumbs = Object.values(this.categories).filter(e => e) as string[];
-
     const categories: IParams[] = Object.keys(this.categories).map((key: string) => ({
       value: this.categories[key],
       key

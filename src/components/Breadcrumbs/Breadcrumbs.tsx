@@ -4,8 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useStores } from "../../hooks/use-stores";
-import themes from "../../styles/theme";
-import { parseStoreItemKey } from "../../utils/string";
+import { IParams } from "../../api/api";
 
 const BreadcrumbsContainer = styled.div``;
 
@@ -25,7 +24,7 @@ const Anchor = styled(Link)`
   font-size: ${rem(14)};
 
   &: hover {
-    border-bottom: 1px solid ${props => themes.primary.darkGray};
+    border-bottom: 1px solid ${props => props.theme.darkGray};
   }
 `;
 
@@ -35,23 +34,37 @@ const Title = styled.h2`
   font-size: ${rem(34)};
 `;
 
-const renderCrumbsList = (breadcrumbs: string[]) =>
-  breadcrumbs.map((key, index) => (
-    <li key={key}>
-      <Anchor to={`/${breadcrumbs.slice(0, index + 1).join("/")}`}>{parseStoreItemKey(key)}</Anchor>
-    </li>
-  ));
+export interface IBreadcrumbProps {
+  items: IParams[];
+  currentItem: string;
+  hideCurrent?: boolean;
+}
 
-const Breadcrumbs: React.FC = observer(() => {
-  const { itemStore } = useStores();
-  const currentItem = parseStoreItemKey(itemStore.breadcrumbs[itemStore.breadcrumbs.length - 1]);
+const renderCrumbsList = (breadcrumbs: IParams[]) => {
+  return breadcrumbs.map((item, index) => {
+    const { key, value } = item;
+    return (
+      <li key={key}>
+        <Anchor
+          to={`/${breadcrumbs
+            .slice(0, index + 1)
+            .map(e => e.key)
+            .join("/")}`}
+        >
+          {value}
+        </Anchor>
+      </li>
+    );
+  });
+};
 
+const Breadcrumbs: React.FC<IBreadcrumbProps> = ({ items, currentItem, hideCurrent = false }) => {
   return (
     <BreadcrumbsContainer>
-      <BreadCrumbsUL>{itemStore.breadcrumbs.length > 1 ? renderCrumbsList(itemStore.breadcrumbs) : null}</BreadCrumbsUL>
-      <Title>{currentItem}</Title>
+      <BreadCrumbsUL>{items.length > 1 ? renderCrumbsList(items) : null}</BreadCrumbsUL>
+      {!hideCurrent && <Title>{currentItem}</Title>}
     </BreadcrumbsContainer>
   );
-});
+};
 
 export default Breadcrumbs;
