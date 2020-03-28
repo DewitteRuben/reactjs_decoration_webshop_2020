@@ -3,8 +3,18 @@ import { useParams, useLocation } from "react-router-dom";
 import { isRight } from "fp-ts/lib/Either";
 import { IShopItemRuntime, IShopItem } from "../../io-ts-types";
 import { useStores } from "../../hooks/use-stores";
-import ItemCard from "../ItemCard/ItemCard";
 import { observer } from "mobx-react";
+import ItemDetail from "../ItemDetail/ItemDetail";
+import Carousel from "../Carousel/Carousel";
+import styled from "styled-components";
+import { rem } from "polished";
+
+const DetailContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: ${rem(25)};
+`;
 
 const parseLocationState = (jsonString: string): IShopItem | undefined => {
   let data;
@@ -49,7 +59,14 @@ const Detail: React.FC = observer(() => {
     return <p>Loading...</p>;
   }
 
-  return <>{detailStore.item && <ItemCard item={detailStore.item} />}</>;
+  return (
+    <DetailContainer>
+      {detailStore.item && (
+        <Carousel images={[detailStore.item.images.thumb, detailStore.item.images.thumb, detailStore.item.images.thumb]} />
+      )}
+      {detailStore.item && <ItemDetail item={detailStore.item} />}
+    </DetailContainer>
+  );
 });
 
 export default Detail;
