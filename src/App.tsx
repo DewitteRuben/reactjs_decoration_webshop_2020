@@ -12,6 +12,7 @@ import SortBySelect from "./components/SortBySelect/SortBySelect";
 import Detail from "./components/Detail/Detail";
 import DetailContainer from "./components/DetailContainer/DetailContainer";
 import CategoryBreadcrumbs from "./components/CategoryBreadcrumbs/CategoryBreadcrumbs";
+import { onlyFocusOnTab } from "./utils/accessibility";
 
 const Titlebar = styled.div`
   height: ${rem(140)};
@@ -29,6 +30,8 @@ const MiddleTitlebar = styled.div`
   justify-content: space-between;
   align-items: flex-end;
 `;
+
+onlyFocusOnTab();
 
 function App() {
   return (
