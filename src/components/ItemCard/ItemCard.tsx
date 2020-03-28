@@ -16,18 +16,21 @@ const ActionBar = styled.div`
   justify-content: flex-end;
   width: 100%;
   opacity: 0;
-  transition: opacity 0.25s ease-in;
+  transition: all 0.25s ease-in;
+  transition-property: opacity, background-color;
 `;
 
 const CardContainer = styled.div`
   position: relative;
   height: ${rem(462)};
+  border-radius: 10px;
 
   &:hover {
     cursor: pointer;
 
     ${ActionBar} {
       opacity: 1;
+      background-color: rgba(255, 255, 255, 0.5);
     }
   }
 `;
@@ -41,6 +44,7 @@ const Image = styled.img`
   height: ${rem(360)};
   width: ${rem(260)};
   box-shadow: 0 ${rem(4)} ${rem(4)} rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
 `;
 
 const ItemBody = styled.div`
