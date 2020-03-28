@@ -49,16 +49,16 @@ interface IStyledIconProps {
 
 type CombinedProps = IProps & Omit<React.SVGProps<SVGSVGElement>, "ref">;
 
-const Icon = React.forwardRef(({ name, ...props }: CombinedProps, ref: React.Ref<SVGSVGElement>) => {
+const ForwardedIcon = React.forwardRef(({ name, ...props }: CombinedProps, ref: React.Ref<SVGSVGElement>) => {
   const IconComponent = iconMap[name];
   return <IconComponent {...props} ref={ref} />;
 });
 
-Icon.displayName = "Icon";
+ForwardedIcon.displayName = "Icon";
 
-const StyledIcon = styled(Icon)<IStyledIconProps>`
+const Icon = styled(ForwardedIcon)<IStyledIconProps>`
   width: ${props => props.size || 28}px;
   height: ${props => props.size || 28}px;
 `;
 
-export default StyledIcon;
+export default Icon;
