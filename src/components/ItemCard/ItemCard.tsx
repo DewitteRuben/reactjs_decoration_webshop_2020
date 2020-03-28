@@ -5,6 +5,7 @@ import FavoriteIcon from "../FavoriteIcon/FavoriteIcon";
 import { useHistory } from "react-router-dom";
 import * as H from "history";
 import { IShopItem } from "../../io-ts-types";
+import _ from "lodash";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -108,7 +109,7 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
         </ItemBody>
         <ItemFooter>
           <ItemDescription>{description}</ItemDescription>
-          <ProductCondition>{stateOfProduct}</ProductCondition>
+          <ProductCondition>{_.capitalize(stateOfProduct)}</ProductCondition>
         </ItemFooter>
       </CardDetailContainer>
       <ActionBar>
