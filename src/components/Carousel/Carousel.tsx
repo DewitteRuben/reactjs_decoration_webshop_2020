@@ -39,7 +39,7 @@ const MainImage = styled(ImageWithZoom)`
   }
 `;
 
-const NextArrow = styled.button`
+const ArrowButton = styled.button`
   position: absolute;
   z-index: 10;
   top: 50%;
@@ -50,20 +50,22 @@ const NextArrow = styled.button`
   padding: 0;
   font: inherit;
   cursor: pointer;
-  outline: inherit;
+  transition: transform 0.1s linear;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+
+  &:active {
+    transform: scale(1);
+  }
 `;
-const BackArrow = styled.button`
-  position: absolute;
-  z-index: 10;
-  top: 50%;
+
+const NextArrow = styled(ArrowButton)`
+  right: 30px;
+`;
+const BackArrow = styled(ArrowButton)`
   left: 30px;
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  outline: inherit;
 `;
 
 const SliderContainer = styled.div`
@@ -88,7 +90,6 @@ const ImageDot = styled(Dot)`
   padding: 0;
   font: inherit;
   cursor: pointer;
-  outline: inherit;
 `;
 
 const LeftSidebar = styled.div`
