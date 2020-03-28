@@ -10,11 +10,11 @@ interface IStatus {
 
 const sanitizeId = (id: string) => {
   if (!id.includes("-")) {
-    return id;
+    throw new Error("Id is invalid.");
   }
 
   const parsedId = id.split("-")[1];
-  if (!parsedId) throw new Error("Id is invalid");
+  if (!parsedId) throw new Error("Id is invalid.");
   return parsedId;
 };
 
@@ -28,8 +28,6 @@ export class DetailStore {
   @action
   fetchItem = flow(function*(this: DetailStore, id: string) {
     try {
-      if (!id) throw new Error("Id is not defined.");
-
       this.status.state = "pending";
       const promiseItems = yield getItemById(sanitizeId(id));
       const jsonResponse: IShopItem | IShopItemNotFoundErrorResponse = yield promiseItems.json();
