@@ -59,7 +59,15 @@ const Price = styled.span`
   font-size: ${rem(18)};
 `;
 
-const SubParagraph = styled.span`
+const ItemDescription = styled.div`
+  color: ${props => props.theme.darkGray};
+  width: ${rem(185)};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
+const ProductCondition = styled.div`
   color: ${props => props.theme.darkGray};
 `;
 
@@ -99,8 +107,8 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
           <Price>{"€" + price.toFixed(2)}</Price>
         </ItemBody>
         <ItemFooter>
-          <SubParagraph>{description}</SubParagraph>
-          <SubParagraph>{stateOfProduct}</SubParagraph>
+          <ItemDescription>{description}</ItemDescription>
+          <ProductCondition>{stateOfProduct}</ProductCondition>
         </ItemFooter>
       </CardDetailContainer>
       <ActionBar>
