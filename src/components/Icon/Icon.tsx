@@ -6,8 +6,24 @@ import { ReactComponent as SearchIcon } from "../../icons/search.svg";
 import { ReactComponent as UserIcon } from "../../icons/user.svg";
 import { ReactComponent as ArrowDownIcon } from "../../icons/arrow-down.svg";
 import { ReactComponent as HeartFillIcon } from "../../icons/heart-fill.svg";
+import { ReactComponent as AddShoppingCartIcon } from "../../icons/add-shopping-cart.svg";
+import { ReactComponent as ClockIcon } from "../../icons/clock.svg";
+import { ReactComponent as ConditionLabelIcon } from "../../icons/condition-label.svg";
+import { ReactComponent as NextIcon } from "../../icons/next.svg";
+import { ReactComponent as BackIcon } from "../../icons/back.svg";
 
-export type IconTypes = "heart" | "heart-fill" | "arrow-down" | "cart" | "search" | "user";
+export type IconTypes =
+  | "heart"
+  | "heart-fill"
+  | "arrow-down"
+  | "cart"
+  | "search"
+  | "user"
+  | "add-shopping-cart"
+  | "clock"
+  | "condition-label"
+  | "next"
+  | "back";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -15,7 +31,12 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   cart: CartIcon,
   search: SearchIcon,
   user: UserIcon,
-  "heart-fill": HeartFillIcon
+  "heart-fill": HeartFillIcon,
+  "add-shopping-cart": AddShoppingCartIcon,
+  clock: ClockIcon,
+  "condition-label": ConditionLabelIcon,
+  back: BackIcon,
+  next: NextIcon
 };
 
 interface IProps {
