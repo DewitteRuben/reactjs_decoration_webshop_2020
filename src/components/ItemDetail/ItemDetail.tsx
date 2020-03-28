@@ -5,6 +5,7 @@ import { rem } from "polished";
 import Icon from "../Icon/Icon";
 import _ from "lodash";
 import CategoryBreadcrumbs from "../CategoryBreadcrumbs/CategoryBreadcrumbs";
+import ButtonWithIcon from "../ButtonWithIcon/ButtonWithIcon";
 
 type IItemDetailProps = {
   item: IShopItem;
@@ -45,6 +46,14 @@ const DetailContainer = styled.div`
   width: ${rem(702)};
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+
+  button {
+    margin-right: 10px;
+  }
+`;
+
 const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
   const { name, createdAt, stateOfProduct, price, description } = item;
   return (
@@ -59,6 +68,10 @@ const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
       </ItemMainInfo>
       <ItemDetailPrice>{price}</ItemDetailPrice>
       <Description>{description}</Description>
+      <ButtonContainer>
+        <ButtonWithIcon iconName="add-shopping-cart">Add to cart</ButtonWithIcon>
+        <ButtonWithIcon iconName="heart">Add to wishlist</ButtonWithIcon>
+      </ButtonContainer>
     </DetailContainer>
   );
 };
