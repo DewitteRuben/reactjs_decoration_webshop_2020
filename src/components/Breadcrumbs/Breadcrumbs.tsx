@@ -1,9 +1,7 @@
-import { observer } from "mobx-react";
 import { rem } from "polished";
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { useStores } from "../../hooks/use-stores";
 import { IParams } from "../../api/api";
 
 const BreadcrumbsContainer = styled.div``;

@@ -1,5 +1,4 @@
 import React from "react";
-import { useStores } from "../../hooks/use-stores";
 import { parseStoreItemKey } from "../../utils/string";
 import Breadcrumbs, { IBreadcrumbProps } from "../Breadcrumbs/Breadcrumbs";
 import { IParams } from "../../api/api";
