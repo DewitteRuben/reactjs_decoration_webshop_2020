@@ -10,6 +10,11 @@ interface IStyledIconProps {
 const StyledIcon = styled(({ pressed, ...props }) => <Icon {...props} />)<IStyledIconProps>`
   transition: transform 0.1s ease-in-out;
   transform: ${props => (props.pressed ? "scale(1.20)" : "scale(1.00)")};
+
+  path {
+    fill: ${props => props.theme.black};
+    fill-opacity: 1;
+  }
 `;
 
 interface IFavoriteIconProps {
@@ -46,11 +51,7 @@ const FavoriteIcon: React.FC<IFavoriteIconProps> = ({ active, onFavorite }) => {
     };
   }, [isFavorite]);
 
-  return (
-    <>
-      <StyledIcon pressed={isMouseDown} onMouseDown={onMouseDown} name={heartFilled ? "heart-fill" : "heart"} />
-    </>
-  );
+  return <StyledIcon pressed={isMouseDown} onMouseDown={onMouseDown} name={heartFilled ? "heart-fill" : "heart"} />;
 };
 
 export default FavoriteIcon;
