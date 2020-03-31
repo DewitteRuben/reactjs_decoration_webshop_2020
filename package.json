@@ -18,6 +18,7 @@
     "lodash": "^4.17.15",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.8",
+    "password-validator": "^5.0.3",
     "polished": "^3.4.4",
     "pure-react-carousel": "^1.26.1",
     "react": "^16.13.0",
