@@ -3,6 +3,19 @@ import React from "react";
 import styled, { keyframes } from "styled-components";
 import Icon, { IconTypes } from "../Icon/Icon";
 
+interface IErrorMessageProps {
+  error?: boolean;
+}
+
+const ErrorMessage = styled.span<IErrorMessageProps>`
+  position: absolute;
+  bottom: -18px;
+  left: 15px;
+  font-size: 12px;
+  color: ${props => props.theme.error};
+  opacity: ${props => (props.error ? "1" : "0")};
+`;
+
 const Input = styled.input`
   background: none;
   border: none;
@@ -72,18 +85,6 @@ const InputContainer = styled.div<IInputContainerProps>`
   }
 `;
 
-interface IErrorMessageProps {
-  error?: boolean;
-}
-
-const ErrorMessage = styled.span<IErrorMessageProps>`
-  position: absolute;
-  bottom: -18px;
-  left: 15px;
-  font-size: 12px;
-  color: ${props => props.theme.error};
-`;
-
 interface IInputContainerProps {
   animateLabel?: boolean;
   error?: boolean;
@@ -99,7 +100,11 @@ interface IProps extends IInputContainerProps {
   onChangeText?: (value: string) => void;
 }
 
-type CombinedProps = IProps & React.InputHTMLAttributes<HTMLInputElement>;
+type HTMLInputPropsNoRef = Omit<
+  React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
+  "ref"
+>;
+type CombinedProps = IProps & HTMLInputPropsNoRef;
 
 const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
   icon,
@@ -109,19 +114,44 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
   validate,
   errorMessage,
   onChangeText,
+  required,
   value,
   ...props
 }) => {
   const [currentVal, setCurrentVal] = React.useState("");
+  const [isInvalid, setIsInvalid] = React.useState(false);
+  const [hasFocused, setHasFocused] = React.useState(false);
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
-  const validationCallback = React.useCallback(() => {
+  if (required && !errorMessage?.length) {
+    errorMessage = "This field is required.";
+  }
+
+  React.useEffect(() => {
+    if (!inputRef.current) return;
+
+    inputRef.current.onfocus = () => {
+      if (!hasFocused) setHasFocused(true);
+    };
+
     if (currentVal.length && validate && errorMessage?.length) {
-      return validate(currentVal);
+      const isInvalid = validate(currentVal);
+      if (isInvalid) {
+        setIsInvalid(isInvalid);
+        return inputRef.current.setCustomValidity(errorMessage);
+      }
     }
-    return false;
-  }, [currentVal, errorMessage, validate]);
 
-  const isInvalid = React.useMemo(() => validationCallback(), [validationCallback]);
+    if (required && errorMessage) {
+      setIsInvalid(currentVal.length === 0 && hasFocused);
+      if (currentVal.length === 0) {
+        return inputRef.current.setCustomValidity(errorMessage);
+      }
+    }
+
+    setIsInvalid(false);
+    return inputRef.current?.setCustomValidity("");
+  }, [currentVal, errorMessage, required, validate, hasFocused]);
 
   const onChangeHandler = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,10 +166,10 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
 
   return (
     <InputContainer className={className} error={isInvalid} animateLabel={Boolean(currentVal.length)}>
-      <Input onChange={onChangeHandler} value={value || currentVal} {...props} />
+      <Input ref={inputRef} onChange={onChangeHandler} value={value || currentVal} {...props} />
       {label && <Label error={isInvalid}>{label}</Label>}
       {icon && iconSize && <InputIcon name={icon} size={iconSize} />}
-      {isInvalid && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      <ErrorMessage error={isInvalid}>{errorMessage}</ErrorMessage>
     </InputContainer>
   );
 };
