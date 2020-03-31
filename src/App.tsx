@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
-import FeedLayoutContainer from "./components/Container/Container";
+import GridContainer from "./components/GridContainer/GridContainer";
 import Feed from "./components/Feed/Feed";
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
@@ -10,9 +10,10 @@ import themes from "./styles/theme";
 import { rem } from "polished";
 import SortBySelect from "./components/SortBySelect/SortBySelect";
 import Detail from "./components/Detail/Detail";
-import DetailContainer from "./components/DetailContainer/DetailContainer";
+import Container from "./components/Container/Container";
 import CategoryBreadcrumbs from "./components/CategoryBreadcrumbs/CategoryBreadcrumbs";
 import { onlyFocusOnTab } from "./utils/accessibility";
+import Login from "./components/Login/Login";
 
 const Titlebar = styled.div`
   height: ${rem(140)};
@@ -40,11 +41,14 @@ function App() {
         <Header />
         <Navbar />
         <Switch>
+          <Route exact path="/login">
+            <Login />
+          </Route>
           {/* Detail Route */}
           <Route path="/:category/:subCategory/:itemCategory/:specificCategory/detail/:id">
-            <DetailContainer>
+            <Container>
               <Detail />
-            </DetailContainer>
+            </Container>
           </Route>
 
           {/* Feed Route */}
@@ -57,10 +61,10 @@ function App() {
                 </div>
               </MiddleTitlebar>
             </Titlebar>
-            <FeedLayoutContainer>
+            <GridContainer>
               <Sidebar />
               <Feed />
-            </FeedLayoutContainer>
+            </GridContainer>
           </Route>
         </Switch>
       </ThemeProvider>
