@@ -1,20 +1,24 @@
 import passwordValidator from "password-validator";
 
-const passwordValidationSchema = new passwordValidator();
-passwordValidationSchema
-  .is()
-  .min(8) // Minimum length 8
-  .is()
-  .max(100) // Maximum length 100
-  .has()
-  .uppercase() // Must have uppercase letters
-  .has()
-  .lowercase() // Must have lowercase letters
-  .has()
-  .digits() // Must have digits
-  .has()
-  .not()
-  .spaces(); // Should not have spaces
+const isPasswordValid = (value: string) => {
+  const schema = new passwordValidator();
+  schema
+    .is()
+    .min(8) // Minimum length 8
+    .is()
+    .max(30) // Maximum length 100
+    .has()
+    .uppercase() // Must have uppercase letters
+    .has()
+    .lowercase() // Must have lowercase letters
+    .has()
+    .digits() // Must have digits
+    .has()
+    .not()
+    .spaces(); // Should not have spaces
+
+  return schema.validate(value);
+};
 
 const isValidEmailRegex = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -22,6 +26,8 @@ const validateEmail = (value: string) => !isValidEmailRegex.test(value);
 
 const validateEqualValue = (valueToConfirm: string) => (value: string) => value !== valueToConfirm;
 
-const validatePassword = (value: string) => !passwordValidationSchema.validate(value);
+const validatePassword = (value: string) => !isPasswordValid(value);
 
-export { validateEmail, validateEqualValue, isValidEmailRegex, validatePassword, passwordValidationSchema };
+const isValidEmail = (value: string) => !validateEmail(value);
+
+export { validateEmail, validateEqualValue, isValidEmail, validatePassword, isPasswordValid };

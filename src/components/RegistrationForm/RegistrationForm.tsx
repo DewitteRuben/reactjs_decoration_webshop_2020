@@ -4,6 +4,9 @@ import TextInput from "../Input/Input";
 import Button from "../Button/Button";
 import { Title } from "../LoginForm/LoginForm";
 import Checkbox from "../Checkbox/Checkbox";
+import { validateEmail, validateEqualValue, validatePassword, isValidEmail } from "../../utils/inputValidation";
+import { useStores } from "../../hooks/use-stores";
+import _ from "lodash";
 
 const StyledInput = styled(TextInput)``;
 
@@ -11,8 +14,12 @@ const StyledCheckbox = styled(Checkbox)``;
 
 const InputContainer = styled.div`
   margin-bottom: 16px;
-  ${StyledInput}, ${StyledCheckbox} {
-    margin-top: 23px;
+  ${StyledInput} {
+    margin-top: 15px;
+  }
+
+  ${StyledCheckbox} {
+    margin-top: 5px;
   }
 `;
 
@@ -38,19 +45,32 @@ const Row = styled.div`
 
 const RegistrationForm: React.FC = () => {
   const formRef = React.useRef<HTMLFormElement | null>(null);
+  const { firebaseStore } = useStores();
+  const [emailAddress, setEmailAddress] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [emailInUse, setEmailInUse] = React.useState(false);
 
-  const validateEmail = (value: string) => {
-    const isValidEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
-    return !isValidEmail.test(value);
+  React.useEffect(() => {
+    if (isValidEmail(emailAddress)) {
+      _.debounce(async () => {
+        const methods = await firebaseStore.auth.fetchSignInMethodsForEmail(emailAddress);
+        setEmailInUse(methods.length > 0);
+      }, 100)();
+    }
+  }, [emailAddress, firebaseStore]);
+
+  const handleOnValidateEmail = (value: string) => emailInUse || validateEmail(value);
+
+  const onEmailAddressChange = (text: string) => {
+    setEmailAddress(text);
   };
 
-  const onChangeTextHandler = (text: string) => {
-    console.log(text);
+  const onPasswordChange = (text: string) => {
+    setPassword(text);
   };
 
   function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(event);
   }
 
   return (
@@ -60,27 +80,48 @@ const RegistrationForm: React.FC = () => {
         <VerticalRuleContainer>
           <VerticalRule />
           <Row>
-            <StyledInput name="username" label="Username" />
+            <StyledInput required name="username" label="Username" />
           </Row>
           <Row>
             <StyledInput
-              onChangeText={onChangeTextHandler}
+              onChangeText={onEmailAddressChange}
               type="text" // type text to avoid email trimming bug in CTRL+backspace https://github.com/facebook/react/issues/11881
-              validate={validateEmail}
-              errorMessage="Invalid email address."
+              onValidate={handleOnValidateEmail}
+              errorMessage={emailInUse ? "This email address is already in use." : "Invalid email address."}
               name="emailAddress"
               required
               label="Email Address"
             />
-            <StyledInput required name="confirmEmailAddress" label="Confirm Email Address" />
+            <StyledInput
+              onValidate={validateEqualValue(emailAddress)}
+              errorMessage="This email address must match the previous field."
+              required
+              label="Confirm Email Address"
+            />
           </Row>
           <Row>
-            <StyledInput name="password" label="Password" type="password" />
-            <StyledInput label="Confirm Password" type="password" />
+            <StyledInput
+              required
+              errorMessage="The password must be at least 8 characters long, have a special character and a number."
+              onChangeText={onPasswordChange}
+              name="password"
+              onValidate={validatePassword}
+              label="Password"
+              minLength={8}
+              maxLength={30}
+              type="password"
+            />
+            <StyledInput
+              required
+              onValidate={validateEqualValue(password)}
+              errorMessage="This password must match the previous field."
+              label="Confirm Password"
+              type="password"
+            />
           </Row>
         </VerticalRuleContainer>
         <Row>
-          <StyledCheckbox name="terms">
+          <StyledCheckbox required name="terms">
             I have read, understood and agreed to the <u>Terms of Use</u> and the <u>Privacy Policy</u>.
           </StyledCheckbox>
         </Row>
