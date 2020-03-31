@@ -12,7 +12,6 @@ const Button = styled.button`
   font-weight: 700;
   font-size: ${rem(18)};
   padding: ${rem(10)} ${rem(20)};
-  margin: ${rem(10)} 0;
   position: relative;
   box-shadow: 0 2px ${props => lighten(0.2)(props.theme.darkGray)};
 
