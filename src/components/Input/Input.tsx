@@ -8,12 +8,12 @@ interface IErrorMessageProps {
 }
 
 const ErrorMessage = styled.span<IErrorMessageProps>`
-  position: absolute;
-  bottom: -18px;
-  left: 15px;
   font-size: 12px;
   color: ${props => props.theme.error};
-  opacity: ${props => (props.error ? "1" : "0")};
+  opacity: ${props => Number(props.error)};
+  max-width: ${rem(305)};
+  margin-top: 5px;
+  transition: opacity 150ms ease-in;
 `;
 
 const Input = styled.input`
@@ -60,6 +60,11 @@ const defaultLabelPosition = keyframes`
   }
 `;
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 const InputIcon = styled(Icon)`
   cursor: pointer;
 `;
@@ -95,7 +100,7 @@ interface IProps extends IInputContainerProps {
   iconSize?: number;
   label?: string;
   value?: string;
-  validate?: (value: string) => boolean;
+  onValidate?: (value: string) => boolean;
   errorMessage?: string;
   onChangeText?: (value: string) => void;
 }
@@ -111,7 +116,7 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
   iconSize = 28,
   label,
   className,
-  validate,
+  onValidate,
   errorMessage,
   onChangeText,
   required,
@@ -134,8 +139,8 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
       if (!hasFocused) setHasFocused(true);
     };
 
-    if (currentVal.length && validate && errorMessage?.length) {
-      const isInvalid = validate(currentVal);
+    if (currentVal.length && onValidate && errorMessage?.length) {
+      const isInvalid = onValidate(currentVal);
       if (isInvalid) {
         setIsInvalid(isInvalid);
         return inputRef.current.setCustomValidity(errorMessage);
@@ -151,7 +156,7 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
 
     setIsInvalid(false);
     return inputRef.current?.setCustomValidity("");
-  }, [currentVal, errorMessage, required, validate, hasFocused]);
+  }, [currentVal, errorMessage, required, onValidate, hasFocused]);
 
   const onChangeHandler = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,12 +170,14 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
   );
 
   return (
-    <InputContainer className={className} error={isInvalid} animateLabel={Boolean(currentVal.length)}>
-      <Input ref={inputRef} onChange={onChangeHandler} value={value || currentVal} {...props} />
-      {label && <Label error={isInvalid}>{label}</Label>}
-      {icon && iconSize && <InputIcon name={icon} size={iconSize} />}
+    <Container>
+      <InputContainer className={className} error={isInvalid} animateLabel={Boolean(currentVal.length)}>
+        <Input ref={inputRef} onChange={onChangeHandler} value={value || currentVal} {...props} />
+        {label && <Label error={isInvalid}>{label}</Label>}
+        {icon && iconSize && <InputIcon name={icon} size={iconSize} />}
+      </InputContainer>
       <ErrorMessage error={isInvalid}>{errorMessage}</ErrorMessage>
-    </InputContainer>
+    </Container>
   );
 };
 
