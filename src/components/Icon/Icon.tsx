@@ -11,6 +11,8 @@ import { ReactComponent as ClockIcon } from "../../icons/clock.svg";
 import { ReactComponent as ConditionLabelIcon } from "../../icons/condition-label.svg";
 import { ReactComponent as NextIcon } from "../../icons/next.svg";
 import { ReactComponent as BackIcon } from "../../icons/back.svg";
+import { ReactComponent as CheckboxCheckedIcon } from "../../icons/checkbox-checked.svg";
+import { ReactComponent as CheckboxBlankIcon } from "../../icons/checkbox-blank.svg";
 
 export type IconTypes =
   | "heart"
@@ -23,7 +25,9 @@ export type IconTypes =
   | "clock"
   | "condition-label"
   | "next"
-  | "back";
+  | "back"
+  | "checkbox-checked"
+  | "checkbox-blank";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -36,7 +40,9 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   clock: ClockIcon,
   "condition-label": ConditionLabelIcon,
   back: BackIcon,
-  next: NextIcon
+  next: NextIcon,
+  "checkbox-checked": CheckboxCheckedIcon,
+  "checkbox-blank": CheckboxBlankIcon
 };
 
 interface IProps {
