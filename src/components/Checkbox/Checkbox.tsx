@@ -60,10 +60,18 @@ const CheckboxLabel = styled.label`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Checkbox: React.FC<ICheckboxProps> = ({ checked, onToggle, className, size = 24, onChange, children, name }) => {
+const Checkbox: React.FC<ICheckboxProps> = ({
+  checked,
+  onToggle,
+  className,
+  size = 24,
+  onChange,
+  children,
+  name,
+  required
+}) => {
   const [isChecked, setCheckedState] = React.useState(checked);
   const [id] = React.useState(() => _.uniqueId("checkbox-"));
-  console.log(isChecked);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (onToggle) {
@@ -75,7 +83,7 @@ const Checkbox: React.FC<ICheckboxProps> = ({ checked, onToggle, className, size
   return (
     <ComponentContainer className={className}>
       <CheckboxContainer hasLabel={Boolean(children)} size={size}>
-        <CheckboxInput name={name} id={id} size={size} onChange={handleChange} type="checkbox" />
+        <CheckboxInput required={required} name={name} id={id} size={size} onChange={handleChange} type="checkbox" />
         <CheckboxIcon size={size} name={isChecked ? "checkbox-checked" : "checkbox-blank"} />
       </CheckboxContainer>
       {children && <CheckboxLabel htmlFor={id}>{children}</CheckboxLabel>}
