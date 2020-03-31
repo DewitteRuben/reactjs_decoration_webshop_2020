@@ -60,7 +60,7 @@ const CheckboxLabel = styled.label`
 `;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Checkbox: React.FC<ICheckboxProps> = ({ checked, onToggle, className, size = 24, onChange, children }) => {
+const Checkbox: React.FC<ICheckboxProps> = ({ checked, onToggle, className, size = 24, onChange, children, name }) => {
   const [isChecked, setCheckedState] = React.useState(checked);
   const [id] = React.useState(() => _.uniqueId("checkbox-"));
   console.log(isChecked);
@@ -75,7 +75,7 @@ const Checkbox: React.FC<ICheckboxProps> = ({ checked, onToggle, className, size
   return (
     <ComponentContainer className={className}>
       <CheckboxContainer hasLabel={Boolean(children)} size={size}>
-        <CheckboxInput id={id} size={size} onChange={handleChange} type="checkbox" />
+        <CheckboxInput name={name} id={id} size={size} onChange={handleChange} type="checkbox" />
         <CheckboxIcon size={size} name={isChecked ? "checkbox-checked" : "checkbox-blank"} />
       </CheckboxContainer>
       {children && <CheckboxLabel htmlFor={id}>{children}</CheckboxLabel>}
