@@ -10,6 +10,7 @@
     "@types/node": "^12.12.29",
     "@types/react": "^16.9.23",
     "@types/react-dom": "^16.9.5",
+    "firebase": "^7.13.1",
     "flat": "^5.0.0",
     "fp-ts": "^2.5.3",
     "io-ts": "^2.1.2",
