@@ -100,7 +100,7 @@ interface IProps extends IInputContainerProps {
   iconSize?: number;
   label?: string;
   value?: string;
-  onValidate?: (value: string) => boolean;
+  onValidate?: (value: string) => boolean | Promise<boolean>;
   errorMessage?: string;
   onChangeText?: (value: string) => void;
 }
@@ -139,13 +139,17 @@ const TextInput: React.FC<Omit<CombinedProps, "onChange">> = ({
       if (!hasFocused) setHasFocused(true);
     };
 
-    if (currentVal.length && onValidate && errorMessage?.length) {
-      const isInvalid = onValidate(currentVal);
-      if (isInvalid) {
-        setIsInvalid(isInvalid);
-        return inputRef.current.setCustomValidity(errorMessage);
+    const handleAsyncValidate = async () => {
+      if (currentVal.length && onValidate && errorMessage?.length) {
+        const isInvalid = await onValidate(currentVal);
+        if (isInvalid) {
+          setIsInvalid(isInvalid);
+          return inputRef.current?.setCustomValidity(errorMessage);
+        }
       }
-    }
+    };
+
+    handleAsyncValidate();
 
     if (required && errorMessage) {
       setIsInvalid(currentVal.length === 0 && hasFocused);
