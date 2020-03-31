@@ -19,7 +19,8 @@ const ShoppingCartCard = styled(Card)`
   padding: 10px 0 10px 0;
   background-color: ${props => props.theme.white};
   position: absolute;
-  right: ${rem(-100)};
+  transform-origin: top left;
+  transform: translateX(-45%);
   z-index: 20;
   min-width: ${rem(250)};
 `;
