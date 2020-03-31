@@ -48,6 +48,7 @@ const DetailContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  margin-top: 10px;
 
   button {
     margin-right: 10px;
