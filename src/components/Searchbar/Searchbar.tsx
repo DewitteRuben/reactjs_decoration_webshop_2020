@@ -1,8 +1,8 @@
 import React from "react";
-import Input from "../Input/Input";
+import TextInput from "../Input/Input";
 
 const Searchbar: React.FC = () => {
-  return <Input type="text" label="Search" name="search" id="search" icon="search" />;
+  return <TextInput type="text" label="Search" name="search" id="search" icon="search" />;
 };
 
 export default Searchbar;

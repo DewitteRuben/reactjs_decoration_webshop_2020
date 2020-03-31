@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
-import Input from "../Input/Input";
+import TextInput from "../Input/Input";
 import Button from "../Button/Button";
 
 export const Title = styled.span`
@@ -9,7 +9,7 @@ export const Title = styled.span`
   font-weight: 600;
 `;
 
-const StyledInput = styled(Input)``;
+const StyledInput = styled(TextInput)``;
 
 const VerticalRule = styled.div`
   display: inline-block;

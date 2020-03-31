@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Input from "../Input/Input";
+import TextInput from "../Input/Input";
 import Button from "../Button/Button";
 import { Title } from "../LoginForm/LoginForm";
 import Checkbox from "../Checkbox/Checkbox";
 
-const StyledInput = styled(Input)``;
+const StyledInput = styled(TextInput)``;
 
 const StyledCheckbox = styled(Checkbox)``;
 
@@ -37,8 +37,24 @@ const Row = styled.div`
 `;
 
 const RegistrationForm: React.FC = () => {
+  const formRef = React.useRef<HTMLFormElement | null>(null);
+
+  const validateEmail = (value: string) => {
+    const isValidEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+    return !isValidEmail.test(value);
+  };
+
+  const onChangeTextHandler = (text: string) => {
+    console.log(text);
+  };
+
+  function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log(event);
+  }
+
   return (
-    <form>
+    <form ref={formRef} onSubmit={handleOnSubmit}>
       <Title>No account? Register now</Title>
       <InputContainer>
         <VerticalRuleContainer>
@@ -47,8 +63,16 @@ const RegistrationForm: React.FC = () => {
             <StyledInput name="username" label="Username" />
           </Row>
           <Row>
-            <StyledInput name="emailAddress" label="Email Address" />
-            <StyledInput label="Confirm Email Address" />
+            <StyledInput
+              onChangeText={onChangeTextHandler}
+              type="text" // type text to avoid email trimming bug in CTRL+backspace https://github.com/facebook/react/issues/11881
+              validate={validateEmail}
+              errorMessage="Invalid email address."
+              name="emailAddress"
+              required
+              label="Email Address"
+            />
+            <StyledInput required name="confirmEmailAddress" label="Confirm Email Address" />
           </Row>
           <Row>
             <StyledInput name="password" label="Password" type="password" />
@@ -56,7 +80,7 @@ const RegistrationForm: React.FC = () => {
           </Row>
         </VerticalRuleContainer>
         <Row>
-          <StyledCheckbox>
+          <StyledCheckbox name="terms">
             I have read, understood and agreed to the <u>Terms of Use</u> and the <u>Privacy Policy</u>.
           </StyledCheckbox>
         </Row>
