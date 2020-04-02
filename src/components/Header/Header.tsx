@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Searchbar from "../Searchbar/Searchbar";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
-import LoginDropdown from "../LoginDropdown/LoginDropdown";
+import UserDropdown from "../UserDropdown/UserDropdown";
 
 const Title = styled.h2`
   margin: 0;
@@ -31,7 +31,7 @@ const Header: React.FC<IProps> = ({ title = "Deco World" }) => {
       <Searchbar />
       <Title>{title}</Title>
       <HeaderIconsContainer>
-        <LoginDropdown />
+        <UserDropdown />
         <NavbarIcon name="heart" />
         <ShoppingCart />
       </HeaderIconsContainer>
