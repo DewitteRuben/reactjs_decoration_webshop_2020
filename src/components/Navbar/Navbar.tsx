@@ -15,6 +15,7 @@ const StyledNavbar = styled.nav`
   align-items: center;
   justify-content: center;
   border-bottom: 2px solid ${props => props.theme.gray};
+  user-select: none;
 `;
 
 interface IAnchorProps {
