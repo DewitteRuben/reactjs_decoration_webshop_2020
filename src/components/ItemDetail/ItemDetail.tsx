@@ -6,6 +6,7 @@ import Icon from "../Icon/Icon";
 import _ from "lodash";
 import CategoryBreadcrumbs from "../CategoryBreadcrumbs/CategoryBreadcrumbs";
 import ButtonWithIcon from "../ButtonWithIcon/ButtonWithIcon";
+import { useStores } from "../../hooks/use-stores";
 
 type IItemDetailProps = {
   item: IShopItem;
@@ -57,6 +58,12 @@ const ButtonContainer = styled.div`
 
 const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
   const { name, createdAt, stateOfProduct, price, description } = item;
+  const { cartStore } = useStores();
+
+  const handleAddToCart = () => {
+    cartStore.addItem(item);
+  };
+
   return (
     <DetailContainer>
       <CategoryBreadcrumbs hideCurrent />
@@ -70,7 +77,9 @@ const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
       <ItemDetailPrice>{price}</ItemDetailPrice>
       <Description>{description}</Description>
       <ButtonContainer>
-        <ButtonWithIcon iconName="add-shopping-cart">Add to cart</ButtonWithIcon>
+        <ButtonWithIcon onClick={handleAddToCart} iconName="add-shopping-cart">
+          Add to cart
+        </ButtonWithIcon>
         <ButtonWithIcon iconName="heart">Add to wishlist</ButtonWithIcon>
       </ButtonContainer>
     </DetailContainer>
