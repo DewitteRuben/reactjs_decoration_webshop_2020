@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import * as H from "history";
 import { IShopItem } from "../../io-ts-types";
 import _ from "lodash";
+import { getLocationFromShopItem } from "../../utils/navigation";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -90,12 +91,7 @@ const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) =>
   evt: React.MouseEvent<HTMLDivElement, MouseEvent>
 ) => {
   evt.preventDefault();
-  const { category, subCategory, itemCategory, specificCategory, id, name } = item;
-  const parsedName = name.replace(/\s+/g, "").toLowerCase();
-  const location: H.LocationDescriptorObject = {
-    pathname: `/${category}/${subCategory}/${itemCategory}/${specificCategory}/detail/${parsedName}-${id}`,
-    state: JSON.stringify(item)
-  };
+  const location = getLocationFromShopItem(item);
   history.push(location);
 };
 
