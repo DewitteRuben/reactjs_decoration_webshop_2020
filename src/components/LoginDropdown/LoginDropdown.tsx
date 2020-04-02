@@ -1,68 +1,62 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
 import useClickOutside from "../../hooks/use-clickoutside";
-import Button from "../Button/Button";
-import Card from "../Card/Card";
-import { Link } from "react-router-dom";
-import ButtonRouter from "../ButtonRouter/ButtonRouter";
-
-const StyledDropdown = styled(Card)`
-  z-index: 10;
-  position: absolute;
-  transform: translateX(-45%);
-  padding: 10px 0 10px 0;
-  background-color: ${props => props.theme.white};
-  min-width: ${rem(250)};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Headline = styled.span`
-  display: inline-block;
-  font-weight: bold;
-  text-align: center;
-  padding-bottom: 10px;
-  width: 100%;
-`;
+import { useStores } from "../../hooks/use-stores";
+import RouterLink from "../Link/RouterLink/RouterLink";
+import { observer } from "mobx-react";
+import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
+import Dropdown from "../Dropdown/Dropdown";
+import Icon from "../Icon/Icon";
 
 const DropdownContainer = styled.div`
   position: relative;
-  display: inline-block;
 `;
 
-const LoginDropdown = () => {
+const StyledRouterLink = styled(RouterLink)`
+  line-height: 38px;
+  margin-right: 5px;
+`;
+
+const closeDropdownCurry = (setVisibility: React.Dispatch<React.SetStateAction<boolean>>) => (callback?: Function) => {
+  return () => {
+    setVisibility(false);
+    if (callback) callback();
+  };
+};
+
+const LoginDropdown = observer(() => {
+  const { firebaseStore } = useStores();
+
   const [isVisible, setVisibility] = React.useState(false);
+
   const toggler = React.useRef<HTMLAnchorElement | null>(null);
+  const closeDropdown = closeDropdownCurry(setVisibility);
 
   const handleToggleMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
     setVisibility(prev => !prev);
   };
 
-  const closeDropdown = () => {
-    setVisibility(false);
-  };
+  const handleLogout = closeDropdown(firebaseStore.logout);
 
-  const containerRef = useClickOutside<HTMLDivElement>(closeDropdown, toggler.current);
+  const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (
-    <DropdownContainer ref={containerRef}>
-      <a onClick={handleToggleMenu} ref={toggler}>
-        <NavbarIcon name="user" />
-      </a>
-      {isVisible && (
-        <StyledDropdown>
-          <Headline>You&apos;re currently not logged in</Headline>
-          <ButtonRouter onClick={closeDropdown} to="/login">
-            Login
-          </ButtonRouter>
-        </StyledDropdown>
+    <DropdownContainer>
+      {firebaseStore.isLoggedIn ? (
+        <a onClick={handleToggleMenu} ref={toggler}>
+          <NavbarIcon name="user" />
+        </a>
+      ) : (
+        <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
       )}
+      <Dropdown hideLastSeperator display={isVisible} ref={containerRef}>
+        <DropdownItem onClick={handleLogout} iconName="exit">
+          Logout
+        </DropdownItem>
+      </Dropdown>
     </DropdownContainer>
   );
-};
+});
 
 export default LoginDropdown;

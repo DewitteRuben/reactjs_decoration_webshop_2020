@@ -17,6 +17,10 @@ const StyledHeader = styled.div`
   height: ${rem(95)};
 `;
 
+const HeaderIconsContainer = styled.div`
+  display: flex;
+`;
+
 interface IProps {
   title?: string;
 }
@@ -26,11 +30,11 @@ const Header: React.FC<IProps> = ({ title = "Deco World" }) => {
     <StyledHeader>
       <Searchbar />
       <Title>{title}</Title>
-      <div>
+      <HeaderIconsContainer>
+        <LoginDropdown />
         <NavbarIcon name="heart" />
         <ShoppingCart />
-        <LoginDropdown />
-      </div>
+      </HeaderIconsContainer>
     </StyledHeader>
   );
 };

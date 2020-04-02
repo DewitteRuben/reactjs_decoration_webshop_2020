@@ -3,7 +3,7 @@ const themes = {
     white: "#fafafa",
     gray: "#f6f6f6",
     darkGray: "#949494",
-    border: "#e6e6e7",
+    border: "#949494",
     opacityGray: "rgba(148, 148, 148, 0.1)",
     black: "#171717",
     error: "#B00020"
