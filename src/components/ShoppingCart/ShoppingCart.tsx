@@ -1,7 +1,5 @@
 import React from "react";
-import Card from "../Card/Card";
 import styled from "styled-components";
-import { rem } from "polished";
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
 import { useStores } from "../../hooks/use-stores";
 import { observer } from "mobx-react";
@@ -9,49 +7,55 @@ import { CartStore } from "../../store/CartStore";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
 import useClickOutside from "../../hooks/use-clickoutside";
 import { IShopItem } from "../../io-ts-types";
+import Dropdown from "../Dropdown/Dropdown";
+import { useHistory } from "react-router-dom";
+import { getLocationFromShopItem } from "../../utils/navigation";
+import Badge from "../Badge/Badge";
+import Button from "../Button/Button";
 
 const ShoppingCartContainer = styled.div`
   position: relative;
-  display: inline-block;
 `;
 
-const ShoppingCartCard = styled(Card)`
-  padding: 10px 0 10px 0;
-  background-color: ${props => props.theme.white};
-  position: absolute;
-  transform-origin: top left;
-  transform: translateX(-45%);
-  z-index: 20;
-  min-width: ${rem(250)};
+const StyledDropdown = styled(Dropdown)`
+  width: 280px;
 `;
 
 const Headline = styled.span`
-  display: inline-block;
   font-weight: bold;
   text-align: center;
-  padding-bottom: 10px;
+  padding: 10px 20px;
+  box-sizing: border-box;
   width: 100%;
 `;
 
-const Seperator = styled.div`
-  border-bottom: 1px solid ${props => props.theme.border};
+const Container = styled.div`
+  padding: 10px 20px;
+  width: inherit;
+  box-sizing: border-box;
+`;
+
+const Total = styled.span`
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  font-weight: bold;
+  color: ${props => props.theme.black};
+  margin-bottom: 10px;
+`;
+
+const StyledButton = styled(Button)`
+  width: 100%;
 `;
 
 const handleOnDelete = (cartStore: CartStore) => (item: IShopItem) => {
   cartStore.removeItem(item._id);
 };
 
-const renderItems = (items: IShopItem[], cartStore: CartStore) => {
-  return items.map(item => (
-    <React.Fragment key={item._id}>
-      <Seperator />
-      <ShoppingCartItem onDelete={handleOnDelete(cartStore)} item={item} />
-    </React.Fragment>
-  ));
-};
-
 const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
+  const history = useHistory();
   const [isVisible, setVisibility] = React.useState(false);
   const toggler = React.useRef<SVGSVGElement | null>(null);
 
@@ -63,16 +67,36 @@ const ShoppingCart: React.FC = observer(() => {
     setVisibility(prev => !prev);
   };
 
-  const containerRef = useClickOutside<HTMLDivElement>(handleClickOutside, toggler.current);
+  const renderItems = () => {
+    return cartStore.items.map(item => {
+      const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        event.preventDefault();
+        const location = getLocationFromShopItem(item);
+        history.push(location);
+      };
+      return <ShoppingCartItem onClick={navigateToItem} key={item._id} onDelete={handleOnDelete(cartStore)} item={item} />;
+    });
+  };
+
+  const containerRef = useClickOutside<HTMLUListElement>(handleClickOutside, toggler.current);
+
   return (
     <ShoppingCartContainer>
+      {cartStore.hasItem && <Badge>{cartStore.items.length}</Badge>}
       <NavbarIcon ref={toggler} onClick={toggleVisbility} name="cart" />
-      {isVisible && (
-        <ShoppingCartCard ref={containerRef}>
-          <Headline>{cartStore.items.length ? "Your shopping cart" : "Your shopping cart is empty."}</Headline>
-          {renderItems(cartStore.items, cartStore)}
-        </ShoppingCartCard>
-      )}
+      <StyledDropdown display={isVisible} ref={containerRef}>
+        <Headline>{cartStore.hasItem ? "Your shopping cart" : "Your shopping cart is empty."}</Headline>
+        {renderItems()}
+        <Container>
+          {cartStore.hasItem && (
+            <Total>
+              <span>Total price:</span>
+              <span>{cartStore.totalPrice}</span>
+            </Total>
+          )}
+          <StyledButton>Checkout</StyledButton>
+        </Container>
+      </StyledDropdown>
     </ShoppingCartContainer>
   );
 });
