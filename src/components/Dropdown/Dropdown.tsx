@@ -1,9 +1,16 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { rem } from "polished";
 
 interface IDropdownProps {
   display?: boolean;
+  hideLastSeperator?: boolean;
 }
+
+const HideEndSeperator = css`
+  li:last-of-type {
+    border-bottom: none;
+  }
+`;
 
 const Dropdown = styled.ul<IDropdownProps>`
   position: absolute;
@@ -26,6 +33,8 @@ const Dropdown = styled.ul<IDropdownProps>`
   background-color: ${props => props.theme.white};
 
   user-select: none;
+
+  ${props => props.hideLastSeperator && HideEndSeperator}
 `;
 
 export default Dropdown;

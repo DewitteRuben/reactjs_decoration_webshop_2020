@@ -56,16 +56,22 @@ export interface IDropdownItemProps extends React.ComponentPropsWithoutRef<"a"> 
   onActionClick?: () => void;
 }
 
+const onClickHandler = (onClick?: Function) => (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  event.preventDefault();
+  if (onClick) onClick();
+};
+
 const DropdownItem: React.FC<IDropdownItemProps> = ({
   children,
   iconName,
   iconSize,
+  onClick,
   actionComponent,
   onActionClick,
   ...props
 }) => (
   <StyledListItem>
-    <StyledDropdownItem {...props}>
+    <StyledDropdownItem onClick={onClickHandler(onClick)} {...props}>
       {iconName && <StyledIcon name={iconName} size={iconSize} />}
       {children}
     </StyledDropdownItem>
