@@ -38,7 +38,7 @@ const LoginDropdown = observer(() => {
     setVisibility(prev => !prev);
   };
 
-  const handleLogout = closeDropdown(firebaseStore.logout);
+  const handleLogout = closeDropdown(() => firebaseStore.logout());
 
   const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (

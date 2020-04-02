@@ -1,4 +1,4 @@
-const serializeFormData = <T>(formData: FormData): T => {
+const serializeFormData = <T extends {}>(formData: FormData): Partial<T> => {
   const entries = Array.from(formData.entries());
   entries
     .filter(arr => arr.indexOf("on") > -1)
@@ -6,7 +6,7 @@ const serializeFormData = <T>(formData: FormData): T => {
       const filteredArr = arr as [string, string | boolean];
       filteredArr[1] = true;
     });
-  return (Object.fromEntries(entries) as unknown) as T;
+  return (Object.fromEntries(entries) as unknown) as Partial<T>;
 };
 
 export { serializeFormData };

@@ -45,7 +45,6 @@ const Row = styled.div`
 `;
 
 const RegistrationForm: React.FC = () => {
-  const formRef = React.useRef<HTMLFormElement | null>(null);
   const { firebaseStore } = useStores();
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -82,11 +81,13 @@ const RegistrationForm: React.FC = () => {
     const formData = new FormData(event.currentTarget);
     const serialized = serializeFormData<IRegistrationForm>(formData);
     const { username, password, emailAddress } = serialized;
-    await firebaseStore.createUser(username, emailAddress, password);
+    if (username && password && emailAddress) {
+      await firebaseStore.createUser(username, emailAddress, password);
+    }
   };
 
   return (
-    <form ref={formRef} onSubmit={handleOnSubmit}>
+    <form onSubmit={handleOnSubmit}>
       <Title>No account? Register now</Title>
       <InputContainer>
         <VerticalRuleContainer>
