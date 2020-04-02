@@ -148,7 +148,7 @@ const Rangeslider: React.FC<IProps> = ({
       const sliderXStart = left;
       const sliderXOffset = selectedCircle.getBoundingClientRect().x - sliderXStart;
 
-      const maximumXOffset = width - sliderSize;
+      const maximumXOffset = Math.ceil(width - sliderSize);
       const minimumXOffset = 0;
 
       if (sliderXOffset < minimumXOffset || sliderXOffset > maximumXOffset) return;
