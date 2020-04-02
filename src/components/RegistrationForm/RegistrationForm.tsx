@@ -7,6 +7,7 @@ import Checkbox from "../Checkbox/Checkbox";
 import { validateEmail, validateEqualValue, validatePassword, isValidEmail } from "../../utils/inputValidation";
 import { useStores } from "../../hooks/use-stores";
 import _ from "lodash";
+import { serializeFormData } from "../../utils/forms";
 
 const StyledInput = styled(TextInput)``;
 
@@ -53,8 +54,8 @@ const RegistrationForm: React.FC = () => {
   React.useEffect(() => {
     if (isValidEmail(emailAddress)) {
       _.debounce(async () => {
-        const methods = await firebaseStore.auth.fetchSignInMethodsForEmail(emailAddress);
-        setEmailInUse(methods.length > 0);
+        const doesUserExist = await firebaseStore.doesUserExist(emailAddress);
+        setEmailInUse(doesUserExist);
       }, 100)();
     }
   }, [emailAddress, firebaseStore]);
@@ -69,9 +70,20 @@ const RegistrationForm: React.FC = () => {
     setPassword(text);
   };
 
-  function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  interface IRegistrationForm {
+    username: string;
+    password: string;
+    emailAddress: string;
+    terms: boolean;
   }
+
+  const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const serialized = serializeFormData<IRegistrationForm>(formData);
+    const { username, password, emailAddress } = serialized;
+    await firebaseStore.createUser(username, emailAddress, password);
+  };
 
   return (
     <form ref={formRef} onSubmit={handleOnSubmit}>

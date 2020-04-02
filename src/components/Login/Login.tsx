@@ -4,6 +4,8 @@ import LoginForm from "../LoginForm/LoginForm";
 import Container from "../Container/Container";
 import RegistrationForm from "../RegistrationForm/RegistrationForm";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import { observer } from "mobx-react";
 
 const LoginPageContainer = styled(Container)`
   display: flex;
@@ -12,10 +14,13 @@ const LoginPageContainer = styled(Container)`
   flex-wrap: wrap;
 `;
 
-const Login = () => {
+const Login = observer(() => {
   const { firebaseStore } = useStores();
-  // @ts-ignore
-  window.firebaseStore = firebaseStore;
+  const history = useHistory();
+
+  if (firebaseStore.isLoggedIn) {
+    history.push("/decoration");
+  }
 
   return (
     <LoginPageContainer>
@@ -23,6 +28,6 @@ const Login = () => {
       <RegistrationForm />
     </LoginPageContainer>
   );
-};
+});
 
 export default Login;
