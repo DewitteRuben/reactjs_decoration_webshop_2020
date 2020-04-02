@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import GridContainer from "./components/GridContainer/GridContainer";
 import Feed from "./components/Feed/Feed";
@@ -41,6 +41,10 @@ function App() {
         <Header />
         <Navbar />
         <Switch>
+          <Route exact path="/">
+            <Redirect to="/decoration" />
+          </Route>
+
           <Route exact path="/login">
             <Login />
           </Route>
@@ -65,6 +69,10 @@ function App() {
               <Sidebar />
               <Feed />
             </GridContainer>
+          </Route>
+
+          <Route path="*">
+            <Redirect to="/decoration" />
           </Route>
         </Switch>
       </ThemeProvider>
