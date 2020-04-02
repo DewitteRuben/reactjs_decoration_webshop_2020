@@ -45,22 +45,27 @@ interface IAuthError {
 
 class FirebaseStore {
   @observable
-  firebase: firebase.app.App;
+  private firebase: firebase.app.App;
+
+  private auth: firebase.auth.Auth;
 
   @observable
-  auth: firebase.auth.Auth;
+  private user: firebase.User | null = null;
 
   @observable
-  errors: IAuthError = { signup: [], login: [], logout: [], token: [] };
+  private errors: IAuthError = { signup: [], login: [], logout: [], token: [] };
 
-  @observable
-  googleAuthProvider: firebase.auth.GoogleAuthProvider;
+  private googleAuthProvider: firebase.auth.GoogleAuthProvider;
 
   constructor() {
     this.firebase = firebase.initializeApp(firebaseConfig);
+
     this.auth = this.firebase.auth();
-    this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
+
+    this.auth.onAuthStateChanged(user => (this.user = user));
     this.auth.useDeviceLanguage();
+
+    this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   }
 
   async createUser(username: string, email: string, password: string) {
@@ -106,13 +111,23 @@ class FirebaseStore {
     }
   }
 
+  async doesUserExist(emailAddress: string) {
+    try {
+      const methods = await this.auth.fetchSignInMethodsForEmail(emailAddress);
+      return methods.length > 0;
+    } catch (error) {
+      this.errors.login.push(error);
+      return true;
+    }
+  }
+
   loginWithGoogle() {
     this.auth.signInWithRedirect(this.googleAuthProvider);
   }
 
   @computed
   get currentUser() {
-    return this.auth.currentUser;
+    return this.user || this.auth.currentUser;
   }
 
   @computed
