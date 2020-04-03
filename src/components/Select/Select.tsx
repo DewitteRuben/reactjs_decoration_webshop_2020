@@ -116,7 +116,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
   };
 
   return (
-    <>
+    <div>
       <SelectContainer ref={toggler} onClick={handleToggle} {...props}>
         <Label fontWeight={selectedItem ? "bold" : "normal"}>{selectedItem?.name || label}</Label>
         <Caret open={isVisible} name="arrow-down" size={11} />
@@ -142,7 +142,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
           </ItemList>
         </ItemContainer>
       )}
-    </>
+    </div>
   );
 };
 

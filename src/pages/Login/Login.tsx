@@ -1,8 +1,8 @@
 import React from "react";
 import { useStores } from "../../hooks/use-stores";
-import LoginForm from "../LoginForm/LoginForm";
-import Container from "../Container/Container";
-import RegistrationForm from "../RegistrationForm/RegistrationForm";
+import LoginForm from "../../components/LoginForm/LoginForm";
+import Container from "../../components/Container/Container";
+import RegistrationForm from "../../components/RegistrationForm/RegistrationForm";
 import styled from "styled-components";
 import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react";

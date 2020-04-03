@@ -4,8 +4,8 @@ import { isRight } from "fp-ts/lib/Either";
 import { IShopItemRuntime, IShopItem } from "../../io-ts-types";
 import { useStores } from "../../hooks/use-stores";
 import { observer } from "mobx-react";
-import ItemDetail from "../ItemDetail/ItemDetail";
-import Carousel from "../Carousel/Carousel";
+import ItemDetail from "../../components/ItemDetail/ItemDetail";
+import Carousel from "../../components/Carousel/Carousel";
 import styled from "styled-components";
 import { rem } from "polished";
 

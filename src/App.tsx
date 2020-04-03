@@ -1,36 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import styled, { ThemeProvider } from "styled-components";
-import GridContainer from "./components/GridContainer/GridContainer";
-import Feed from "./components/Feed/Feed";
+import { ThemeProvider } from "styled-components";
 import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
-import Sidebar from "./components/Sidebar/Sidebar";
 import themes from "./styles/theme";
-import { rem } from "polished";
-import SortBySelect from "./components/SortBySelect/SortBySelect";
-import Detail from "./components/Detail/Detail";
+import Detail from "./pages/Detail/Detail";
 import Container from "./components/Container/Container";
-import CategoryBreadcrumbs from "./components/CategoryBreadcrumbs/CategoryBreadcrumbs";
 import { onlyFocusOnTab } from "./utils/accessibility";
-import Login from "./components/Login/Login";
-
-const Titlebar = styled.div`
-  height: ${rem(140)};
-  grid-area: breadcrumbs;
-  max-width: 1440px;
-  margin: 0 auto;
-  display: grid;
-  align-items: center;
-  grid-template-columns: 290px 1070px 1fr;
-`;
-
-const MiddleTitlebar = styled.div`
-  grid-column-start: 2;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-`;
+import Login from "./pages/Login/Login";
+import Main from "./pages/Main/Main";
 
 onlyFocusOnTab();
 
@@ -57,18 +35,7 @@ function App() {
 
           {/* Feed Route */}
           <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
-            <Titlebar>
-              <MiddleTitlebar>
-                <CategoryBreadcrumbs />
-                <div>
-                  <SortBySelect />
-                </div>
-              </MiddleTitlebar>
-            </Titlebar>
-            <GridContainer>
-              <Sidebar />
-              <Feed />
-            </GridContainer>
+            <Main />
           </Route>
 
           <Route path="*">
