@@ -8,6 +8,7 @@ import { IShopItem } from "../../io-ts-types";
 import _ from "lodash";
 import { getLocationFromShopItem } from "../../utils/navigation";
 import Typography from "../Typography/Typography";
+import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -55,7 +56,7 @@ const ItemBody = styled.div`
   height: ${rem(32)};
 `;
 
-const ItemDescription = styled.div`
+const ItemDescription = styled(Typography)`
   color: ${props => props.theme.darkGray};
   width: ${rem(185)};
   overflow: hidden;
@@ -66,17 +67,13 @@ const ItemDescription = styled.div`
 const ItemFooter = styled.div`
   display: flex;
   justify-content: space-between;
-  height: ${rem(16)};
 `;
 
 interface IProps {
   item: IShopItem;
 }
 
-const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) => (
-  evt: React.MouseEvent<HTMLDivElement, MouseEvent>
-) => {
-  evt.preventDefault();
+const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) => () => {
   const location = getLocationFromShopItem(item);
   history.push(location);
 };
@@ -86,25 +83,27 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
   const history = useHistory();
 
   return (
-    <CardContainer onClick={viewItemDetail(item, history)}>
-      <Image src={images.thumb} alt={name} />
-      <CardDetailContainer>
-        <ItemBody>
-          <Typography fontWeight="bold" as="p">
-            {name}
-          </Typography>
-          <Typography fontWeight="bold" fontSize="large" as="p">
-            {"€" + price.toFixed(2)}
-          </Typography>
-        </ItemBody>
-        <ItemFooter>
-          <ItemDescription>{description}</ItemDescription>
-          <Typography color="darkGray">{_.capitalize(stateOfProduct)}</Typography>
-        </ItemFooter>
-      </CardDetailContainer>
-      <ActionBar>
-        <FavoriteIcon />
-      </ActionBar>
+    <CardContainer>
+      <ButtonUnstyled onClick={viewItemDetail(item, history)}>
+        <Image src={images.thumb} alt={name} />
+        <CardDetailContainer>
+          <ItemBody>
+            <Typography fontWeight="bold" as="p">
+              {name}
+            </Typography>
+            <Typography fontWeight="bold" fontSize="large" as="p">
+              {"€" + price.toFixed(2)}
+            </Typography>
+          </ItemBody>
+          <ItemFooter>
+            <ItemDescription>{description}</ItemDescription>
+            <Typography color="darkGray">{_.capitalize(stateOfProduct)}</Typography>
+          </ItemFooter>
+        </CardDetailContainer>
+        <ActionBar>
+          <FavoriteIcon />
+        </ActionBar>
+      </ButtonUnstyled>
     </CardContainer>
   );
 };

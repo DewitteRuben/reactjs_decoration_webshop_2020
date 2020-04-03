@@ -13,6 +13,7 @@ import { getLocationFromShopItem } from "../../utils/navigation";
 import Badge from "../Badge/Badge";
 import Button from "../Button/Button";
 import Typography from "../Typography/Typography";
+import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 
 const ShoppingCartContainer = styled.div`
   position: relative;
@@ -54,7 +55,7 @@ const ShoppingCart: React.FC = observer(() => {
   const { cartStore } = useStores();
   const history = useHistory();
   const [isVisible, setVisibility] = React.useState(false);
-  const toggler = React.useRef<SVGSVGElement | null>(null);
+  const toggler = React.useRef<HTMLButtonElement | null>(null);
 
   const handleClickOutside = () => {
     setVisibility(false);
@@ -80,7 +81,9 @@ const ShoppingCart: React.FC = observer(() => {
   return (
     <ShoppingCartContainer>
       {cartStore.hasItem && <Badge>{cartStore.items.length}</Badge>}
-      <NavbarIcon ref={toggler} onClick={toggleVisbility} name="cart" />
+      <ButtonUnstyled ref={toggler} onClick={toggleVisbility}>
+        <NavbarIcon name="cart" />
+      </ButtonUnstyled>
       <StyledDropdown display={isVisible} ref={containerRef}>
         <Headline fontWeight="bold" align="center">
           {cartStore.hasItem ? "Your shopping cart" : "Your shopping cart is empty."}

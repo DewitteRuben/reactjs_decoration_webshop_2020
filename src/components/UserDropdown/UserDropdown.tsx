@@ -7,6 +7,7 @@ import RouterLink from "../Link/RouterLink/RouterLink";
 import { observer } from "mobx-react";
 import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
 import Dropdown from "../Dropdown/Dropdown";
+import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -29,10 +30,10 @@ const LoginDropdown = observer(() => {
 
   const [isVisible, setVisibility] = React.useState(false);
 
-  const toggler = React.useRef<HTMLAnchorElement | null>(null);
+  const toggler = React.useRef<HTMLButtonElement | null>(null);
   const closeDropdown = closeDropdownCurry(setVisibility);
 
-  const handleToggleMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleToggleMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setVisibility(prev => !prev);
   };
@@ -43,9 +44,9 @@ const LoginDropdown = observer(() => {
   return (
     <DropdownContainer>
       {firebaseStore.isLoggedIn ? (
-        <a onClick={handleToggleMenu} ref={toggler}>
+        <ButtonUnstyled onClick={handleToggleMenu} ref={toggler}>
           <NavbarIcon name="user" />
-        </a>
+        </ButtonUnstyled>
       ) : (
         <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
       )}

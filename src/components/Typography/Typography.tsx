@@ -41,7 +41,7 @@ export const getColors = (type: Colors) => {
   return colorMap[type];
 };
 
-interface ITypographyProps {
+export interface ITypographyProps {
   fontWeight?: FontWeightTypes;
   fontSize?: FontSizes;
   color?: Colors;
