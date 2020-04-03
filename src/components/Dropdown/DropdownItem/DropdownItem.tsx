@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { rem } from "polished";
 import Icon, { IconTypes } from "../../Icon/Icon";
+import Typography from "../../Typography/Typography";
 
 const StyledDropdownItem = styled.a`
   display: flex;
@@ -14,7 +15,7 @@ const StyledDropdownItem = styled.a`
 
   color: ${props => props.theme.black};
 
-  font-size: ${rem(18)};
+  font-size: ${rem(16)};
 
   text-decoration: none;
   user-select: none;
@@ -27,7 +28,7 @@ const StyledDropdownItem = styled.a`
 
 const StyledListItem = styled.li`
   position: relative;
-  width: inherit;
+  width: 100%;
   border-bottom: 1px solid ${props => props.theme.border};
 `;
 
@@ -47,6 +48,11 @@ const ActionButton = styled.div`
     cursor: pointer;
     opacity: 0.5;
   }
+`;
+
+const TextNode = styled(Typography)`
+  font-size: inherit;
+  white-space: nowrap;
 `;
 
 export interface IDropdownItemProps extends React.ComponentPropsWithoutRef<"a"> {
@@ -73,9 +79,10 @@ const DropdownItem: React.FC<IDropdownItemProps> = ({
   <StyledListItem>
     <StyledDropdownItem onClick={onClickHandler(onClick)} {...props}>
       {iconName && <StyledIcon name={iconName} size={iconSize} />}
-      {children}
+      {typeof children === "string" ? <TextNode>{children}</TextNode> : children}
     </StyledDropdownItem>
     {actionComponent && <ActionButton onClick={onActionClick}>{actionComponent}</ActionButton>}
   </StyledListItem>
 );
+
 export default DropdownItem;
