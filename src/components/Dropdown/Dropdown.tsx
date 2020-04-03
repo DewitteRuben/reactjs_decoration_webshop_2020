@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { rem } from "polished";
+import React from "react";
 
 interface IDropdownProps {
   display?: boolean;
@@ -12,7 +13,20 @@ const HideEndSeperator = css`
   }
 `;
 
-const Dropdown = styled.ul<IDropdownProps>`
+type ForwardedDropdownProps = IDropdownProps & React.ComponentPropsWithRef<"ul">;
+
+// Filtering out props so React doesn't complain about missnamed attributes (https://github.com/styled-components/styled-components/pull/3006)
+const ForwardedDropdown: React.FC<ForwardedDropdownProps> = React.forwardRef(
+  ({ display, hideLastSeperator, children, ...rest }, ref: React.Ref<HTMLUListElement>) => (
+    <ul ref={ref} {...rest}>
+      {children}
+    </ul>
+  )
+);
+
+ForwardedDropdown.displayName = "ForwardedDropdown";
+
+const Dropdown = styled(ForwardedDropdown)<IDropdownProps>`
   position: absolute;
   display: ${props => (props.display ? "flex" : "none")};
   flex-direction: column;

@@ -30,12 +30,12 @@ const Label = styled(Typography)`
 `;
 
 interface ICaret {
-  toggled: boolean;
+  open: boolean;
 }
 
 const Caret = styled(Icon)<ICaret>`
   transition: transform 0.1s linear;
-  transform: ${props => `rotate(${props.toggled ? "-180" : "0"}deg)`};
+  transform: ${props => `rotate(${props.open ? "-180" : "0"}deg)`};
 `;
 
 const ItemList = styled.ul`
@@ -119,7 +119,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
     <>
       <SelectContainer ref={toggler} onClick={handleToggle} {...props}>
         <Label fontWeight={selectedItem ? "bold" : "normal"}>{selectedItem?.name || label}</Label>
-        <Caret toggled={isVisible} name="arrow-down" size={11} />
+        <Caret open={isVisible} name="arrow-down" size={11} />
       </SelectContainer>
       {isVisible && (
         <ItemContainer ref={containerRef}>
