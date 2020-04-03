@@ -16,8 +16,6 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-console.log(firebaseConfig);
-
 enum SignupErrorCode {
   EMAIL_IN_USE = "auth/email-already-in-use",
   INVALID_EMAIL = "auth/invalid-email",
@@ -43,6 +41,11 @@ interface IAuthError {
   token: any[];
 }
 
+interface IUser {
+  user: firebase.User | null;
+  loaded: boolean;
+}
+
 class FirebaseStore {
   @observable
   private firebase: firebase.app.App;
@@ -50,7 +53,7 @@ class FirebaseStore {
   private auth: firebase.auth.Auth;
 
   @observable
-  private user: firebase.User | null = null;
+  private user: IUser = { user: null, loaded: false };
 
   @observable
   private errors: IAuthError = { signup: [], login: [], logout: [], token: [] };
@@ -62,7 +65,10 @@ class FirebaseStore {
 
     this.auth = this.firebase.auth();
 
-    this.auth.onAuthStateChanged(user => (this.user = user));
+    this.auth.onAuthStateChanged(user => {
+      this.user = { user, loaded: true };
+    });
+
     this.auth.useDeviceLanguage();
 
     this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
@@ -127,12 +133,17 @@ class FirebaseStore {
 
   @computed
   get currentUser() {
-    return this.user || this.auth.currentUser;
+    return this.user.user || this.auth.currentUser;
   }
 
   @computed
   get isLoggedIn() {
     return this.currentUser !== null;
+  }
+
+  @computed
+  get isAuthReady() {
+    return this.user.loaded;
   }
 }
 
