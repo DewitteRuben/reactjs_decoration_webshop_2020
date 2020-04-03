@@ -36,8 +36,7 @@ const LoginDropdown = observer(() => {
   const closeDropdownCallback = closeDropdownCurry(setVisibility);
   const closeDropdown = closeDropdownCallback();
 
-  const handleToggleMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    event.preventDefault();
+  const handleToggleMenu = () => {
     setVisibility(prev => !prev);
   };
 

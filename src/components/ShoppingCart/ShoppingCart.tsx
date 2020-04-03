@@ -67,8 +67,7 @@ const ShoppingCart: React.FC = observer(() => {
 
   const renderItems = () => {
     return cartStore.items.map(item => {
-      const navigateToItem = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        event.preventDefault();
+      const navigateToItem = () => {
         const location = getLocationFromShopItem(item);
         history.push(location);
       };
