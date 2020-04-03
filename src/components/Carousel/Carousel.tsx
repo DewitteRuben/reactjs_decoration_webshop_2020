@@ -12,6 +12,7 @@ interface ICarouselProps {
 
 const ItemImageContainer = styled.div`
   width: ${rem(702)};
+  margin-right: 35px;
 `;
 
 const MainImage = styled(ImageWithZoom)`
