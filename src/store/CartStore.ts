@@ -1,10 +1,18 @@
 import { observable, action, computed } from "mobx";
 import _ from "lodash";
 import { IShopItem } from "../io-ts-types";
+import { loadCart, persistCart } from "../persistence/localstorage";
 
 export class CartStore {
   @observable
   items: IShopItem[] = [];
+
+  constructor() {
+    const persistedCart = loadCart();
+    if (persistedCart) {
+      this.items = persistedCart;
+    }
+  }
 
   @action
   addItem = (item: IShopItem) => {
@@ -12,11 +20,13 @@ export class CartStore {
     if (hasItem < 0) {
       this.items.push(item);
     }
+    persistCart(this.items);
   };
 
   @action
   removeItem = (id: string) => {
     _.remove(this.items, item => item._id === id);
+    persistCart(this.items);
   };
 
   @computed
