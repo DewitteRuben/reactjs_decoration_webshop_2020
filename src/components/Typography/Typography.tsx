@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { rem } from "polished";
 
 export type FontWeightTypes = "normal" | "semibold" | "bold" | "extrabold";
-export type FontSizes = "smallest" | "small" | "normal" | "large" | "larger" | "largest";
+export type FontSizes = "smallest" | "small" | "normal" | "large" | "x2" | "x3" | "larger" | "largest";
 export type Colors = "white" | "gray" | "black" | "darkGray" | "opacityGray" | "red";
 export type AlignmentTypes = "inherit" | "left" | "center" | "right" | "justify";
 
@@ -18,6 +18,8 @@ const fontSizeMap: Record<FontSizes, number> = {
   small: 14,
   normal: 16,
   large: 18,
+  x2: 20,
+  x3: 22,
   larger: 24,
   largest: 34
 };
