@@ -13,5 +13,6 @@ export default styled.a<ILinkProps>`
 
   &:hover {
     border-bottom: 1px solid ${props => (props.color ? getColors(props.color) : getColors("black"))};
+    cursor: pointer;
   }
 `;
