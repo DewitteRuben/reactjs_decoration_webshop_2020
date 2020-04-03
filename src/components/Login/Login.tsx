@@ -4,7 +4,7 @@ import LoginForm from "../LoginForm/LoginForm";
 import Container from "../Container/Container";
 import RegistrationForm from "../RegistrationForm/RegistrationForm";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react";
 
 const LoginPageContainer = styled(Container)`
@@ -16,10 +16,9 @@ const LoginPageContainer = styled(Container)`
 
 const Login = observer(() => {
   const { firebaseStore } = useStores();
-  const history = useHistory();
 
   if (firebaseStore.isLoggedIn) {
-    history.push("/decoration");
+    return <Redirect to="/decoration" />;
   }
 
   return (
