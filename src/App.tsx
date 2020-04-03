@@ -9,6 +9,7 @@ import Container from "./components/Container/Container";
 import { onlyFocusOnTab } from "./utils/accessibility";
 import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
+import Profile from "./pages/Profile/Profile";
 
 onlyFocusOnTab();
 
@@ -21,6 +22,10 @@ function App() {
         <Switch>
           <Route exact path="/">
             <Redirect to="/decoration" />
+          </Route>
+
+          <Route exact path="/profile">
+            <Profile />
           </Route>
 
           <Route exact path="/login">

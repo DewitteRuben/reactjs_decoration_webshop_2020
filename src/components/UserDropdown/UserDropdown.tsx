@@ -8,6 +8,7 @@ import { observer } from "mobx-react";
 import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
 import Dropdown from "../Dropdown/Dropdown";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
+import { useHistory } from "react-router-dom";
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -27,6 +28,7 @@ const closeDropdownCurry = (setVisibility: React.Dispatch<React.SetStateAction<b
 
 const LoginDropdown = observer(() => {
   const { firebaseStore } = useStores();
+  const history = useHistory();
 
   const [isVisible, setVisibility] = React.useState(false);
 
@@ -40,6 +42,7 @@ const LoginDropdown = observer(() => {
   };
 
   const handleLogout = closeDropdownCallback(() => firebaseStore.logout());
+  const handleProfile = closeDropdownCallback(() => history.push("/profile"));
 
   const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (
@@ -52,6 +55,9 @@ const LoginDropdown = observer(() => {
         <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
       )}
       <Dropdown hideLastSeperator display={isVisible} ref={containerRef}>
+        <DropdownItem onClick={handleProfile} iconName="user">
+          My profile
+        </DropdownItem>
         <DropdownItem onClick={handleLogout} iconName="exit">
           Logout
         </DropdownItem>
