@@ -9,8 +9,10 @@ import Typography from "../Typography/Typography";
 import Container from "../Container/Container";
 
 const StyledHeader = styled(Container)`
-  align-items: center;
   height: ${rem(95)};
+
+  align-items: center;
+  margin-top: 0;
 `;
 
 const HeaderIconsContainer = styled.div`
