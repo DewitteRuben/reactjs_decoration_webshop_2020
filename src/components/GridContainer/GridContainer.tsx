@@ -9,6 +9,7 @@ const StyledContainer = styled(Container)`
     "breadcrumbs breadcrumbs"
     "aside list"
     "aside list";
+  margin-top: 0;
 `;
 
 const GridContainer: React.FC = ({ children, ...other }) => <StyledContainer {...other}>{children}</StyledContainer>;
