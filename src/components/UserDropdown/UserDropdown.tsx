@@ -31,14 +31,15 @@ const LoginDropdown = observer(() => {
   const [isVisible, setVisibility] = React.useState(false);
 
   const toggler = React.useRef<HTMLButtonElement | null>(null);
-  const closeDropdown = closeDropdownCurry(setVisibility);
+  const closeDropdownCallback = closeDropdownCurry(setVisibility);
+  const closeDropdown = closeDropdownCallback();
 
   const handleToggleMenu = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
     setVisibility(prev => !prev);
   };
 
-  const handleLogout = closeDropdown(() => firebaseStore.logout());
+  const handleLogout = closeDropdownCallback(() => firebaseStore.logout());
 
   const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (
