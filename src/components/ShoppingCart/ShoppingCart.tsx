@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { getLocationFromShopItem } from "../../utils/navigation";
 import Badge from "../Badge/Badge";
 import Button from "../Button/Button";
+import Typography from "../Typography/Typography";
 
 const ShoppingCartContainer = styled.div`
   position: relative;
@@ -21,9 +22,7 @@ const StyledDropdown = styled(Dropdown)`
   width: 280px;
 `;
 
-const Headline = styled.span`
-  font-weight: bold;
-  text-align: center;
+const Headline = styled(Typography)`
   padding: 10px 20px;
   box-sizing: border-box;
   width: 100%;
@@ -35,13 +34,11 @@ const Container = styled.div`
   box-sizing: border-box;
 `;
 
-const Total = styled.span`
+const Total = styled(Typography)`
   display: flex;
   justify-content: space-between;
   box-sizing: border-box;
   width: 100%;
-  font-weight: bold;
-  color: ${props => props.theme.black};
   margin-bottom: 10px;
 `;
 
@@ -85,11 +82,13 @@ const ShoppingCart: React.FC = observer(() => {
       {cartStore.hasItem && <Badge>{cartStore.items.length}</Badge>}
       <NavbarIcon ref={toggler} onClick={toggleVisbility} name="cart" />
       <StyledDropdown display={isVisible} ref={containerRef}>
-        <Headline>{cartStore.hasItem ? "Your shopping cart" : "Your shopping cart is empty."}</Headline>
+        <Headline fontWeight="bold" align="center">
+          {cartStore.hasItem ? "Your shopping cart" : "Your shopping cart is empty."}
+        </Headline>
         {renderItems()}
         <Container>
           {cartStore.hasItem && (
-            <Total>
+            <Total fontWeight="bold" color="black">
               <span>Total price:</span>
               <span>{cartStore.totalPrice}</span>
             </Total>

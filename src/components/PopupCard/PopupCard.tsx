@@ -1,8 +1,8 @@
 import { rem } from "polished";
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Card from "../Card/Card";
+import RouterLink from "../Link/RouterLink/RouterLink";
 
 const StyledPopupCard = styled(Card)`
   display: grid;
@@ -28,15 +28,6 @@ interface IProps {
   category?: ICategory;
 }
 
-const Anchor = styled(Link)`
-  text-decoration: none;
-  color: ${props => props.theme.black};
-
-  &:hover {
-    border-bottom: 1px solid black;
-  }
-`;
-
 const PopupCard = React.forwardRef(
   (
     props: IProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
@@ -51,7 +42,7 @@ const PopupCard = React.forwardRef(
       >
         {category?.subcategories.map(subcategory => (
           <div key={subcategory.key}>
-            <Anchor to={`/${category.key}/${subcategory.key}`}>{subcategory.name}</Anchor>
+            <RouterLink to={`/${category.key}/${subcategory.key}`}>{subcategory.name}</RouterLink>
           </div>
         ))}
       </StyledPopupCard>

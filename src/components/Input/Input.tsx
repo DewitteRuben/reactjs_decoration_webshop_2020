@@ -2,13 +2,14 @@ import { rem } from "polished";
 import React from "react";
 import styled, { keyframes } from "styled-components";
 import Icon, { IconTypes } from "../Icon/Icon";
+import { getFontSize } from "../Typography/Typography";
 
 interface IErrorMessageProps {
   error?: boolean;
 }
 
 const ErrorMessage = styled.span<IErrorMessageProps>`
-  font-size: 12px;
+  font-size: ${getFontSize("smallest")};
   color: ${props => props.theme.error};
   opacity: ${props => Number(props.error)};
   max-width: ${rem(305)};
@@ -22,7 +23,7 @@ const Input = styled.input`
   padding: 0 ${rem(5)} 0 ${rem(20)};
   width: 80%;
   margin-top: ${rem(1)};
-  font-size: ${rem(16)};
+  font-size: ${getFontSize("normal")};
 `;
 
 interface ILabelProps {
@@ -32,7 +33,7 @@ interface ILabelProps {
 const Label = styled.label<ILabelProps>`
   position: absolute;
   left: ${rem(13)};
-  font-size: ${rem(16)};
+  font-size: ${getFontSize("normal")};
   background-color: ${props => props.theme.white};
   color: ${props => (props.error ? props.theme.error : props.theme.black)};
   transform-origin: top left;

@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
-import { lighten, rem } from "polished";
+import { rem } from "polished";
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { useStores } from "../../hooks/use-stores";
 import NavigationStore from "../../store/NavigationStore";
 import NavPositionCircle from "../NavPositionCircle/NavPositionCircle";
 import PopupCard from "../PopupCard/PopupCard";
+import NavbarLink from "../Link/NavbarLink/NavbarLink";
 
 const StyledNavbar = styled.nav`
   height: ${rem(50)};
@@ -18,29 +18,10 @@ const StyledNavbar = styled.nav`
   user-select: none;
 `;
 
-interface IAnchorProps {
-  selected: boolean;
-}
-
-const Anchor = styled(Link)<IAnchorProps>`
-  text-decoration: none;
-  color: ${props => (props.selected ? lighten(0.5, props.theme.black) : props.theme.black)};
-  padding: 5px 15px;
-  background-color: ${props => (props.selected ? props.theme.opacityGray : props.theme.white)};
-  border-radius: 20px;
-
-  &:hover {
-    color: ${props => lighten(0.5, props.theme.black)};
-    background-color: ${props => props.theme.opacityGray};
-    border-radius: 20px;
-  }
-`;
-
 const NavUL = styled.ul`
   & > li {
     display: inline-block;
     margin-left: 50px;
-    font-weight: bold;
   }
 `;
 
@@ -91,7 +72,7 @@ const handleOnMouseEnter = (store: NavigationStore) => (event: React.MouseEvent<
 const data2li = (store: NavigationStore) =>
   store.data.map(e => (
     <li key={e.key}>
-      <Anchor
+      <NavbarLink
         onMouseOver={handleOnMouseEnter(store)}
         data-item={e.key}
         selected={store.getCurrentSelectedPosition() === e.key}
@@ -99,7 +80,7 @@ const data2li = (store: NavigationStore) =>
         onClick={handleNavChange(store)}
       >
         {e.name}
-      </Anchor>
+      </NavbarLink>
     </li>
   ));
 

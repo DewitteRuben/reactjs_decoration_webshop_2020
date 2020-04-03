@@ -7,6 +7,7 @@ import * as H from "history";
 import { IShopItem } from "../../io-ts-types";
 import _ from "lodash";
 import { getLocationFromShopItem } from "../../utils/navigation";
+import Typography from "../Typography/Typography";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -54,27 +55,12 @@ const ItemBody = styled.div`
   height: ${rem(32)};
 `;
 
-const Title = styled.span`
-  font-weight: bold;
-  display: block;
-`;
-
-const Price = styled.span`
-  font-weight: bold;
-  display: block;
-  font-size: ${rem(18)};
-`;
-
 const ItemDescription = styled.div`
   color: ${props => props.theme.darkGray};
   width: ${rem(185)};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-`;
-
-const ProductCondition = styled.div`
-  color: ${props => props.theme.darkGray};
 `;
 
 const ItemFooter = styled.div`
@@ -104,12 +90,16 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
       <Image src={images.thumb} alt={name} />
       <CardDetailContainer>
         <ItemBody>
-          <Title>{name}</Title>
-          <Price>{"€" + price.toFixed(2)}</Price>
+          <Typography fontWeight="bold" as="p">
+            {name}
+          </Typography>
+          <Typography fontWeight="bold" fontSize="large" as="p">
+            {"€" + price.toFixed(2)}
+          </Typography>
         </ItemBody>
         <ItemFooter>
           <ItemDescription>{description}</ItemDescription>
-          <ProductCondition>{_.capitalize(stateOfProduct)}</ProductCondition>
+          <Typography color="darkGray">{_.capitalize(stateOfProduct)}</Typography>
         </ItemFooter>
       </CardDetailContainer>
       <ActionBar>

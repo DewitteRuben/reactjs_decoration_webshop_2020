@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import TextInput from "../Input/Input";
 import Button from "../Button/Button";
-import { Title } from "../LoginForm/LoginForm";
 import Checkbox from "../Checkbox/Checkbox";
 import { validateEmail, validateEqualValue, validatePassword, isValidEmail } from "../../utils/inputValidation";
 import { useStores } from "../../hooks/use-stores";
 import _ from "lodash";
 import { serializeFormData } from "../../utils/forms";
+import Typography from "../Typography/Typography";
 
 const StyledInput = styled(TextInput)``;
 
@@ -88,7 +88,9 @@ const RegistrationForm: React.FC = () => {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <Title>No account? Register now</Title>
+      <Typography fontSize="largest" as="h2" fontWeight="bold">
+        No account? Register now
+      </Typography>
       <InputContainer>
         <VerticalRuleContainer>
           <VerticalRule />

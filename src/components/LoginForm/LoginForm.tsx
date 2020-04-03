@@ -1,16 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { rem } from "polished";
 import TextInput from "../Input/Input";
 import Button from "../Button/Button";
 import { serializeFormData } from "../../utils/forms";
 import { useStores } from "../../hooks/use-stores";
 import { observer } from "mobx-react";
-
-export const Title = styled.span`
-  font-size: ${rem(34)};
-  font-weight: 600;
-`;
+import Typography from "../Typography/Typography";
 
 const StyledInput = styled(TextInput)``;
 
@@ -55,7 +50,9 @@ const LoginForm: React.FC = observer(() => {
 
   return (
     <form onSubmit={handleOnSubmit}>
-      <Title>Login</Title>
+      <Typography fontSize="largest" as="h2" fontWeight="bold">
+        Login
+      </Typography>
       <VerticalRuleContainer>
         <VerticalRule />
         <InputContainer>

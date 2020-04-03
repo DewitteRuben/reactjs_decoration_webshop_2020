@@ -7,7 +7,6 @@ import RouterLink from "../Link/RouterLink/RouterLink";
 import { observer } from "mobx-react";
 import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
 import Dropdown from "../Dropdown/Dropdown";
-import Icon from "../Icon/Icon";
 
 const DropdownContainer = styled.div`
   position: relative;

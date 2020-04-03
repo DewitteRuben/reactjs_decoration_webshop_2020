@@ -1,8 +1,8 @@
-import { rem } from "polished";
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { IParams } from "../../api/api";
+import RouterLink from "../Link/RouterLink/RouterLink";
+import Typography from "../Typography/Typography";
 
 const BreadcrumbsContainer = styled.div``;
 
@@ -16,22 +16,6 @@ const BreadCrumbsUL = styled.ul`
   }
 `;
 
-const Anchor = styled(Link)`
-  text-decoration: none;
-  color: ${props => props.theme.darkGray};
-  font-size: ${rem(14)};
-
-  &: hover {
-    border-bottom: 1px solid ${props => props.theme.darkGray};
-  }
-`;
-
-const Title = styled.h2`
-  margin: 0;
-  font-weight: normal;
-  font-size: ${rem(34)};
-`;
-
 export interface IBreadcrumbProps {
   items: IParams[];
   currentItem: string;
@@ -43,14 +27,16 @@ const renderCrumbsList = (breadcrumbs: IParams[]) => {
     const { key, value } = item;
     return (
       <li key={key}>
-        <Anchor
+        <RouterLink
+          color="darkGray"
+          fontSize="small"
           to={`/${breadcrumbs
             .slice(0, index + 1)
             .map(e => e.key)
             .join("/")}`}
         >
           {value}
-        </Anchor>
+        </RouterLink>
       </li>
     );
   });
@@ -60,7 +46,11 @@ const Breadcrumbs: React.FC<IBreadcrumbProps> = ({ items, currentItem, hideCurre
   return (
     <BreadcrumbsContainer>
       <BreadCrumbsUL>{items.length > 1 ? renderCrumbsList(items) : null}</BreadCrumbsUL>
-      {!hideCurrent && <Title>{currentItem}</Title>}
+      {!hideCurrent && (
+        <Typography as="h2" fontSize="largest">
+          {currentItem}
+        </Typography>
+      )}
     </BreadcrumbsContainer>
   );
 };

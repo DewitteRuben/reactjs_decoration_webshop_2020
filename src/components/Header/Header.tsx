@@ -5,10 +5,7 @@ import Searchbar from "../Searchbar/Searchbar";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import NavbarIcon from "../NavbarIcon/NavbarIcon";
 import UserDropdown from "../UserDropdown/UserDropdown";
-
-const Title = styled.h2`
-  margin: 0;
-`;
+import Typography from "../Typography/Typography";
 
 const StyledHeader = styled.div`
   display: flex;
@@ -29,7 +26,9 @@ const Header: React.FC<IProps> = ({ title = "Deco World" }) => {
   return (
     <StyledHeader>
       <Searchbar />
-      <Title>{title}</Title>
+      <Typography fontSize="larger" fontWeight="bold" as="h2">
+        {title}
+      </Typography>
       <HeaderIconsContainer>
         <UserDropdown />
         <NavbarIcon name="heart" />

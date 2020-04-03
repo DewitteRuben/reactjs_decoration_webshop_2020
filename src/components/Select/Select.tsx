@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { rem } from "polished";
 import Icon from "../Icon/Icon";
 import useClickOutside from "../../hooks/use-clickoutside";
+import Typography from "../Typography/Typography";
 
 const SelectContainer = styled.div`
   padding: 7px 12px;
@@ -10,27 +11,21 @@ const SelectContainer = styled.div`
   cursor: pointer;
   line-height: 1;
   letter-spacing: 0.5px;
-  background-color: #fff;
-  color: #1a1a1a;
+  background-color: ${props => props.theme.white};
   user-select: none;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.darkBorder};
 `;
 
 const ItemContainer = styled.div`
   position: absolute;
-  border: 1px solid #ddd;
+  border: 1px solid ${props => props.theme.darkBorder};
   z-index: 10;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   margin-top: 8px;
-  background: #fff;
+  background: ${props => props.theme.white};
 `;
 
-interface ILabel {
-  selected?: boolean;
-}
-
-const Label = styled.span<ILabel>`
-  font-weight: ${props => (props.selected ? "bold" : "normal")};
+const Label = styled(Typography)`
   margin-right: ${rem(5)};
 `;
 
@@ -123,7 +118,7 @@ const Select: React.FC<ISelectProps> = ({ label, items, onValueChange, clear, ..
   return (
     <>
       <SelectContainer ref={toggler} onClick={handleToggle} {...props}>
-        <Label selected={Boolean(selectedItem)}>{selectedItem?.name || label}</Label>
+        <Label fontWeight={selectedItem ? "bold" : "normal"}>{selectedItem?.name || label}</Label>
         <Caret toggled={isVisible} name="arrow-down" size={11} />
       </SelectContainer>
       {isVisible && (

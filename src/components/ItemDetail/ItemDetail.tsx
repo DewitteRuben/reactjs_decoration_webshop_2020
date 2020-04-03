@@ -7,25 +7,19 @@ import _ from "lodash";
 import CategoryBreadcrumbs from "../CategoryBreadcrumbs/CategoryBreadcrumbs";
 import ButtonWithIcon from "../ButtonWithIcon/ButtonWithIcon";
 import { useStores } from "../../hooks/use-stores";
+import Typography from "../Typography/Typography";
 
 type IItemDetailProps = {
   item: IShopItem;
 };
 
-const ItemName = styled.span`
-  font-size: ${rem(34)};
-`;
-
 const ItemDetailIcon = styled(Icon)`
   margin-right: ${rem(8)};
 `;
 
-const ItemMainInfo = styled.div`
+const ItemMainInfo = styled(Typography)`
   display: flex;
-  font-size: ${rem(14)};
-  font-weight: bold;
   line-height: ${rem(28)};
-  color: ${props => props.theme.darkGray};
   margin: ${rem(14)} 0;
 
   ${ItemDetailIcon}:last-of-type {
@@ -33,14 +27,8 @@ const ItemMainInfo = styled.div`
   }
 `;
 
-const ItemDetailPrice = styled.div`
-  font-size: ${rem(18)};
+const ItemDetailPrice = styled(Typography)`
   margin: ${rem(14)} 0;
-  font-weight: 600;
-`;
-
-const Description = styled.div`
-  font-size: ${rem(18)};
 `;
 
 const DetailContainer = styled.div`
@@ -67,15 +55,17 @@ const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
   return (
     <DetailContainer>
       <CategoryBreadcrumbs hideCurrent />
-      <ItemName>{name}</ItemName>
-      <ItemMainInfo>
+      <Typography fontSize="largest">{name}</Typography>
+      <ItemMainInfo as="div" fontWeight="bold" fontSize="small" color="darkGray">
         <ItemDetailIcon name="clock" />
         <span>{createdAt?.toLocaleString()}</span>
         <ItemDetailIcon name="condition-label" />
         <span>{_.capitalize(stateOfProduct)}</span>
       </ItemMainInfo>
-      <ItemDetailPrice>{price}</ItemDetailPrice>
-      <Description>{description}</Description>
+      <ItemDetailPrice as="div" fontWeight="bold" fontSize="large">
+        {price}
+      </ItemDetailPrice>
+      <Typography fontSize="large">{description}</Typography>
       <ButtonContainer>
         <ButtonWithIcon onClick={handleAddToCart} iconName="add-shopping-cart">
           Add to cart
