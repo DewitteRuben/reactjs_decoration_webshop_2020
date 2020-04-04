@@ -4,7 +4,8 @@ import Priceslider from "../Priceslider/Priceslider";
 
 const SidebarContainer = styled.div`
   grid-area: aside;
-  padding-right: 40px;
+  padding-right: 60px;
+  grid-row-start: 2;
 `;
 
 const SidebarBlock = styled.div``;

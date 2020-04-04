@@ -8,36 +8,33 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Feed from "../../components/Feed/Feed";
 
 const Titlebar = styled.div`
+  display: flex;
   height: ${rem(140)};
   grid-area: breadcrumbs;
   max-width: 1440px;
-  margin: 0 auto;
-  display: grid;
   align-items: center;
-  grid-template-columns: 290px 1070px 1fr;
 `;
 
 const MiddleTitlebar = styled.div`
-  grid-column-start: 2;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  max-width: 1070px;
+  width: 100%;
 `;
 
 const Main: React.FC = () => {
   return (
-    <>
+    <GridContainer>
       <Titlebar>
         <MiddleTitlebar>
           <CategoryBreadcrumbs />
           <SortBySelect />
         </MiddleTitlebar>
       </Titlebar>
-      <GridContainer>
-        <Sidebar />
-        <Feed />
-      </GridContainer>
-    </>
+      <Sidebar />
+      <Feed />
+    </GridContainer>
   );
 };
 
