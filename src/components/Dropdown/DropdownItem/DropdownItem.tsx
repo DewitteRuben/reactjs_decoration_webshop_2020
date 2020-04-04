@@ -29,7 +29,7 @@ const StyledDropdownItem = styled.a`
 const StyledListItem = styled.li`
   position: relative;
   width: 100%;
-  border-bottom: 1px solid ${props => props.theme.border};
+  border-bottom: 1px solid ${props => props.theme.darkBorder};
 `;
 
 const StyledIcon = styled(Icon)`
