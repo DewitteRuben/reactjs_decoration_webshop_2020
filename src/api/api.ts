@@ -1,4 +1,6 @@
+import { INewShopItem } from "./../io-ts-types/index";
 import { ICategoryQuery } from "../store/ItemStore";
+import _ from "lodash";
 const baseURL = process.env["REACT_APP_BASE_URL"] || "http://localhost:3000/api";
 
 export interface IParams {
@@ -6,15 +8,31 @@ export interface IParams {
   value?: string;
 }
 
-const request = (endpoint: string, method: "GET" | "POST" = "GET", params: IParams[] = [], data: object = {}) => {
+const request = (
+  endpoint: string,
+  method: "GET" | "POST" = "GET",
+  params: IParams[] = [],
+  data: object = {},
+  options: RequestInit = {}
+) => {
   const parsedParams = params
     .filter(param => param.value)
     .map(param => `${param.key}=${param.value}`)
     .join("&");
 
+  const mergedOptions = _.merge(
+    {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    },
+    options
+  );
+
   return fetch(`${baseURL}/${endpoint}${params?.length ? `?${parsedParams}` : ""}`, {
     method,
-    body: method === "POST" ? JSON.stringify(data) : undefined
+    body: method === "POST" ? JSON.stringify(data) : undefined,
+    ...(method === "POST" ? mergedOptions : options)
   });
 };
 
@@ -32,4 +50,12 @@ const getItemById = (id: string) => {
   return request("shopitem", "GET", [filter]);
 };
 
-export { getItemByCategory, getItemsWithFilters, getItemById };
+const addItem = (item: INewShopItem, token: string) => {
+  return request("shopitem", "POST", [], item, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+};
+
+export { getItemByCategory, getItemsWithFilters, getItemById, addItem };
