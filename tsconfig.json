@@ -15,7 +15,8 @@
     "noEmit": true,
     "jsx": "react",
     "experimentalDecorators": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "noErrorTruncation": true
   },
   "include": ["src", "custom.d.ts"]
 }
