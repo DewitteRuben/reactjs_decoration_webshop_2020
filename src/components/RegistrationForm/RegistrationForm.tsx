@@ -78,8 +78,7 @@ const RegistrationForm: React.FC = () => {
 
   const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const serialized = serializeFormData<IRegistrationForm>(formData);
+    const serialized = serializeFormData<IRegistrationForm>(event.currentTarget);
     const { username, password, emailAddress } = serialized;
     if (username && password && emailAddress) {
       await firebaseStore.createUser(username, emailAddress, password);

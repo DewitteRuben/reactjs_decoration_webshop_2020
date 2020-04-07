@@ -40,8 +40,7 @@ const LoginForm: React.FC = observer(() => {
 
   const handleOnSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const serialized = serializeFormData<ILoginForm>(formData);
+    const serialized = serializeFormData<ILoginForm>(event.currentTarget);
     const { emailAddress, password } = serialized;
     if (emailAddress && password) {
       await firebaseStore.login(emailAddress, password);
