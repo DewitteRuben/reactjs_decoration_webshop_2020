@@ -1,9 +1,12 @@
+import { IUploadStatus } from "../utils/FirebaseUploadManager";
 import * as firebase from "firebase/app";
 
-// Add the Firebase services that you want to use
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
+
 import { observable, computed } from "mobx";
+import FirebaseUploadManager from "../utils/FirebaseUploadManager";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -77,7 +80,7 @@ class FirebaseStore {
   async createUser(username: string, email: string, password: string) {
     try {
       const res = await this.auth.createUserWithEmailAndPassword(email, password);
-      await res.user?.updateProfile({
+      res.user?.updateProfile({
         displayName: username
       });
     } catch (error) {
@@ -89,7 +92,7 @@ class FirebaseStore {
 
   async login(email: string, password: string) {
     try {
-      return await this.auth.signInWithEmailAndPassword(email, password);
+      return this.auth.signInWithEmailAndPassword(email, password);
     } catch (error) {
       const errorCode = error.code;
       const errorCodeEnum = LoginErrorCode[errorCode as keyof typeof LoginErrorCode];
@@ -99,7 +102,7 @@ class FirebaseStore {
 
   async logout(): Promise<void> {
     try {
-      return await this.auth.signOut();
+      return this.auth.signOut();
     } catch (error) {
       this.errors.logout.push(error);
     }
@@ -111,10 +114,18 @@ class FirebaseStore {
     }
 
     try {
-      return await this.currentUser.getIdToken();
+      return this.currentUser.getIdToken();
     } catch (error) {
       this.errors.token.push(error);
     }
+  }
+
+  getUserId() {
+    if (!this.currentUser) {
+      throw new Error(AuthErrorCode.NOT_LOGGED_IN);
+    }
+
+    return this.currentUser.uid;
   }
 
   async doesUserExist(emailAddress: string) {
@@ -125,6 +136,22 @@ class FirebaseStore {
       this.errors.login.push(error);
       return true;
     }
+  }
+
+  async uploadFile(file: File, onUpdate?: (status: IUploadStatus) => void) {
+    this.uploadFiles([file], onUpdate);
+  }
+
+  async uploadFiles(files: File[], onUpdate?: (status: IUploadStatus) => void) {
+    const uid = this.getUserId();
+    const storage = this.firebase.storage().ref();
+    const bulkUpload = new FirebaseUploadManager(storage);
+    bulkUpload.setOptions({ extra: uid });
+    bulkUpload.add(...files);
+    if (onUpdate) {
+      bulkUpload.addListener("update", onUpdate);
+    }
+    return bulkUpload.upload();
   }
 
   loginWithGoogle() {
