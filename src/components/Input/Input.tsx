@@ -78,7 +78,7 @@ const InputContainer = styled.div<IInputContainerProps>`
   background-color: ${props => props.theme.white};
   padding: ${rem(4)} ${rem(2)};
   border-radius: ${rem(25)};
-  border: 1px solid ${props => (props.error ? props.theme.error : props.theme.darkGray)};
+  border: 1px solid ${props => (props.error ? props.theme.error : props.theme.border)};
   transition: border 150ms ease-in;
 
   ${Input}:focus + label {
