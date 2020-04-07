@@ -28,6 +28,9 @@ ForwardedDropdown.displayName = "ForwardedDropdown";
 
 const Dropdown = styled(ForwardedDropdown)<IDropdownProps>`
   position: absolute;
+  z-index: 10;
+  transform: translateX(-45%);
+
   display: ${props => (props.display ? "flex" : "none")};
   flex-direction: column;
   justify-content: center;
@@ -37,10 +40,7 @@ const Dropdown = styled(ForwardedDropdown)<IDropdownProps>`
   padding: 0;
   margin: 0;
 
-  z-index: 10;
   list-style-type: none;
-
-  transform: translateX(-45%);
 
   box-shadow: 0 2px 9px rgba(0, 0, 0, 0.1);
 
