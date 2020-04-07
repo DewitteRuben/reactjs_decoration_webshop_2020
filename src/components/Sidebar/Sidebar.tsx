@@ -6,6 +6,8 @@ const SidebarContainer = styled.div`
   grid-area: aside;
   padding-right: 60px;
   grid-row-start: 2;
+  box-sizing: border-box;
+  min-width: 285px;
 `;
 
 const SidebarBlock = styled.div``;
