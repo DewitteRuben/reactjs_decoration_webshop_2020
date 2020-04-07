@@ -1,0 +1,88 @@
+{
+  "name": "Categories",
+  "key": "categories",
+  "nodesTitle": "Categories",
+  "nodes": [
+    {
+      "name": "Decoration",
+      "key": "decoration",
+      "nodesTitle": "Sub category",
+      "nodes": [
+        {
+          "name": "Vases and flowers",
+          "key": "vases-and-flowers",
+          "nodesTitle": "Specific category",
+          "nodes": [
+            {
+              "name": "Vases",
+              "key": "vases",
+              "nodesTitle": "Item category",
+              "nodes": [
+                {
+                  "name": "Keramic vase",
+                  "key": "keramic-vase"
+                }
+              ]
+            },
+            {
+              "name": "Flowers",
+              "key": "flowers",
+              "nodesTitle": "Specific category",
+              "nodes": [
+                {
+                  "name": "Fake flower",
+                  "key": "fake-flower"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Fabrics & pillows",
+          "key": "fabrics-and-pillows",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Wall decoration",
+          "key": "wall-decoration",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Candles, lanterns & more",
+          "key": "candles-lanterns-more",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Party decoration",
+          "key": "party-decoration",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Home fragrence",
+          "key": "home-fragrence",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Storage",
+          "key": "storage",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Handcrafting materials",
+          "key": "handcrafting-materials",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Bathroom accessories",
+          "key": "bathroom-accessories",
+          "nodesTitle": "Specific category"
+        },
+        {
+          "name": "Other",
+          "key": "other",
+          "nodesTitle": "Specific category"
+        }
+      ]
+    }
+  ]
+}
