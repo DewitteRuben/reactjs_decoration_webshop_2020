@@ -33,6 +33,8 @@ export enum Gender {
 }
 
 const user = t.interface({
+  firstName: t.string,
+  lastName: t.string,
   username: t.string,
   emailAddress: t.string,
   photoURL: t.string,
