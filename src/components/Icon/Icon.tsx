@@ -14,6 +14,7 @@ import { ReactComponent as BackIcon } from "../../icons/back.svg";
 import { ReactComponent as CheckboxCheckedIcon } from "../../icons/checkbox-checked.svg";
 import { ReactComponent as CheckboxBlankIcon } from "../../icons/checkbox-blank.svg";
 import { ReactComponent as ExitIcon } from "../../icons/exit.svg";
+import { ReactComponent as ArrowBackIcon } from "../../icons/arrow-back.svg";
 
 export type IconTypes =
   | "heart"
@@ -29,7 +30,8 @@ export type IconTypes =
   | "back"
   | "checkbox-checked"
   | "checkbox-blank"
-  | "exit";
+  | "exit"
+  | "arrow-back";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -45,7 +47,8 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   next: NextIcon,
   "checkbox-checked": CheckboxCheckedIcon,
   "checkbox-blank": CheckboxBlankIcon,
-  exit: ExitIcon
+  exit: ExitIcon,
+  "arrow-back": ArrowBackIcon
 };
 
 interface IProps {
