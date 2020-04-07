@@ -1,4 +1,4 @@
-import { INewShopItem } from "./../io-ts-types/index";
+import { INewShopItem, INewUser } from "./../io-ts-types/index";
 import { ICategoryQuery } from "../store/ItemStore";
 import _ from "lodash";
 const baseURL = process.env["REACT_APP_BASE_URL"] || "http://localhost:3000/api";
@@ -7,6 +7,14 @@ export interface IParams {
   key: string;
   value?: string;
 }
+
+const getAuthorizationOptions = (token: string) => {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  };
+};
 
 const request = (
   endpoint: string,
@@ -51,11 +59,15 @@ const getItemById = (id: string) => {
 };
 
 const addItem = (item: INewShopItem, token: string) => {
-  return request("shopitem", "POST", [], item, {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  });
+  return request("shopitem", "POST", [], item, getAuthorizationOptions(token));
 };
 
-export { getItemByCategory, getItemsWithFilters, getItemById, addItem };
+const addUser = (user: Partial<INewUser>, token: string) => {
+  return request("user", "POST", [], user, getAuthorizationOptions(token));
+};
+
+const getUserByToken = (token: string) => {
+  return request("user", "GET", [], undefined, getAuthorizationOptions(token));
+};
+
+export { getItemByCategory, getItemsWithFilters, getItemById, addItem, addUser, getUserByToken };

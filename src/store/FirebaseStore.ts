@@ -5,8 +5,11 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
-import { observable, computed } from "mobx";
+import { observable, computed, flow, action } from "mobx";
 import FirebaseUploadManager from "../utils/FirebaseUploadManager";
+import { addUser, getUserByToken } from "../api/api";
+import { IUser } from "../io-ts-types";
+import _ from "lodash";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -37,16 +40,11 @@ enum AuthErrorCode {
   NOT_LOGGED_IN = "auth/not-logged-in"
 }
 
-interface IAuthError {
-  signup: SignupErrorCode[];
-  login: LoginErrorCode[];
-  logout: any[];
-  token: any[];
-}
-
-interface IUser {
+interface IFirebaseUser {
   user: firebase.User | null;
   loaded: boolean;
+  data: Partial<IUser> | null;
+  error: Error | null;
 }
 
 class FirebaseStore {
@@ -56,10 +54,7 @@ class FirebaseStore {
   private auth: firebase.auth.Auth;
 
   @observable
-  private user: IUser = { user: null, loaded: false };
-
-  @observable
-  private errors: IAuthError = { signup: [], login: [], logout: [], token: [] };
+  private user: IFirebaseUser = { user: null, loaded: false, data: null, error: null };
 
   private googleAuthProvider: firebase.auth.GoogleAuthProvider;
 
@@ -68,8 +63,11 @@ class FirebaseStore {
 
     this.auth = this.firebase.auth();
 
-    this.auth.onAuthStateChanged(user => {
-      this.user = { user, loaded: true };
+    this.auth.onAuthStateChanged(async user => {
+      this.user.user = user;
+      if (user) {
+        await this.fetchUserData();
+      }
     });
 
     this.auth.useDeviceLanguage();
@@ -77,35 +75,19 @@ class FirebaseStore {
     this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   }
 
-  async createUser(username: string, email: string, password: string) {
-    try {
-      const res = await this.auth.createUserWithEmailAndPassword(email, password);
-      res.user?.updateProfile({
-        displayName: username
-      });
-    } catch (error) {
-      const errorCode = error.code;
-      const errorCodeEnum = SignupErrorCode[errorCode as keyof typeof SignupErrorCode];
-      this.errors.signup.push(errorCodeEnum);
-    }
+  async createUser(username: string, emailAddress: string, password: string) {
+    await this.auth.createUserWithEmailAndPassword(emailAddress, password);
+    const token = await this.getJWTToken();
+    await addUser({ username, emailAddress }, token);
   }
 
   async login(email: string, password: string) {
-    try {
-      return this.auth.signInWithEmailAndPassword(email, password);
-    } catch (error) {
-      const errorCode = error.code;
-      const errorCodeEnum = LoginErrorCode[errorCode as keyof typeof LoginErrorCode];
-      this.errors.login.push(errorCodeEnum);
-    }
+    return this.auth.signInWithEmailAndPassword(email, password);
   }
 
   async logout(): Promise<void> {
-    try {
-      return this.auth.signOut();
-    } catch (error) {
-      this.errors.logout.push(error);
-    }
+    this.user = { user: null, error: null, loaded: false, data: null };
+    return this.auth.signOut();
   }
 
   async getJWTToken() {
@@ -113,12 +95,22 @@ class FirebaseStore {
       throw new Error(AuthErrorCode.NOT_LOGGED_IN);
     }
 
-    try {
-      return this.currentUser.getIdToken();
-    } catch (error) {
-      this.errors.token.push(error);
-    }
+    return this.currentUser.getIdToken();
   }
+
+  @action
+  fetchUserData = flow(function*(this: FirebaseStore) {
+    try {
+      const token = yield this.getJWTToken();
+      const userDataPromise = yield getUserByToken(token);
+      const userData = yield userDataPromise.json();
+      this.user.loaded = true;
+      this.user.data = userData;
+    } catch (error) {
+      this.user.loaded = true;
+      this.user.error = error;
+    }
+  });
 
   getUserId() {
     if (!this.currentUser) {
@@ -129,13 +121,8 @@ class FirebaseStore {
   }
 
   async doesUserExist(emailAddress: string) {
-    try {
-      const methods = await this.auth.fetchSignInMethodsForEmail(emailAddress);
-      return methods.length > 0;
-    } catch (error) {
-      this.errors.login.push(error);
-      return true;
-    }
+    const methods = await this.auth.fetchSignInMethodsForEmail(emailAddress);
+    return methods.length > 0;
   }
 
   async uploadFile(file: File, onUpdate?: (status: IUploadStatus) => void) {
@@ -160,7 +147,8 @@ class FirebaseStore {
 
   @computed
   get currentUser() {
-    return this.user.user || this.auth.currentUser;
+    console.log(this.user.user);
+    return _.merge(this.user.user || this.auth.currentUser, this.user.data);
   }
 
   @computed
@@ -169,8 +157,8 @@ class FirebaseStore {
   }
 
   @computed
-  get isAuthReady() {
-    return this.user.loaded;
+  get authStatus() {
+    return { loaded: this.user.loaded, error: this.user.error };
   }
 }
 

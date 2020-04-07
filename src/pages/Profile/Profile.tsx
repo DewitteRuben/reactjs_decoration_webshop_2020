@@ -31,12 +31,17 @@ const Profile = observer(() => {
   const { firebaseStore } = useStores();
   const currentUser = firebaseStore.currentUser;
 
-  if (!firebaseStore.isAuthReady) {
-    return <p>Loading...</p>; // TODO: proper loading handling
+  // TODO: proper loading handling
+  if (firebaseStore.authStatus.error) {
+    return <p>{firebaseStore.authStatus.error.message}</p>;
+  }
+
+  if (!firebaseStore.authStatus.loaded) {
+    return <p>Loading...</p>;
   }
 
   if (!firebaseStore.isLoggedIn || !currentUser) {
-    return <Redirect to="/decoration" />;
+    return <Redirect to="/" />;
   }
 
   return (

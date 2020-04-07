@@ -26,6 +26,32 @@ export enum Condition {
   FAIR = "fair"
 }
 
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female",
+  OTHER = "other"
+}
+
+const user = t.interface({
+  username: t.string,
+  emailAddress: t.string,
+  photoURL: t.string,
+  phoneNumber: t.string,
+  gender: createEnumType<Gender>(Gender, "Gender"),
+  address: t.interface({
+    street: t.interface({
+      name: t.string,
+      number: t.string
+    }),
+    postalCode: t.string,
+    city: t.string,
+    country: t.string
+  })
+});
+
+const userbirthdateDateField = t.interface({ birthdate: date });
+const userbirthdateStringField = t.interface({ birthdate: t.string });
+
 const shopItemImageFromServer = t.interface({
   small: t.string,
   regular: t.string,
@@ -59,7 +85,7 @@ const shopItemImagesField = t.interface({
   images: shopItemImagesFromServer
 });
 
-const optionalShopItemFields = t.partial({
+const optionalMongoDbItems = t.partial({
   userId: t.string,
   createdAt: date,
   updatedAt: date
@@ -84,7 +110,7 @@ export const IShopItemRuntime = t.intersection([
   shopItemDatabaseFields,
   mainShopItemFields,
   shopItemImagesField,
-  optionalShopItemFields
+  optionalMongoDbItems
 ]);
 export const IShopItemStringifiedRuntime = t.intersection([
   shopItemDatabaseFields,
@@ -93,11 +119,18 @@ export const IShopItemStringifiedRuntime = t.intersection([
   optionalStringifiedShopItemFields
 ]);
 
-export const INewShopItem = t.intersection([mainShopItemFields, shopItemAddImageField]);
+export const INewShopItemRuntime = t.intersection([mainShopItemFields, shopItemAddImageField]);
+export const IUserRuntimeStringified = t.intersection([user, userbirthdateStringField, optionalMongoDbItems]);
+export const IUserRuntime = t.intersection([user, userbirthdateDateField, optionalMongoDbItems]);
+export const INewUserRuntime = t.intersection([user, userbirthdateDateField]);
 
 export type IShopItemImage = t.TypeOf<typeof shopItemImageFromServer>;
 export type IShopItemImages = t.TypeOf<typeof shopItemImagesFromServer>;
-export type INewShopItem = t.TypeOf<typeof INewShopItem>;
+export type INewShopItem = t.TypeOf<typeof INewShopItemRuntime>;
+
+export type IUser = t.TypeOf<typeof IUserRuntime>;
+export type IUserStringified = t.TypeOf<typeof IUserRuntimeStringified>;
+export type INewUser = t.TypeOf<typeof INewUserRuntime>;
 
 export type IShopItemNotFoundErrorResponse = t.TypeOf<typeof IShopItemNotFoundErrorResponseRuntime>;
 export type IShopItem = t.TypeOf<typeof IShopItemRuntime>;

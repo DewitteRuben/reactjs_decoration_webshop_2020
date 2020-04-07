@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Typography from "../Typography/Typography";
 import React from "react";
+import { IUser } from "../../io-ts-types";
 
 const ProfileInfo = styled.ul`
   margin: 0;
@@ -13,20 +14,20 @@ const ProfileInfoListItem = styled(Typography)`
 `;
 
 interface IProfileUserInfoProps {
-  user: firebase.User | null;
+  user: firebase.User & Partial<IUser>;
 }
 
 const ProfileUserInfo: React.FC<IProfileUserInfoProps> = ({ user }) => {
-  const { uid, displayName, email, phoneNumber } = { ...user };
+  const { username, email, phoneNumber, uid } = user;
 
   return (
     <ProfileInfo>
       <ProfileInfoListItem as="li" fontSize="large">
         User ID: {uid}
       </ProfileInfoListItem>
-      {displayName && (
+      {username && (
         <ProfileInfoListItem as="li" fontSize="large">
-          Username: {displayName}
+          Username: {username}
         </ProfileInfoListItem>
       )}
       <ProfileInfoListItem as="li" fontSize="large">
