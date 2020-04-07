@@ -44,9 +44,10 @@ const handleOnDelete = (item: IShopItem, onDelete?: (item: IShopItem) => void) =
 };
 
 const ShoppingCartItem: React.FC<IShoppingCartItemProps> = ({ item, onDelete, ...props }) => {
+  const firstImage = item.images[0];
   return (
     <DropdownItem actionComponent="X" onActionClick={handleOnDelete(item, onDelete)} {...props}>
-      <ShoppingCartItemImage src={item.images?.small} alt={item.name} />
+      <ShoppingCartItemImage src={firstImage.small} alt={item.name} />
       <DescriptionContainer>
         <ShoppingCartItemName>{item.name}</ShoppingCartItemName>
         <ShoppingCartItemDescription>{item.description}</ShoppingCartItemDescription>

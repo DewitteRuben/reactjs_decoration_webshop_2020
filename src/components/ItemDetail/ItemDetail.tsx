@@ -45,7 +45,7 @@ const ButtonContainer = styled.div`
 `;
 
 const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
-  const { name, createdAt, stateOfProduct, price, description } = item;
+  const { name, createdAt, condition, price, description } = item;
   const { cartStore } = useStores();
 
   const handleAddToCart = () => {
@@ -60,7 +60,7 @@ const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
         <ItemDetailIcon name="clock" />
         <span>{createdAt?.toLocaleString()}</span>
         <ItemDetailIcon name="condition-label" />
-        <span>{_.capitalize(stateOfProduct)}</span>
+        <span>{_.capitalize(condition)}</span>
       </ItemMainInfo>
       <ItemDetailPrice as="div" fontWeight="bold" fontSize="large">
         {price}

@@ -4,9 +4,10 @@ import { rem } from "polished";
 import { CarouselProvider, Slider, Slide, ImageWithZoom, Dot, CarouselContext } from "pure-react-carousel";
 import "pure-react-carousel/dist/react-carousel.es.css";
 import Icon from "../Icon/Icon";
+import { IShopItemImage } from "../../io-ts-types";
 
 interface ICarouselProps {
-  images: string[];
+  images: IShopItemImage[];
   step?: number;
 }
 
@@ -110,11 +111,11 @@ const RightSidebar = styled.div`
 `;
 
 interface ICarouselControlsProps {
-  images: string[];
+  maxLength: number;
   step?: number;
 }
 
-const CarouselControls: React.FC<ICarouselControlsProps> = ({ images, step = 1 }) => {
+const CarouselControls: React.FC<ICarouselControlsProps> = ({ maxLength, step = 1 }) => {
   const carouselContext = React.useContext(CarouselContext);
 
   const [currentSlide, setCurrentSlide] = React.useState(carouselContext.state.currentSlide);
@@ -127,7 +128,7 @@ const CarouselControls: React.FC<ICarouselControlsProps> = ({ images, step = 1 }
   }, [carouselContext]);
 
   const switchSlide = (prev?: boolean) => () => {
-    carouselContext.setStoreState({ currentSlide: (currentSlide + (prev ? -step : step) + images.length) % images.length });
+    carouselContext.setStoreState({ currentSlide: (currentSlide + (prev ? -step : step) + maxLength) % maxLength });
   };
 
   return (
@@ -150,17 +151,17 @@ const ItemImages: React.FC<ICarouselProps> = ({ images, step }) => {
       <CarouselProvider naturalSlideWidth={702} naturalSlideHeight={500} totalSlides={images.length}>
         <SliderContainer>
           <Slider>
-            {images.map((image: string, index: number) => (
+            {images.map((image: IShopItemImage, index: number) => (
               <Slide index={index} key={`image-${index}`}>
-                <MainImage src={image} />
+                <MainImage src={image.full} />
               </Slide>
             ))}
           </Slider>
-          <CarouselControls step={step} images={images} />
+          <CarouselControls step={step} maxLength={images.length} />
         </SliderContainer>
-        {images.map((image: string, index: number) => (
+        {images.map((image: IShopItemImage, index: number) => (
           <ImageDot key={`image-${index}`} slide={index}>
-            <OtherImage src={image} />
+            <OtherImage src={image.thumb} />
           </ImageDot>
         ))}
       </CarouselProvider>

@@ -61,9 +61,7 @@ const Detail: React.FC = observer(() => {
 
   return (
     <DetailContainer>
-      {detailStore.item && (
-        <Carousel images={[detailStore.item.images.thumb, detailStore.item.images.thumb, detailStore.item.images.thumb]} />
-      )}
+      {detailStore.item && <Carousel images={detailStore.item.images} />}
       {detailStore.item && <ItemDetail item={detailStore.item} />}
     </DetailContainer>
   );

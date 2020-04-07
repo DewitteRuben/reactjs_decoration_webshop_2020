@@ -79,13 +79,14 @@ const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) =>
 };
 
 const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
-  const { images, name, description, stateOfProduct, price } = item;
+  const { images, name, description, condition, price } = item;
+  const firstImage = images[0];
   const history = useHistory();
 
   return (
     <CardContainer>
       <ButtonUnstyled onClick={viewItemDetail(item, history)}>
-        <Image src={images.thumb} alt={name} />
+        <Image src={firstImage.thumb} alt={name} />
         <CardDetailContainer>
           <ItemBody>
             <Typography fontWeight="bold" as="p">
@@ -97,7 +98,7 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
           </ItemBody>
           <ItemFooter>
             <ItemDescription>{description}</ItemDescription>
-            <Typography color="darkGray">{_.capitalize(stateOfProduct)}</Typography>
+            <Typography color="darkGray">{_.capitalize(condition)}</Typography>
           </ItemFooter>
         </CardDetailContainer>
         <ActionBar>
