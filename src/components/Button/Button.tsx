@@ -2,17 +2,23 @@ import styled from "styled-components";
 import { rem, lighten } from "polished";
 
 const Button = styled.button`
-  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  position: relative;
+  background-color: ${props => props.theme.white};
+  padding: ${rem(10)} ${rem(20)};
+
   border: 1px solid ${props => props.theme.darkGray};
-  background-color: initial;
+  border-radius: 4px;
+
+  text-align: center;
   color: ${props => props.theme.black};
+
   font-weight: 700;
   font-size: ${rem(18)};
-  padding: ${rem(10)} ${rem(20)};
-  position: relative;
+
   box-shadow: 0 2px ${props => lighten(0.2)(props.theme.darkGray)};
 
   &:hover {
