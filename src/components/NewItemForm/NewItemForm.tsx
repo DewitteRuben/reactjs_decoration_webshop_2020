@@ -1,51 +1,26 @@
 import React from "react";
-import styled, { css } from "styled-components";
-import InputRegular from "../InputRegular/InputRegular";
-import Typography from "../Typography/Typography";
-import Card from "../Card/Card";
+import styled from "styled-components";
 import MediaSelect from "../MediaSelect/MediaSelect";
 import Button from "../Button/Button";
 import { serializeFormData } from "../../utils/forms";
 import { useStores } from "../../hooks/use-stores";
-import TreeSelect from "../TreeSelect/TreeSelect";
 import data from "../TreeSelect/data.json";
 import { Condition, INewShopItem } from "../../io-ts-types";
-import InputSelect from "../InputSelect/InputSelect";
 import { addItem } from "../../api/api";
 import { parseCategoryString } from "../../utils/string";
 import { useHistory } from "react-router-dom";
-
-const InputDimensionMixin = css`
-  width: 60%;
-  height: 44px;
-`;
-
-const StyledInput = styled(InputRegular)`
-  ${InputDimensionMixin}
-`;
-
-const StyledTreeSelect = styled(TreeSelect)`
-  ${InputDimensionMixin}
-`;
-
-const StyledSelect = styled(InputSelect)`
-  ${InputDimensionMixin}
-`;
-
-const Textarea = styled(StyledInput)`
-  height: 150px;
-  resize: none;
-  max-height: none;
-`;
-
-const Title = styled(Typography)`
-  margin-bottom: 20px;
-`;
-
-const ItemInfoCard = styled(Card)`
-  margin-bottom: 20px;
-  border-radius: 4px;
-`;
+import {
+  InputCard,
+  InputContainer,
+  InputLabel,
+  Seperator,
+  FormInput,
+  FormTextarea,
+  FormTreeSelect,
+  FormSelect,
+  FormButtonContainer
+} from "../FormBuilderComponents";
+import Typography from "../Typography/Typography";
 
 const NewItemContainer = styled.form`
   display: flex;
@@ -55,29 +30,8 @@ const NewItemContainer = styled.form`
   width: 1140px;
 `;
 
-const Label = styled(Typography)`
-  display: block;
-  margin-bottom: 8px;
-  cursor: pointer;
-  user-select: none;
-`;
-
-const InputContainer = styled.div`
-  margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Seperator = styled.hr`
-  margin: 20px 0;
-  height: 1px;
-  background-color: ${props => props.theme.border};
-  border: none;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
+const Title = styled(Typography)`
+  margin-bottom: 20px;
 `;
 
 interface INewItemForm {
@@ -129,23 +83,23 @@ const NewItemForm: React.FC = () => {
       <Title fontSize="largest" fontWeight="bold" as="h2">
         Sell an item
       </Title>
-      <ItemInfoCard>
+      <InputCard>
         <InputContainer>
-          <Label htmlFor="name" as="label" fontWeight="extrabold" fontSize="large">
+          <InputLabel htmlFor="name" as="label" fontWeight="extrabold" fontSize="large">
             Title
-          </Label>
-          <StyledInput required name="name" placeholder="For example 'Sturdy keramic vase'" id="name" />
+          </InputLabel>
+          <FormInput required name="name" placeholder="For example 'Sturdy keramic vase'" id="name" />
         </InputContainer>
-      </ItemInfoCard>
-      <ItemInfoCard>
+      </InputCard>
+      <InputCard>
         <MediaSelect required name="images" />
-      </ItemInfoCard>
-      <ItemInfoCard>
+      </InputCard>
+      <InputCard>
         <InputContainer>
-          <Label htmlFor="description" as="label" fontWeight="extrabold" fontSize="large">
+          <InputLabel htmlFor="description" as="label" fontWeight="extrabold" fontSize="large">
             Description
-          </Label>
-          <Textarea
+          </InputLabel>
+          <FormTextarea
             placeholder="Describe the item you are selling"
             required
             name="description"
@@ -153,20 +107,20 @@ const NewItemForm: React.FC = () => {
             id="description"
           />
         </InputContainer>
-      </ItemInfoCard>
-      <ItemInfoCard>
+      </InputCard>
+      <InputCard>
         <InputContainer>
-          <Label htmlFor="categories" as="label" fontWeight="extrabold" fontSize="large">
+          <InputLabel htmlFor="categories" as="label" fontWeight="extrabold" fontSize="large">
             Category
-          </Label>
-          <StyledTreeSelect placeholder="Select a category" required id="category" name="categories" rootNode={data} />
+          </InputLabel>
+          <FormTreeSelect placeholder="Select a category" required id="category" name="categories" rootNode={data} />
         </InputContainer>
         <Seperator />
         <InputContainer>
-          <Label htmlFor="condition" as="label" fontWeight="extrabold" fontSize="large">
+          <InputLabel htmlFor="condition" as="label" fontWeight="extrabold" fontSize="large">
             Condition
-          </Label>
-          <StyledSelect
+          </InputLabel>
+          <FormSelect
             required
             id="condition"
             name="condition"
@@ -174,18 +128,18 @@ const NewItemForm: React.FC = () => {
             data={conditionValues}
           />
         </InputContainer>
-      </ItemInfoCard>
-      <ItemInfoCard>
+      </InputCard>
+      <InputCard>
         <InputContainer>
-          <Label htmlFor="price" as="label" fontWeight="extrabold" fontSize="large">
+          <InputLabel htmlFor="price" as="label" fontWeight="extrabold" fontSize="large">
             Price
-          </Label>
-          <StyledInput placeholder="Enter a price" required step="0.01" type="number" name="price" id="price" />
+          </InputLabel>
+          <FormInput placeholder="Enter a price" required step="0.01" type="number" name="price" id="price" />
         </InputContainer>
-      </ItemInfoCard>
-      <ButtonContainer>
+      </InputCard>
+      <FormButtonContainer>
         <Button type="submit">Save item</Button>
-      </ButtonContainer>
+      </FormButtonContainer>
     </NewItemContainer>
   );
 };
