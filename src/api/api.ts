@@ -18,7 +18,7 @@ const getAuthorizationOptions = (token: string) => {
 
 const request = (
   endpoint: string,
-  method: "GET" | "POST" = "GET",
+  method: "GET" | "POST" | "PUT" = "GET",
   params: IParams[] = [],
   data: object = {},
   options: RequestInit = {}
@@ -39,8 +39,8 @@ const request = (
 
   return fetch(`${baseURL}/${endpoint}${params?.length ? `?${parsedParams}` : ""}`, {
     method,
-    body: method === "POST" ? JSON.stringify(data) : undefined,
-    ...(method === "POST" ? mergedOptions : options)
+    body: method === "POST" || method === "PUT" ? JSON.stringify(data) : undefined,
+    ...(method === "POST" || method === "PUT" ? mergedOptions : options)
   });
 };
 
@@ -66,8 +66,12 @@ const addUser = (user: Partial<INewUser>, token: string) => {
   return request("user", "POST", [], user, getAuthorizationOptions(token));
 };
 
+const updateUser = (user: Partial<INewUser>, token: string) => {
+  return request("user", "PUT", [], user, getAuthorizationOptions(token));
+};
+
 const getUserByToken = (token: string) => {
   return request("user", "GET", [], undefined, getAuthorizationOptions(token));
 };
 
-export { getItemByCategory, getItemsWithFilters, getItemById, addItem, addUser, getUserByToken };
+export { getItemByCategory, getItemsWithFilters, getItemById, addItem, addUser, getUserByToken, updateUser };

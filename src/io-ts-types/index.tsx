@@ -37,14 +37,11 @@ const user = t.interface({
   lastName: t.string,
   username: t.string,
   emailAddress: t.string,
-  photoURL: t.string,
   phoneNumber: t.string,
+  photoURL: t.string,
   gender: createEnumType<Gender>(Gender, "Gender"),
   address: t.interface({
-    street: t.interface({
-      name: t.string,
-      number: t.string
-    }),
+    street: t.string,
     postalCode: t.string,
     city: t.string,
     country: t.string
@@ -87,13 +84,14 @@ const shopItemImagesField = t.interface({
   images: shopItemImagesFromServer
 });
 
-const optionalMongoDbItems = t.partial({
+const mongoDbItems = t.interface({
   userId: t.string,
   createdAt: date,
   updatedAt: date
 });
 
-const optionalStringifiedShopItemFields = t.partial({
+const mongoDbItemsStringified = t.interface({
+  userId: t.string,
   createdAt: t.string,
   updatedAt: t.string
 });
@@ -112,19 +110,31 @@ export const IShopItemRuntime = t.intersection([
   shopItemDatabaseFields,
   mainShopItemFields,
   shopItemImagesField,
-  optionalMongoDbItems
+  mongoDbItems
 ]);
 export const IShopItemStringifiedRuntime = t.intersection([
   shopItemDatabaseFields,
   mainShopItemFields,
   shopItemImagesField,
-  optionalStringifiedShopItemFields
+  mongoDbItemsStringified
 ]);
 
+export const INewUserStringified = t.intersection([user, userbirthdateStringField]);
+
 export const INewShopItemRuntime = t.intersection([mainShopItemFields, shopItemAddImageField]);
-export const IUserRuntimeStringified = t.intersection([user, userbirthdateStringField, optionalMongoDbItems]);
-export const IUserRuntime = t.intersection([user, userbirthdateDateField, optionalMongoDbItems]);
+export const IUserRuntimeStringified = t.intersection([user, userbirthdateStringField, mongoDbItemsStringified]);
+export const IUserRuntime = t.intersection([user, userbirthdateDateField, mongoDbItems]);
 export const INewUserRuntime = t.intersection([user, userbirthdateDateField]);
+export const IUserPartialStringifiedRuntime = t.partial({
+  ...user.props,
+  ...userbirthdateStringField.props,
+  ...mongoDbItemsStringified.props
+});
+export const IUserPartialRuntime = t.partial({
+  ...user.props,
+  ...userbirthdateDateField.props,
+  ...mongoDbItems.props
+});
 
 export type IShopItemImage = t.TypeOf<typeof shopItemImageFromServer>;
 export type IShopItemImages = t.TypeOf<typeof shopItemImagesFromServer>;
@@ -133,6 +143,9 @@ export type INewShopItem = t.TypeOf<typeof INewShopItemRuntime>;
 export type IUser = t.TypeOf<typeof IUserRuntime>;
 export type IUserStringified = t.TypeOf<typeof IUserRuntimeStringified>;
 export type INewUser = t.TypeOf<typeof INewUserRuntime>;
+export type INewUserStringified = t.TypeOf<typeof INewUserStringified>;
+export type IUserPartialStringified = t.TypeOf<typeof IUserPartialStringifiedRuntime>;
+export type IUserPartial = t.TypeOf<typeof IUserPartialRuntime>;
 
 export type IShopItemNotFoundErrorResponse = t.TypeOf<typeof IShopItemNotFoundErrorResponseRuntime>;
 export type IShopItem = t.TypeOf<typeof IShopItemRuntime>;
