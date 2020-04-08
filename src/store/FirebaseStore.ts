@@ -1,3 +1,6 @@
+import { isRight } from "fp-ts/lib/Either";
+import { IUserPartialRuntime, INewUser } from "./../io-ts-types/index";
+import { dateReviver } from "./../utils/string";
 import { IUploadStatus } from "../utils/FirebaseUploadManager";
 import * as firebase from "firebase/app";
 
@@ -7,7 +10,7 @@ import "firebase/storage";
 
 import { observable, computed, flow, action } from "mobx";
 import FirebaseUploadManager from "../utils/FirebaseUploadManager";
-import { addUser, getUserByToken } from "../api/api";
+import { addUser, getUserByToken, updateUser } from "../api/api";
 import { IUser } from "../io-ts-types";
 import _ from "lodash";
 
@@ -65,9 +68,7 @@ class FirebaseStore {
 
     this.auth.onAuthStateChanged(async user => {
       this.user.user = user;
-      if (user) {
-        await this.fetchUserData();
-      }
+      await this.fetchUserData();
     });
 
     this.auth.useDeviceLanguage();
@@ -75,10 +76,15 @@ class FirebaseStore {
     this.googleAuthProvider = new firebase.auth.GoogleAuthProvider();
   }
 
+  async updateUserData(data: Partial<INewUser>) {
+    const token = await this.getJWTToken();
+    return updateUser(data, token);
+  }
+
   async createUser(username: string, emailAddress: string, password: string) {
     await this.auth.createUserWithEmailAndPassword(emailAddress, password);
     const token = await this.getJWTToken();
-    await addUser({ username, emailAddress }, token);
+    return addUser({ username, emailAddress }, token);
   }
 
   async login(email: string, password: string) {
@@ -103,9 +109,15 @@ class FirebaseStore {
     try {
       const token = yield this.getJWTToken();
       const userDataPromise = yield getUserByToken(token);
-      const userData = yield userDataPromise.json();
+      const userData: string = yield userDataPromise.text();
+      const parsedUserData = JSON.parse(userData, dateReviver);
+      if (isRight(IUserPartialRuntime.decode(parsedUserData))) {
+        this.user.data = parsedUserData;
+      } else {
+        this.user.error = new Error("The data received from the database is malformed.");
+      }
+
       this.user.loaded = true;
-      this.user.data = userData;
     } catch (error) {
       this.user.loaded = true;
       this.user.error = error;
@@ -147,8 +159,8 @@ class FirebaseStore {
 
   @computed
   get currentUser() {
-    console.log(this.user.user);
-    return _.merge(this.user.user || this.auth.currentUser, this.user.data);
+    if (this.user.loaded && !this.user.user) return null;
+    return _.merge(this.user.data, _.omit(this.user.user, ["phoneNumber", "photoURL"]));
   }
 
   @computed
