@@ -46,8 +46,10 @@ const StyledAvatar = styled.span<IStyledAvatarProps>`
 
   background-color: #1a83c5;
   background-image: ${props => (props.imgURL ? `url(${props.imgURL})` : "")};
-  background-size: cover;
   border-radius: 50%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100% 100%;
 
   color: ${props => props.theme.white};
 
