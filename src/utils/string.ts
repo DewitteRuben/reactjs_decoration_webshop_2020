@@ -1,4 +1,5 @@
 import _ from "lodash";
+import moment from "moment";
 
 const map: { [key: string]: string } = {
   and: "&",
@@ -22,4 +23,13 @@ export type CategoryNames = typeof categoryNames[number];
 export const parseCategoryString = (category: string): Record<CategoryNames, string> => {
   const categories = _.drop(category.split(","));
   return _.zipObject(categoryNames, categories) as Record<CategoryNames, string>;
+};
+
+export const dateReviver = function(key: any, value: any) {
+  if (typeof value === "string") {
+    if (moment(value, moment.ISO_8601).isValid()) {
+      return new Date(value);
+    }
+  }
+  return value;
 };
