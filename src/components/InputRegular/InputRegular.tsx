@@ -26,4 +26,12 @@ export default styled.input`
     color: ${props => props.theme.placeholder};
     opacity: 0.5;
   }
+
+  &:disabled {
+    background-color: ${props => props.theme.gray};
+  }
+
+  &:disabled:hover {
+    cursor: not-allowed;
+  }
 `;
