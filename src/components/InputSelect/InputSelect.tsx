@@ -38,7 +38,14 @@ interface IInputSelectProps extends Omit<React.ComponentPropsWithoutRef<"select"
   onChange?: (key: string) => void;
 }
 
-const InputSelect: React.FC<IInputSelectProps> = ({ placeholder, data, capitalizeValue = true, onChange, ...props }) => {
+const InputSelect: React.FC<IInputSelectProps> = ({
+  placeholder,
+  data,
+  capitalizeValue = true,
+  onChange,
+  defaultValue,
+  ...props
+}) => {
   const [value, setValue] = React.useState("");
 
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -49,8 +56,14 @@ const InputSelect: React.FC<IInputSelectProps> = ({ placeholder, data, capitaliz
   };
 
   return (
-    <Select {...props} togglePlaceholder={!value.length} defaultValue={""} onChange={handleOnChange} as="select">
-      <PlaceholderOption disabled hidden value="">
+    <Select
+      {...props}
+      togglePlaceholder={!defaultValue?.toString().length && !value.length}
+      defaultValue={defaultValue || ""}
+      onChange={handleOnChange}
+      as="select"
+    >
+      <PlaceholderOption hidden value="">
         {placeholder}
       </PlaceholderOption>
       {data.map((item: string | IKeyValuePair) => {
