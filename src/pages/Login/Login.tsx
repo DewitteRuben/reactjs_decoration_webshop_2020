@@ -18,7 +18,7 @@ const Login = observer(() => {
   const { firebaseStore } = useStores();
 
   if (firebaseStore.isLoggedIn) {
-    return <Redirect to="/decoration" />;
+    return <Redirect to="/" />;
   }
 
   return (
