@@ -1,22 +1,18 @@
+import { isRight } from "fp-ts/lib/Either";
+import { IShopItemDataRuntime, IShopItemData } from "./../io-ts-types/index";
 import { flow, observable, action, computed } from "mobx";
 import { getItemsWithFilters } from "../api/api";
 import { SortTypes } from "../components/SortBySelect/SortBySelect";
 import { getSortedItems } from "../utils/sort";
 import _ from "lodash";
 import { IParams } from "../api/api";
-import { IShopItem } from "../io-ts-types";
+import { dateReviver } from "../utils/string";
 
 export type Categories = "decoration";
 
 export type Subcategories = "vases-and-flowers";
 
 export type ItemCategories = "vases" | "flowers";
-
-export interface IShopItemData {
-  items: IShopItem[];
-  minPrice?: number;
-  maxPrice?: number;
-}
 
 export interface ICategoryQuery {
   [key: string]: string | undefined;
@@ -56,15 +52,38 @@ export default class ItemStore {
 
     const queryParams = [...categories, ...this.filters2Params(this.filters)];
 
-    const response = yield getItemsWithFilters([...queryParams, { key: "amount", value: "true" }]);
-    const { amount } = yield response.json();
-    this.setAmount(amount);
-
-    this.status.state = "pending";
     try {
+      const response = yield getItemsWithFilters([...queryParams, { key: "amount", value: "true" }]);
+      const { amount } = yield response.json();
+      this.setAmount(amount);
+
+      this.status.state = "pending";
       const promiseItems = yield getItemsWithFilters(queryParams);
-      const fetchedItems = yield promiseItems.json();
-      this.shopItemData = fetchedItems;
+      const shopItemData = yield promiseItems.json();
+      if (isRight(IShopItemDataRuntime.decode(shopItemData))) {
+        this.shopItemData = shopItemData;
+      }
+      this.status.state = "done";
+    } catch (error) {
+      this.status = { state: "error", error };
+    }
+  });
+
+  @action
+  fetchItemsByUserId = flow(function*(this: ItemStore, userId: string) {
+    const idParam = { key: "userId", value: userId };
+    try {
+      const response = yield getItemsWithFilters([idParam, { key: "amount", value: "true" }]);
+      const { amount } = yield response.json();
+      this.setAmount(amount);
+
+      this.status.state = "pending";
+      const itemsResponse = yield getItemsWithFilters([idParam]);
+      const JSONString = yield itemsResponse.text();
+      const shopItemData = JSON.parse(JSONString, dateReviver);
+      if (isRight(IShopItemDataRuntime.decode(shopItemData))) {
+        this.shopItemData = shopItemData;
+      }
       this.status.state = "done";
     } catch (error) {
       this.status = { state: "error", error };

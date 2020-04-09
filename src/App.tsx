@@ -11,6 +11,7 @@ import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";
 import Profile from "./pages/Profile/Profile";
 import NewItem from "./pages/NewItem/NewItem";
+import User from "./pages/User/User";
 
 onlyFocusOnTab();
 
@@ -36,6 +37,11 @@ function App() {
           <Route exact path="/login">
             <Login />
           </Route>
+
+          <Route exact path="/user/:id">
+            <User />
+          </Route>
+
           {/* Detail Route */}
           <Route path="/:category/:subCategory/:itemCategory/:specificCategory/detail/:id">
             <Container>

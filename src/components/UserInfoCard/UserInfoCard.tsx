@@ -8,6 +8,7 @@ import { useStores } from "../../hooks/use-stores";
 import { isRight } from "fp-ts/lib/Either";
 import { observer } from "mobx-react";
 import Skeleton from "react-loading-skeleton";
+import RouterLink from "../Link/RouterLink/RouterLink";
 
 const UserInfoCardContainer = styled.div`
   position: absolute;
@@ -43,6 +44,12 @@ const ActionContainer = styled.div`
   height: 32px;
 `;
 
+const StyledRouterLink = styled(RouterLink)`
+  &:hover {
+    border: none;
+  }
+`;
+
 interface IUserInfoCardProps extends React.ComponentPropsWithoutRef<"div"> {
   userId: string;
 }
@@ -65,20 +72,21 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId }) => {
 
   return (
     <UserInfoCardContainer>
-      <TopContainer>
-        {userData ? (
-          <Avatar imgURL={userData.photoURL} username={userData.username} size="small" />
-        ) : (
-          <Skeleton circle width={getAvatarSize("small")} height={getAvatarSize("small")} />
-        )}
-        <Username fontWeight="bold" fontSize="large">
-          {userData ? userData.username : <Skeleton />}
-        </Username>
-      </TopContainer>
+      <StyledRouterLink to={`/user/${userId}`}>
+        <TopContainer>
+          {userData ? (
+            <Avatar imgURL={userData.photoURL} username={userData.username} size="small" />
+          ) : (
+            <Skeleton circle width={getAvatarSize("small")} height={getAvatarSize("small")} />
+          )}
+          <Username fontWeight="bold" fontSize="large">
+            {userData ? userData.username : <Skeleton />}
+          </Username>
+        </TopContainer>
+      </StyledRouterLink>
       <ActionContainer>
         <Icon size={32} name="add-user" />
         <Icon size={32} name="message" />
-        <Icon size={32} name="user-profile" />
       </ActionContainer>
     </UserInfoCardContainer>
   );
