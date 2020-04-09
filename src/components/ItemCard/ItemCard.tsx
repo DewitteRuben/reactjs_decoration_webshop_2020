@@ -9,6 +9,7 @@ import _ from "lodash";
 import { getLocationFromShopItem } from "../../utils/navigation";
 import Typography from "../Typography/Typography";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
+import Skeleton from "react-loading-skeleton";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -76,6 +77,22 @@ interface IProps {
 const viewItemDetail = (item: IShopItem, history: H.History<H.LocationState>) => () => {
   const location = getLocationFromShopItem(item);
   history.push(location);
+};
+
+export const ItemCardSkeleton: React.FC = () => {
+  return (
+    <CardContainer>
+      <Skeleton width={260} height={360} />
+      <CardDetailContainer>
+        <ItemBody>
+          <Skeleton width={240} />
+        </ItemBody>
+        <ItemFooter>
+          <Skeleton width={240} />
+        </ItemFooter>
+      </CardDetailContainer>
+    </CardContainer>
+  );
 };
 
 const ItemCard: React.FC<IProps> = ({ item, ...other }) => {

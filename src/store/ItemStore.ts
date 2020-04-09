@@ -37,6 +37,7 @@ export default class ItemStore {
   @observable
   sortType: SortTypes = SortTypes.NONE;
 
+  @observable amount = 0;
   @observable status = { state: "inactive", error: {} };
   @observable error = {};
 
@@ -55,6 +56,10 @@ export default class ItemStore {
 
     const queryParams = [...categories, ...this.filters2Params(this.filters)];
 
+    const response = yield getItemsWithFilters([...queryParams, { key: "amount", value: "true" }]);
+    const { amount } = yield response.json();
+    this.setAmount(amount);
+
     this.status.state = "pending";
     try {
       const promiseItems = yield getItemsWithFilters(queryParams);
@@ -69,6 +74,11 @@ export default class ItemStore {
   @action
   setSortType = (sortType: SortTypes) => {
     this.sortType = sortType;
+  };
+
+  @action
+  setAmount = (amount: number) => {
+    this.amount = amount;
   };
 
   @action

@@ -9,6 +9,7 @@ import { ICategoryQuery } from "../../store/ItemStore";
 const Feed: React.FC = () => {
   const { itemStore } = useStores();
   const { category, subCategory, itemCategory, specificCategory } = useParams();
+  const isLoading = itemStore.status.state === "pending";
   const query: ICategoryQuery = React.useMemo(
     () => ({
       category,
@@ -36,7 +37,7 @@ const Feed: React.FC = () => {
     itemStore.setCategories(query);
   }, [itemStore, query]);
 
-  return useObserver(() => <ItemList items={itemStore.getItems()} />);
+  return useObserver(() => <ItemList loading={isLoading} amount={itemStore.amount} items={itemStore.getItems()} />);
 };
 
 export default Feed;

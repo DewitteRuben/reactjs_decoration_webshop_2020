@@ -1,10 +1,12 @@
 import React from "react";
 import styled from "styled-components";
-import ItemCard from "../ItemCard/ItemCard";
+import ItemCard, { ItemCardSkeleton } from "../ItemCard/ItemCard";
 import { IShopItem } from "../../io-ts-types";
 
 interface IProps {
   items: IShopItem[];
+  loading?: boolean;
+  amount?: number;
 }
 
 const ItemContainer = styled.div`
@@ -16,7 +18,14 @@ const ItemContainer = styled.div`
   grid-area: list;
 `;
 
-const ItemList: React.FC<IProps> = ({ items }) => {
+const ItemList: React.FC<IProps> = ({ items, loading, amount }) => {
+  if (loading && amount) {
+    const skeleton = Array(amount)
+      .fill(0)
+      .map((_, i) => <ItemCardSkeleton key={`feed-skeleton-${i}`} />);
+    return <ItemContainer>{skeleton}</ItemContainer>;
+  }
+
   return (
     <ItemContainer>
       {items?.map(item => (
