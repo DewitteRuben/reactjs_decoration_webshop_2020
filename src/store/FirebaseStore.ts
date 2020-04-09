@@ -10,7 +10,7 @@ import "firebase/storage";
 
 import { observable, computed, flow, action } from "mobx";
 import FirebaseUploadManager from "../utils/FirebaseUploadManager";
-import { addUser, getUserByToken, updateUser } from "../api/api";
+import { addUser, getUserByToken, updateUser, getUserById as apiGetUserById } from "../api/api";
 import { IUser } from "../io-ts-types";
 import _ from "lodash";
 
@@ -124,6 +124,11 @@ class FirebaseStore {
     }
   });
 
+  async getUserById(userId: string) {
+    const token = await this.getJWTToken();
+    return apiGetUserById(token, userId);
+  }
+
   getUserId() {
     if (!this.currentUser) {
       throw new Error(AuthErrorCode.NOT_LOGGED_IN);
@@ -160,7 +165,8 @@ class FirebaseStore {
   @computed
   get currentUser() {
     if (this.user.loaded && !this.user.user) return null;
-    return _.merge(this.user.data, _.omit(this.user.user, ["phoneNumber", "photoURL"]));
+    const mergedData = _.merge(this.user.data, _.omit(this.user.user, ["phoneNumber", "photoURL"]));
+    return _.isEmpty(mergedData) ? null : mergedData;
   }
 
   @computed

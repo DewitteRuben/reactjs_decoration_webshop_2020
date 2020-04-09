@@ -32,6 +32,12 @@ export enum Gender {
   OTHER = "other"
 }
 
+export const IUserStrippedRuntime = t.interface({
+  username: t.string,
+  photoURL: t.string,
+  gender: createEnumType<Gender>(Gender, "Gender")
+});
+
 const user = t.interface({
   firstName: t.string,
   lastName: t.string,
@@ -150,3 +156,4 @@ export type IUserPartial = t.TypeOf<typeof IUserPartialRuntime>;
 export type IShopItemNotFoundErrorResponse = t.TypeOf<typeof IShopItemNotFoundErrorResponseRuntime>;
 export type IShopItem = t.TypeOf<typeof IShopItemRuntime>;
 export type IShopItemStringified = t.TypeOf<typeof IShopItemStringifiedRuntime>;
+export type IUserStripped = t.TypeOf<typeof IUserStrippedRuntime>;

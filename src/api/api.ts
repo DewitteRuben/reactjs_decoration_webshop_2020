@@ -73,5 +73,9 @@ const updateUser = (user: Partial<INewUser>, token: string) => {
 const getUserByToken = (token: string) => {
   return request("user", "GET", [], undefined, getAuthorizationOptions(token));
 };
+const getUserById = (token: string, userId: string) => {
+  const filter: IParams = { key: "id", value: userId };
+  return request("user", "GET", [filter], undefined, getAuthorizationOptions(token));
+};
 
-export { getItemByCategory, getItemsWithFilters, getItemById, addItem, addUser, getUserByToken, updateUser };
+export { getItemByCategory, getItemsWithFilters, getItemById, addItem, addUser, getUserByToken, getUserById, updateUser };

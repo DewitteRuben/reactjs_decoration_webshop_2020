@@ -44,7 +44,7 @@ const StyledAvatar = styled.span<IStyledAvatarProps>`
 
   font-size: ${props => rem(props.size ? getAvatarFontSize(props.size) : getAvatarFontSize("normal"))};
 
-  background-color: #1a83c5;
+  background-color: ${props => (props.imgURL ? props.theme.white : "#1a83c5")};
   background-image: ${props => (props.imgURL ? `url(${props.imgURL})` : "")};
   border-radius: 50%;
   background-repeat: no-repeat;

@@ -15,6 +15,9 @@ import { ReactComponent as CheckboxCheckedIcon } from "../../icons/checkbox-chec
 import { ReactComponent as CheckboxBlankIcon } from "../../icons/checkbox-blank.svg";
 import { ReactComponent as ExitIcon } from "../../icons/exit.svg";
 import { ReactComponent as ArrowBackIcon } from "../../icons/arrow-back.svg";
+import { ReactComponent as AddUserIcon } from "../../icons/add-user.svg";
+import { ReactComponent as MessageIcon } from "../../icons/message.svg";
+import { ReactComponent as UserProfileIcon } from "../../icons/user-profile.svg";
 
 export type IconTypes =
   | "heart"
@@ -31,7 +34,10 @@ export type IconTypes =
   | "checkbox-checked"
   | "checkbox-blank"
   | "exit"
-  | "arrow-back";
+  | "arrow-back"
+  | "add-user"
+  | "message"
+  | "user-profile";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -48,7 +54,10 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   "checkbox-checked": CheckboxCheckedIcon,
   "checkbox-blank": CheckboxBlankIcon,
   exit: ExitIcon,
-  "arrow-back": ArrowBackIcon
+  "arrow-back": ArrowBackIcon,
+  "add-user": AddUserIcon,
+  message: MessageIcon,
+  "user-profile": UserProfileIcon
 };
 
 interface IProps {

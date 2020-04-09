@@ -8,6 +8,8 @@ import CategoryBreadcrumbs from "../CategoryBreadcrumbs/CategoryBreadcrumbs";
 import ButtonWithIcon from "../ButtonWithIcon/ButtonWithIcon";
 import { useStores } from "../../hooks/use-stores";
 import Typography from "../Typography/Typography";
+import UserInfoCard from "../UserInfoCard/UserInfoCard";
+import { observer } from "mobx-react";
 
 type IItemDetailProps = {
   item: IShopItem;
@@ -33,6 +35,7 @@ const ItemDetailPrice = styled(Typography)`
 
 const DetailContainer = styled.div`
   width: ${rem(702)};
+  position: relative;
 `;
 
 const ButtonContainer = styled.div`
@@ -44,9 +47,9 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
-  const { name, createdAt, condition, price, description } = item;
-  const { cartStore } = useStores();
+const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
+  const { name, createdAt, condition, price, description, userId } = item;
+  const { cartStore, firebaseStore } = useStores();
 
   const handleAddToCart = () => {
     cartStore.addItem(item);
@@ -72,8 +75,9 @@ const ItemDetail: React.FC<IItemDetailProps> = ({ item }) => {
         </ButtonWithIcon>
         <ButtonWithIcon iconName="heart">Add to wishlist</ButtonWithIcon>
       </ButtonContainer>
+      {firebaseStore.isLoggedIn && <UserInfoCard userId={userId} />}
     </DetailContainer>
   );
-};
+});
 
 export default ItemDetail;
