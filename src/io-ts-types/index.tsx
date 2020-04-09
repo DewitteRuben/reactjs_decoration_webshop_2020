@@ -118,6 +118,21 @@ export const IShopItemRuntime = t.intersection([
   shopItemImagesField,
   mongoDbItems
 ]);
+
+export const IShopItemsRuntime = t.array(IShopItemRuntime);
+
+export const IShopItemDataPrice = t.partial({
+  minPrice: t.number,
+  maxPrice: t.number
+});
+
+export const IShopItemDataRuntime = t.intersection([
+  IShopItemDataPrice,
+  t.interface({
+    items: IShopItemsRuntime
+  })
+]);
+
 export const IShopItemStringifiedRuntime = t.intersection([
   shopItemDatabaseFields,
   mainShopItemFields,
@@ -155,5 +170,7 @@ export type IUserPartial = t.TypeOf<typeof IUserPartialRuntime>;
 
 export type IShopItemNotFoundErrorResponse = t.TypeOf<typeof IShopItemNotFoundErrorResponseRuntime>;
 export type IShopItem = t.TypeOf<typeof IShopItemRuntime>;
+export type IShopItems = t.TypeOf<typeof IShopItemsRuntime>;
+export type IShopItemData = t.TypeOf<typeof IShopItemDataRuntime>;
 export type IShopItemStringified = t.TypeOf<typeof IShopItemStringifiedRuntime>;
 export type IUserStripped = t.TypeOf<typeof IUserStrippedRuntime>;
