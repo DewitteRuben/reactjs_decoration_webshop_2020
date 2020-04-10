@@ -25,6 +25,8 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
+// For future use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 enum SignupErrorCode {
   EMAIL_IN_USE = "auth/email-already-in-use",
   INVALID_EMAIL = "auth/invalid-email",
@@ -32,6 +34,8 @@ enum SignupErrorCode {
   WEAK_PASSWORD = "auth/weak-password"
 }
 
+// For future use
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 enum LoginErrorCode {
   INVALID_EMAIL = "auth/invalid-email",
   USER_DISABLED = "auth/user-disabled",
@@ -67,6 +71,8 @@ class FirebaseStore {
     this.auth = this.firebase.auth();
 
     this.auth.onAuthStateChanged(async user => {
+      this.clearState();
+
       this.user.user = user;
       await this.fetchUserData();
     });
@@ -91,8 +97,12 @@ class FirebaseStore {
     return this.auth.signInWithEmailAndPassword(email, password);
   }
 
-  async logout(): Promise<void> {
+  clearState() {
     this.user = { user: null, error: null, loaded: false, data: null };
+  }
+
+  async logout(): Promise<void> {
+    this.clearState();
     return this.auth.signOut();
   }
 
