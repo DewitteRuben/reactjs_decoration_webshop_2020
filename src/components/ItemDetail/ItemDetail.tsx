@@ -49,7 +49,7 @@ const ButtonContainer = styled.div`
 
 const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
   const { name, createdAt, condition, price, description, userId } = item;
-  const { cartStore, firebaseStore } = useStores();
+  const { cartStore } = useStores();
 
   const handleAddToCart = () => {
     cartStore.addItem(item);
@@ -75,7 +75,7 @@ const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
         </ButtonWithIcon>
         <ButtonWithIcon iconName="heart">Add to wishlist</ButtonWithIcon>
       </ButtonContainer>
-      {firebaseStore.isLoggedIn && <UserInfoCard userId={userId} />}
+      <UserInfoCard userId={userId} />
     </DetailContainer>
   );
 });

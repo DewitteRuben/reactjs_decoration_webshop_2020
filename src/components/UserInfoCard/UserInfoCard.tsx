@@ -4,11 +4,11 @@ import styled from "styled-components";
 import Icon from "../Icon/Icon";
 import Typography from "../Typography/Typography";
 import { IUserStripped, IUserStrippedRuntime } from "../../io-ts-types";
-import { useStores } from "../../hooks/use-stores";
 import { isRight } from "fp-ts/lib/Either";
 import { observer } from "mobx-react";
 import Skeleton from "react-loading-skeleton";
 import RouterLink from "../Link/RouterLink/RouterLink";
+import { getPartialUserById } from "../../api/api";
 
 const UserInfoCardContainer = styled.div`
   position: absolute;
@@ -55,12 +55,11 @@ interface IUserInfoCardProps extends React.ComponentPropsWithoutRef<"div"> {
 }
 
 const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId }) => {
-  const { firebaseStore } = useStores();
   const [userData, setUserData] = React.useState<IUserStripped>();
 
   React.useEffect(() => {
     async function fetchUser() {
-      const response = await firebaseStore.getUserById(userId);
+      const response = await getPartialUserById(userId);
       const data = await response.json();
       if (isRight(IUserStrippedRuntime.decode(data))) {
         setUserData(data);
@@ -68,7 +67,7 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId }) => {
     }
 
     fetchUser();
-  }, [firebaseStore, userId]);
+  }, [userId]);
 
   return (
     <UserInfoCardContainer>
