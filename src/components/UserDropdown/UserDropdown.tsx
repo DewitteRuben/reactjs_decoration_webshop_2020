@@ -41,7 +41,8 @@ const LoginDropdown = observer(() => {
   };
 
   const handleLogout = closeDropdownCallback(() => firebaseStore.logout());
-  const handleProfile = closeDropdownCallback(() => history.push("/profile"));
+  const handleProfileSettings = closeDropdownCallback(() => history.push("/profile"));
+  const handleMyProfile = (userId: string) => closeDropdownCallback(() => history.push(`/user/${userId}`));
 
   const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (
@@ -53,14 +54,19 @@ const LoginDropdown = observer(() => {
       ) : (
         <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
       )}
-      <Dropdown hideLastSeperator display={isVisible} ref={containerRef}>
-        <DropdownItem onClick={handleProfile} iconName="user">
-          My profile
-        </DropdownItem>
-        <DropdownItem onClick={handleLogout} iconName="exit">
-          Logout
-        </DropdownItem>
-      </Dropdown>
+      {firebaseStore.isLoggedIn && (
+        <Dropdown hideLastSeperator display={isVisible} ref={containerRef}>
+          <DropdownItem onClick={handleMyProfile(firebaseStore.getUserId())} iconName="user">
+            My profile
+          </DropdownItem>
+          <DropdownItem onClick={handleProfileSettings} iconName="cog">
+            Settings
+          </DropdownItem>
+          <DropdownItem onClick={handleLogout} iconName="exit">
+            Logout
+          </DropdownItem>
+        </Dropdown>
+      )}
     </DropdownContainer>
   );
 });

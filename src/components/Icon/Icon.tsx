@@ -18,6 +18,8 @@ import { ReactComponent as ArrowBackIcon } from "../../icons/arrow-back.svg";
 import { ReactComponent as AddUserIcon } from "../../icons/add-user.svg";
 import { ReactComponent as MessageIcon } from "../../icons/message.svg";
 import { ReactComponent as UserProfileIcon } from "../../icons/user-profile.svg";
+import { ReactComponent as WrenchIcon } from "../../icons/wrench.svg";
+import { ReactComponent as CogIcon } from "../../icons/cog.svg";
 
 export type IconTypes =
   | "heart"
@@ -37,7 +39,9 @@ export type IconTypes =
   | "arrow-back"
   | "add-user"
   | "message"
-  | "user-profile";
+  | "user-profile"
+  | "wrench"
+  | "cog";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -57,7 +61,9 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   "arrow-back": ArrowBackIcon,
   "add-user": AddUserIcon,
   message: MessageIcon,
-  "user-profile": UserProfileIcon
+  "user-profile": UserProfileIcon,
+  wrench: WrenchIcon,
+  cog: CogIcon
 };
 
 interface IProps {
