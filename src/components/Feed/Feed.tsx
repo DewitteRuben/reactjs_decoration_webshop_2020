@@ -22,6 +22,8 @@ class Feed extends Component<RouteComponentProps<IRouteProps>, {}> {
   componentDidUpdate(prevProps: RouteComponentProps<IRouteProps>) {
     const { itemStore } = this.context;
     if (!_.isEqual(this.props.match.params, prevProps.match.params)) {
+      itemStore.clear();
+
       const { category, subCategory, itemCategory, specificCategory } = this.props.match.params;
       itemStore.setCategories({ category, subCategory, itemCategory, specificCategory });
     }
