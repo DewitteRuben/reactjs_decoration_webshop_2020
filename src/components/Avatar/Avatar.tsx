@@ -2,12 +2,13 @@ import styled from "styled-components";
 import { rem } from "polished";
 import React from "react";
 
-type AvatarSizes = "small" | "normal" | "large";
+type AvatarSizes = "small" | "normal" | "large" | "largest";
 
 const sizeMap: Record<AvatarSizes, number> = {
   small: 32,
   normal: 64,
-  large: 96
+  large: 96,
+  largest: 160
 };
 
 interface IStyledAvatarProps {
@@ -19,6 +20,9 @@ const getAvatarFontSize = (size: AvatarSizes) => {
   const intSize = sizeMap[size];
   if (intSize - 32 < 32) {
     return intSize / 2;
+  }
+  if (intSize > 96) {
+    return 96;
   }
   return intSize - 32;
 };
