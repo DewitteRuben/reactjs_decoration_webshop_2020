@@ -18,12 +18,24 @@ const ItemContainer = styled.div`
   grid-area: list;
 `;
 
+const MessageContainer = styled.div`
+  grid-area: list;
+`;
+
 const ItemList: React.FC<IProps> = ({ items, loading, amount }) => {
-  if (loading && amount) {
-    const skeleton = Array(amount)
+  if (loading) {
+    const skeleton = Array(amount || 20)
       .fill(0)
       .map((_, i) => <ItemCardSkeleton key={`feed-skeleton-${i}`} />);
     return <ItemContainer>{skeleton}</ItemContainer>;
+  }
+
+  if (!loading && items.length === 0) {
+    return (
+      <MessageContainer>
+        <p>There are no items in this category (yet) or this category does not exist.</p>
+      </MessageContainer>
+    );
   }
 
   return (
