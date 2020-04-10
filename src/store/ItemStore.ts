@@ -59,9 +59,10 @@ export default class ItemStore {
 
       this.status.state = "pending";
       const promiseItems = yield getItemsWithFilters(queryParams);
-      const shopItemData = yield promiseItems.json();
-      if (isRight(IShopItemDataRuntime.decode(shopItemData))) {
-        this.shopItemData = shopItemData;
+      const shopItemData = yield promiseItems.text();
+      const parsedShopItemData = JSON.parse(shopItemData, dateReviver);
+      if (isRight(IShopItemDataRuntime.decode(parsedShopItemData))) {
+        this.shopItemData = parsedShopItemData;
       }
       this.status.state = "done";
     } catch (error) {
@@ -72,6 +73,7 @@ export default class ItemStore {
   @action
   fetchItemsByUserId = flow(function*(this: ItemStore, userId: string) {
     const idParam = { key: "userId", value: userId };
+
     try {
       const response = yield getItemsWithFilters([idParam, { key: "amount", value: "true" }]);
       const { amount } = yield response.json();
@@ -118,7 +120,7 @@ export default class ItemStore {
   @action
   setCategories = (categories: ICategoryQuery) => {
     this.clearFilters();
-    this.categories = categories;
+    this.categories = { ...categories };
   };
 
   filters2Params = (obj: FiltersMap<string | number>): IParams[] => {
@@ -143,5 +145,12 @@ export default class ItemStore {
   @computed
   get maxPrice() {
     return this.shopItemData.maxPrice;
+  }
+
+  @action
+  clear() {
+    this.status = { state: "inactive", error: {} };
+    this.shopItemData.items = [];
+    this.amount = 0;
   }
 }

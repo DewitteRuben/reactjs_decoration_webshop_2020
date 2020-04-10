@@ -1,43 +1,62 @@
-import { reaction } from "mobx";
-import { useObserver } from "mobx-react";
-import React from "react";
-import { useParams } from "react-router-dom";
-import { useStores } from "../../hooks/use-stores";
+import React, { Component } from "react";
+import { withRouter, RouteComponentProps } from "react-router-dom";
 import ItemList from "../ItemList/ItemList";
-import { ICategoryQuery } from "../../store/ItemStore";
+import { reaction, IReactionDisposer } from "mobx";
+import storesContext from "../../store/store";
+import { observer } from "mobx-react";
+import _ from "lodash";
 
-const Feed: React.FC = () => {
-  const { itemStore } = useStores();
-  const { category, subCategory, itemCategory, specificCategory } = useParams();
-  const isLoading = itemStore.status.state === "pending";
-  const query: ICategoryQuery = React.useMemo(
-    () => ({
-      category,
-      subCategory,
-      itemCategory,
-      specificCategory
-    }),
-    [category, subCategory, itemCategory, specificCategory]
-  );
+interface IRouteProps {
+  category: string;
+  subCategory: string;
+  itemCategory: string;
+  specificCategory: string;
+}
 
-  React.useEffect(() => {
+@observer
+class Feed extends Component<RouteComponentProps<IRouteProps>, {}> {
+  static contextType = storesContext;
+  context!: React.ContextType<typeof storesContext>;
+  disposer?: IReactionDisposer;
+
+  componentDidUpdate(prevProps: RouteComponentProps<IRouteProps>) {
+    const { itemStore } = this.context;
+    if (!_.isEqual(this.props.match.params, prevProps.match.params)) {
+      const { category, subCategory, itemCategory, specificCategory } = this.props.match.params;
+      itemStore.setCategories({ category, subCategory, itemCategory, specificCategory });
+    }
+  }
+
+  componentDidMount() {
+    const { itemStore } = this.context;
+
+    itemStore.clear();
+
     const disposer = reaction(
-      () => ({ ...itemStore.categories, ...itemStore.filters }),
+      () => itemStore.filters,
       () => {
-        itemStore.fetchItems();
+        _.debounce(() => itemStore.fetchItems())();
       }
     );
 
-    return () => {
-      disposer();
-    };
-  }, [itemStore]);
+    this.disposer = disposer;
 
-  React.useEffect(() => {
-    itemStore.setCategories(query);
-  }, [itemStore, query]);
+    const { category, subCategory, itemCategory, specificCategory } = this.props.match.params;
+    itemStore.setCategories({ category, subCategory, itemCategory, specificCategory });
+  }
 
-  return useObserver(() => <ItemList loading={isLoading} amount={itemStore.amount} items={itemStore.getItems()} />);
-};
+  componentWillUnmount() {
+    if (this.disposer) {
+      this.disposer();
+    }
+  }
 
-export default Feed;
+  render() {
+    const { itemStore } = this.context;
+    const isLoading = itemStore.status.state !== "done";
+
+    return <ItemList loading={isLoading} amount={itemStore.amount} items={itemStore.getItems()} />;
+  }
+}
+
+export default withRouter(Feed);

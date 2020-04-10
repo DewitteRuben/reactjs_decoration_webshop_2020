@@ -1,24 +1,68 @@
-import React from "react";
+import React, { Component } from "react";
 import ItemList from "../ItemList/ItemList";
-import { useStores } from "../../hooks/use-stores";
-import { autorun } from "mobx";
-import { useObserver } from "mobx-react";
+import { autorun, IReactionDisposer } from "mobx";
+import { observer } from "mobx-react";
+import styled from "styled-components";
+import SortBySelect from "../SortBySelect/SortBySelect";
+import Typography from "../Typography/Typography";
+import Skeleton from "react-loading-skeleton";
+import { storesContext } from "../../store/store";
+import _ from "lodash";
+
+const ActionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+const FeedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
 
 interface IUserFeedProps {
   userId: string;
 }
 
-const UserFeed: React.FC<IUserFeedProps> = ({ userId }) => {
-  const { itemStore } = useStores();
-  const isLoading = itemStore.status.state === "pending";
+@observer
+class UserFeed extends Component<IUserFeedProps, {}> {
+  static contextType = storesContext;
+  context!: React.ContextType<typeof storesContext>;
+  disposer?: IReactionDisposer;
 
-  React.useEffect(() => {
-    return autorun(() => {
-      itemStore.fetchItemsByUserId(userId);
+  componentDidMount() {
+    const { itemStore } = this.context;
+    const { userId } = this.props;
+
+    itemStore.clear();
+
+    const disposer = autorun(() => {
+      _.debounce(() => itemStore.fetchItemsByUserId(userId))();
     });
-  }, [itemStore, userId]);
 
-  return useObserver(() => <ItemList items={itemStore.getItems()} loading={isLoading} amount={itemStore.amount} />);
-};
+    this.disposer = disposer;
+  }
+
+  componentWillUnmount() {
+    if (this.disposer) {
+      this.disposer();
+    }
+  }
+
+  render() {
+    const { itemStore } = this.context;
+    const isLoading = itemStore.status.state !== "done";
+
+    return (
+      <FeedContainer>
+        <ActionContainer>
+          <Typography>{isLoading ? <Skeleton width={70} /> : `Item(s): ${itemStore.amount}`}</Typography>
+          <SortBySelect />
+        </ActionContainer>
+        <ItemList items={itemStore.getItems()} loading={isLoading} amount={itemStore.amount} />
+      </FeedContainer>
+    );
+  }
+}
 
 export default UserFeed;

@@ -32,11 +32,17 @@ export enum Gender {
   OTHER = "other"
 }
 
-export const IUserStrippedRuntime = t.interface({
-  username: t.string,
+const IUserStrippedPartial = t.partial({
   photoURL: t.string,
   gender: createEnumType<Gender>(Gender, "Gender")
 });
+
+export const IUserStrippedRuntime = t.intersection([
+  t.interface({
+    username: t.string
+  }),
+  IUserStrippedPartial
+]);
 
 const user = t.interface({
   firstName: t.string,
