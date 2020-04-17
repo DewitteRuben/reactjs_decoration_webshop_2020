@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { rem, lighten } from "polished";
 
 const Button = styled.button`
+  box-sizing: border-box;
+
   display: flex;
   justify-content: center;
   align-items: center;

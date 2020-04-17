@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { rem } from "polished";
 
 export type FontWeightTypes = "normal" | "semibold" | "bold" | "extrabold";
@@ -48,7 +48,13 @@ export interface ITypographyProps {
   fontSize?: FontSizes;
   color?: Colors;
   align?: AlignmentTypes;
+  fullWidth?: boolean;
 }
+
+const fullWidth = css`
+  display: inline-block;
+  width: 100%;
+`;
 
 const Typography = styled.span<ITypographyProps>`
   padding: 0;
@@ -58,6 +64,7 @@ const Typography = styled.span<ITypographyProps>`
   font-size: ${props => (props.fontSize ? getFontSize(props.fontSize) : getFontSize("normal"))};
   font-weight: ${props => (props.fontWeight ? getFontWeight(props.fontWeight) : getFontWeight("normal"))};
   text-align: ${props => (props.align ? props.align : "initial")};
+  ${props => props.fullWidth && fullWidth}
 `;
 
 export default Typography;
