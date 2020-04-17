@@ -3,6 +3,7 @@ import styled from "styled-components";
 import ShoppingCart from "../ShoppingCart/ShoppingCart";
 import UserDropdown from "../UserDropdown/UserDropdown";
 import ButtonNewItem from "../ButtonNewItem/ButtonNewItem";
+import Wishlist from "../Wishlist/Wishlist";
 
 const HeaderIconsContainer = styled.div`
   display: flex;
@@ -15,6 +16,7 @@ const HeaderIcons = () => {
     <HeaderIconsContainer>
       <ButtonNewItem />
       <UserDropdown />
+      <Wishlist />
       <ShoppingCart />
     </HeaderIconsContainer>
   );
