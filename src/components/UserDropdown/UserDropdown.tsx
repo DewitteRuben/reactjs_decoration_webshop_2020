@@ -9,6 +9,7 @@ import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
 import Dropdown, { closeDropdownCurry } from "../Dropdown/Dropdown";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 import { useHistory } from "react-router-dom";
+import Skeleton from "react-loading-skeleton";
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -40,12 +41,16 @@ const LoginDropdown = observer(() => {
   const containerRef = useClickOutside<HTMLUListElement>(closeDropdown, toggler.current);
   return (
     <DropdownContainer>
-      {firebaseStore.isLoggedIn ? (
-        <ButtonUnstyled onClick={handleToggleMenu} ref={toggler}>
-          <NavbarIcon name="user" />
-        </ButtonUnstyled>
+      {firebaseStore.authStatus.loaded ? (
+        firebaseStore.isLoggedIn ? (
+          <ButtonUnstyled onClick={handleToggleMenu} ref={toggler}>
+            <NavbarIcon name="user" />
+          </ButtonUnstyled>
+        ) : (
+          <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
+        )
       ) : (
-        <StyledRouterLink to="/login">Login or Sign up</StyledRouterLink>
+        <Skeleton circle width={36} height={36} />
       )}
       {firebaseStore.isLoggedIn && (
         <Dropdown hideLastSeperator display={isVisible} ref={containerRef}>
