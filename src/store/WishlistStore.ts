@@ -2,6 +2,7 @@ import { observable, action, computed, toJS } from "mobx";
 import _ from "lodash";
 import { IShopItem } from "../io-ts-types";
 import { persistWishlist, loadWishlist } from "../persistence/localstorage";
+import { updateWishlistCount } from "../api/api";
 
 export class WishlistStore {
   @observable
@@ -15,24 +16,29 @@ export class WishlistStore {
   }
 
   @action
-  addItem = (item: IShopItem) => {
-    const hasItem = this.items.findIndex(itemInList => itemInList.id === item.id);
-    if (hasItem < 0) {
+  addItem = async (item: IShopItem) => {
+    const hasItem = this.items.findIndex(itemInList => itemInList.id === item.id) >= 0;
+    if (!hasItem) {
       this.items.push(item);
+      await updateWishlistCount(item.id);
     }
     persistWishlist(this.items);
   };
 
   @action
-  removeItem = (id: string) => {
+  removeItem = async (id: string) => {
+    const hasItem = this.items.findIndex(itemInList => itemInList.id === id) >= 0;
+    if (hasItem) {
+      await updateWishlistCount(id, true);
+    }
     _.remove(this.items, item => item.id === id);
     persistWishlist(this.items);
   };
 
   @action
-  toggleItem = (item: IShopItem) => {
-    const hasItem = this.items.findIndex(itemInList => itemInList.id === item.id);
-    if (hasItem >= 0) {
+  wishlist = async (item: IShopItem) => {
+    const hasItem = this.items.findIndex(itemInList => itemInList.id === item.id) >= 0;
+    if (hasItem) {
       this.removeItem(item.id);
     } else {
       this.addItem(item);

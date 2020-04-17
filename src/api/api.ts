@@ -84,6 +84,15 @@ const getPartialUserById = (userId: string) => {
   return request("user", "GET", [filter]);
 };
 
+const updateWishlistCount = (shopItemId: string, decr?: boolean) => {
+  const filters: IParams[] = [
+    { key: "id", value: shopItemId },
+    { key: "type", value: decr ? "decr" : "incr" }
+  ];
+
+  return request("shopitem", "PUT", filters);
+};
+
 export {
   getItemByCategory,
   getItemsWithFilters,
@@ -93,5 +102,6 @@ export {
   getUserByToken,
   getUserById,
   updateUser,
-  getPartialUserById
+  getPartialUserById,
+  updateWishlistCount
 };
