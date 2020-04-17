@@ -6,7 +6,7 @@ import { useStores } from "../../hooks/use-stores";
 import RouterLink from "../Link/RouterLink/RouterLink";
 import { observer } from "mobx-react";
 import DropdownItem from "../Dropdown/DropdownItem/DropdownItem";
-import Dropdown from "../Dropdown/Dropdown";
+import Dropdown, { closeDropdownCurry } from "../Dropdown/Dropdown";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 import { useHistory } from "react-router-dom";
 
@@ -18,13 +18,6 @@ const StyledRouterLink = styled(RouterLink)`
   line-height: 38px;
   margin-right: 5px;
 `;
-
-const closeDropdownCurry = (setVisibility: React.Dispatch<React.SetStateAction<boolean>>) => (callback?: Function) => {
-  return () => {
-    setVisibility(false);
-    if (callback) callback();
-  };
-};
 
 const LoginDropdown = observer(() => {
   const { firebaseStore } = useStores();

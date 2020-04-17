@@ -51,4 +51,13 @@ const Dropdown = styled(ForwardedDropdown)<IDropdownProps>`
   ${props => props.hideLastSeperator && HideEndSeperator}
 `;
 
+export const closeDropdownCurry = (setVisibility: React.Dispatch<React.SetStateAction<boolean>>) => (
+  callback?: Function
+) => {
+  return () => {
+    setVisibility(false);
+    if (callback) callback();
+  };
+};
+
 export default Dropdown;

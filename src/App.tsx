@@ -12,6 +12,7 @@ import Main from "./pages/Main/Main";
 import Profile from "./pages/Profile/Profile";
 import NewItem from "./pages/NewItem/NewItem";
 import User from "./pages/User/User";
+import Checkout from "./pages/Checkout/Checkout";
 
 onlyFocusOnTab();
 
@@ -40,6 +41,10 @@ function App() {
 
           <Route exact path="/user/:id">
             <User />
+          </Route>
+
+          <Route exact path="/checkout">
+            <Checkout />
           </Route>
 
           {/* Detail Route */}
