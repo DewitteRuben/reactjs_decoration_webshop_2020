@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Icon from "../Icon/Icon";
 import styled from "styled-components";
 
@@ -24,24 +24,30 @@ interface IFavoriteIconProps {
 
 const FavoriteIcon: React.FC<IFavoriteIconProps> = ({ active, onFavorite }) => {
   const [heartFilled, setHeartFilledState] = React.useState(false);
-  const [isFavorite, setClickState] = React.useState(Boolean(active));
+  const [isFavorite, setClickState] = React.useState(active);
   const [isMouseDown, setMouseState] = React.useState(false);
 
-  const onMouseDown = () => {
-    setMouseState(true);
-    setClickState(prev => {
+  const onMouseDown = useCallback(
+    (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      setMouseState(true);
+      setClickState(prev => !prev);
       if (onFavorite) {
-        onFavorite(!prev);
+        onFavorite(!isFavorite);
       }
-      return !prev;
-    });
-    setHeartFilledState(isFavorite ? false : true);
-  };
+    },
+    [isFavorite, onFavorite]
+  );
+
+  React.useEffect(() => {
+    setHeartFilledState(isFavorite ? true : false);
+  }, [isFavorite]);
 
   React.useEffect(() => {
     const onMouseUp = () => {
       setMouseState(false);
-      setHeartFilledState(isFavorite);
+      setHeartFilledState(isFavorite ? true : false);
     };
 
     document.addEventListener("mouseup", onMouseUp);

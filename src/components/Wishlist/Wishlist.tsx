@@ -12,9 +12,10 @@ import { WishlistStore } from "../../store/WishlistStore";
 import { IShopItem } from "../../io-ts-types";
 import styled from "styled-components";
 import Typography from "../Typography/Typography";
+import { observer } from "mobx-react";
 
 const handleOnDelete = (wishlistStore: WishlistStore) => (item: IShopItem) => {
-  wishlistStore.removeItem(item._id);
+  wishlistStore.removeItem(item.id);
 };
 
 const WishlistContainer = styled.div`
@@ -45,7 +46,7 @@ const Total = styled(Typography)`
   margin-bottom: 10px;
 `;
 
-const Wishlist: React.FC = () => {
+const Wishlist: React.FC = observer(() => {
   const { wishlistStore } = useStores();
   const history = useHistory();
   const [isVisible, setVisibility] = React.useState(false);
@@ -64,7 +65,7 @@ const Wishlist: React.FC = () => {
         history.push(location);
       };
       return (
-        <ShoppingCartItem onClick={navigateToItem} key={item._id} onDelete={handleOnDelete(wishlistStore)} item={item} />
+        <ShoppingCartItem onClick={navigateToItem} key={item.id} onDelete={handleOnDelete(wishlistStore)} item={item} />
       );
     });
   };
@@ -73,16 +74,16 @@ const Wishlist: React.FC = () => {
 
   return (
     <WishlistContainer>
-      {wishlistStore.hasItem && <Badge>{wishlistStore.items.length}</Badge>}
+      {wishlistStore.hasItems && <Badge>{wishlistStore.items.length}</Badge>}
       <ButtonUnstyled ref={toggler} onClick={toggleVisbility}>
         <NavbarIcon name="heart" />
       </ButtonUnstyled>
       <StyledDropdown display={isVisible} ref={containerRef}>
         <Headline fontWeight="bold" align="center">
-          {wishlistStore.hasItem ? "Your wishlist" : "Your wishlist is empty."}
+          {wishlistStore.hasItems ? "Your wishlist" : "Your wishlist is empty."}
         </Headline>
         {renderItems()}
-        {wishlistStore.hasItem && (
+        {wishlistStore.hasItems && (
           <Container>
             <Total fontWeight="bold" color="black">
               <span>Total price:</span>
@@ -93,6 +94,6 @@ const Wishlist: React.FC = () => {
       </StyledDropdown>
     </WishlistContainer>
   );
-};
+});
 
 export default Wishlist;

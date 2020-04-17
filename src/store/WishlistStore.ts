@@ -1,4 +1,4 @@
-import { observable, action, computed } from "mobx";
+import { observable, action, computed, toJS } from "mobx";
 import _ from "lodash";
 import { IShopItem } from "../io-ts-types";
 import { persistWishlist, loadWishlist } from "../persistence/localstorage";
@@ -25,8 +25,18 @@ export class WishlistStore {
 
   @action
   removeItem = (id: string) => {
-    _.remove(this.items, item => item._id === id);
+    _.remove(this.items, item => item.id === id);
     persistWishlist(this.items);
+  };
+
+  @action
+  toggleItem = (item: IShopItem) => {
+    const hasItem = this.items.findIndex(itemInList => itemInList.id === item.id);
+    if (hasItem >= 0) {
+      this.removeItem(item.id);
+    } else {
+      this.addItem(item);
+    }
   };
 
   @computed
@@ -39,7 +49,11 @@ export class WishlistStore {
   }
 
   @computed
-  get hasItem() {
+  get hasItems() {
     return this.items.length > 0;
+  }
+
+  hasItem(id: string) {
+    return computed(() => this.items.findIndex(itemInList => itemInList.id === id) >= 0).get();
   }
 }

@@ -1,7 +1,6 @@
 import { rem } from "polished";
 import React from "react";
 import styled from "styled-components";
-import FavoriteIcon from "../FavoriteIcon/FavoriteIcon";
 import { useHistory } from "react-router-dom";
 import * as H from "history";
 import { IShopItem } from "../../io-ts-types";
@@ -10,6 +9,7 @@ import { getLocationFromShopItem } from "../../utils/navigation";
 import Typography from "../Typography/Typography";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 import Skeleton from "react-loading-skeleton";
+import ButtonAddToWishlist from "../ButtonAddToWishlist/ButtonAddToWishlist";
 
 const ActionBar = styled.div`
   position: absolute;
@@ -97,8 +97,9 @@ export const ItemCardSkeleton: React.FC = () => {
 
 const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
   const { images, name, description, condition, price } = item;
-  const firstImage = images[0];
   const history = useHistory();
+
+  const firstImage = images[0];
 
   return (
     <CardContainer>
@@ -119,7 +120,7 @@ const ItemCard: React.FC<IProps> = ({ item, ...other }) => {
           </ItemFooter>
         </CardDetailContainer>
         <ActionBar>
-          <FavoriteIcon />
+          <ButtonAddToWishlist item={item} />
         </ActionBar>
       </ButtonUnstyled>
     </CardContainer>
