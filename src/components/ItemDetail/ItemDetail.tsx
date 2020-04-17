@@ -16,7 +16,7 @@ type IItemDetailProps = {
 };
 
 const ItemDetailIcon = styled(Icon)`
-  margin-right: ${rem(8)};
+  margin: 0 ${rem(8)};
 `;
 
 const ItemMainInfo = styled(Typography)`
@@ -24,8 +24,8 @@ const ItemMainInfo = styled(Typography)`
   line-height: ${rem(28)};
   margin: ${rem(14)} 0;
 
-  ${ItemDetailIcon}:last-of-type {
-    margin-left: ${rem(8)};
+  ${ItemDetailIcon}:first-of-type {
+    margin-left: 0;
   }
 `;
 
@@ -49,10 +49,15 @@ const ButtonContainer = styled.div`
 
 const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
   const { name, createdAt, condition, price, description, userId } = item;
-  const { cartStore } = useStores();
+  const { cartStore, wishlistStore } = useStores();
+  const isWishlisted = wishlistStore.hasItem(item.id);
 
   const handleAddToCart = () => {
     cartStore.addItem(item);
+  };
+
+  const handleAddToWishlist = () => {
+    wishlistStore.toggle(item);
   };
 
   return (
@@ -64,6 +69,8 @@ const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
         <span>{createdAt?.toLocaleString()}</span>
         <ItemDetailIcon name="condition-label" />
         <span>{_.capitalize(condition)}</span>
+        <ItemDetailIcon name="heart-fill" />
+        <span>{item.wishlists}</span>
       </ItemMainInfo>
       <ItemDetailPrice as="div" fontWeight="bold" fontSize="large">
         {price}
@@ -73,7 +80,9 @@ const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
         <ButtonWithIcon onClick={handleAddToCart} iconName="add-shopping-cart">
           Add to cart
         </ButtonWithIcon>
-        <ButtonWithIcon iconName="heart">Add to wishlist</ButtonWithIcon>
+        <ButtonWithIcon onClick={handleAddToWishlist} iconName={isWishlisted ? "heart-fill" : "heart"}>
+          {isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+        </ButtonWithIcon>
       </ButtonContainer>
       <UserInfoCard userId={userId} />
     </DetailContainer>

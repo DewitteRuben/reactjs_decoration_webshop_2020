@@ -77,6 +77,10 @@ const shopItemDatabaseFields = t.interface({
   _id: t.string
 });
 
+const otherShopItemFields = t.interface({
+  wishlists: t.number
+});
+
 const mainShopItemFields = t.interface({
   category: t.string,
   subCategory: t.string,
@@ -119,6 +123,7 @@ export const IShopItemNotFoundErrorResponseRuntime = t.interface({
 });
 
 export const IShopItemRuntime = t.intersection([
+  otherShopItemFields,
   shopItemDatabaseFields,
   mainShopItemFields,
   shopItemImagesField,

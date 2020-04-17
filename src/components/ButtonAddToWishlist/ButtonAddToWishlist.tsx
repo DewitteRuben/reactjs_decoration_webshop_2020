@@ -6,7 +6,7 @@ import FavoriteIcon from "../FavoriteIcon/FavoriteIcon";
 import { useObserver } from "mobx-react";
 
 const handleToggleFavorite = (wishlistStore: WishlistStore) => (item: IShopItem) => (state: boolean) => {
-  wishlistStore.wishlist(item);
+  wishlistStore.toggle(item);
 };
 
 interface IButtonAddToWishlistProps {
