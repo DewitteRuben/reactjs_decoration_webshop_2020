@@ -33,3 +33,12 @@ export const dateReviver = function(key: any, value: any) {
   }
   return value;
 };
+
+export const parseQueryParams = (search: string): { [key: string]: string } => {
+  return search
+    .substring(1)
+    .split("&")
+    .map(value => value.split("="))
+    .map(value => ({ [value[0]]: value[1] }))
+    .reduce((acc, cur) => Object.assign(acc, cur), {});
+};
