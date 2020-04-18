@@ -6,6 +6,7 @@ import Card from "../Card/Card";
 import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
 import Typography from "../Typography/Typography";
 import { useStores } from "../../hooks/use-stores";
+import { observer } from "mobx-react";
 
 const handleOnDelete = (cartStore: CartStore) => (item: IShopItem) => {
   cartStore.removeItem(item._id);
@@ -21,8 +22,9 @@ const ShoppingCartContainer = styled.div`
   padding: 10px 20px;
 `;
 
-const CheckoutCart: React.FC = () => {
+const CheckoutCart: React.FC = observer(() => {
   const { cartStore } = useStores();
+
   return (
     <ShopItemContainer as="ul">
       {cartStore.items.map(item => (
@@ -35,6 +37,6 @@ const CheckoutCart: React.FC = () => {
       </ShoppingCartContainer>
     </ShopItemContainer>
   );
-};
+});
 
 export default CheckoutCart;
