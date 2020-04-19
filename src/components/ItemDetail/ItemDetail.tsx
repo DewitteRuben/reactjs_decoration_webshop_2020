@@ -11,6 +11,8 @@ import Typography from "../Typography/Typography";
 import UserInfoCard from "../UserInfoCard/UserInfoCard";
 import { observer } from "mobx-react";
 import moment from "moment";
+import ItemDetailAction from "../ItemDetailAction/ItemDetailAction";
+import { Spacer } from "../Layout";
 
 type IItemDetailProps = {
   item: IShopItem;
@@ -46,6 +48,12 @@ const ButtonContainer = styled.div`
   button {
     margin-right: 10px;
   }
+`;
+
+const ActionContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
 `;
 
 const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
@@ -85,7 +93,11 @@ const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
           {isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         </ButtonWithIcon>
       </ButtonContainer>
-      <UserInfoCard userId={userId} />
+      <ActionContainer>
+        <UserInfoCard userId={userId} />
+        <Spacer />
+        <ItemDetailAction userId={userId} />
+      </ActionContainer>
     </DetailContainer>
   );
 });

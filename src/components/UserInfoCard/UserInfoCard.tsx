@@ -11,10 +11,6 @@ import RouterLink from "../Link/RouterLink/RouterLink";
 import { getPartialUserById } from "../../api/api";
 
 const UserInfoCardContainer = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-
   padding: 15px;
   min-width: 150px;
   max-height: 96px;
@@ -54,7 +50,7 @@ interface IUserInfoCardProps extends React.ComponentPropsWithoutRef<"div"> {
   userId: string;
 }
 
-const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId }) => {
+const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId, ...other }) => {
   const [userData, setUserData] = React.useState<IUserStripped>();
 
   React.useEffect(() => {
@@ -70,7 +66,7 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId }) => {
   }, [userId]);
 
   return (
-    <UserInfoCardContainer>
+    <UserInfoCardContainer {...other}>
       <StyledRouterLink to={`/user/${userId}`}>
         <TopContainer>
           {userData ? (

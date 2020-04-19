@@ -20,6 +20,8 @@ import { ReactComponent as MessageIcon } from "../../icons/message.svg";
 import { ReactComponent as UserProfileIcon } from "../../icons/user-profile.svg";
 import { ReactComponent as WrenchIcon } from "../../icons/wrench.svg";
 import { ReactComponent as CogIcon } from "../../icons/cog.svg";
+import { ReactComponent as EditIcon } from "../../icons/edit.svg";
+import { ReactComponent as DeleteIcon } from "../../icons/delete.svg";
 
 export type IconTypes =
   | "heart"
@@ -41,7 +43,9 @@ export type IconTypes =
   | "message"
   | "user-profile"
   | "wrench"
-  | "cog";
+  | "cog"
+  | "edit"
+  | "delete";
 
 const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   heart: HeartIcon,
@@ -63,7 +67,9 @@ const iconMap: Record<IconTypes, FunctionComponent<SVGProps<SVGSVGElement>>> = {
   message: MessageIcon,
   "user-profile": UserProfileIcon,
   wrench: WrenchIcon,
-  cog: CogIcon
+  cog: CogIcon,
+  edit: EditIcon,
+  delete: DeleteIcon
 };
 
 interface IProps {
@@ -75,6 +81,8 @@ interface IStyledIconProps {
 }
 
 type CombinedProps = IProps & Omit<React.SVGProps<SVGSVGElement>, "ref">;
+
+export type IconProps = CombinedProps & IStyledIconProps;
 
 const ForwardedIcon = React.forwardRef(({ name, ...props }: CombinedProps, ref: React.Ref<SVGSVGElement>) => {
   const IconComponent = iconMap[name];
