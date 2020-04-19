@@ -8,6 +8,8 @@ import { useStores } from "../../hooks/use-stores";
 import _ from "lodash";
 import { serializeFormData } from "../../utils/forms";
 import Typography from "../Typography/Typography";
+import { useToasts } from "react-toast-notifications";
+import { getSignupErrorMessage, Success } from "../../store/FirebaseStore";
 
 const StyledInput = styled(TextInput)``;
 
@@ -24,19 +26,6 @@ const InputContainer = styled.div`
   }
 `;
 
-const VerticalRule = styled.div`
-  display: inline-block;
-  border-left: 1px solid ${props => props.theme.darkGray};
-  height: 140px;
-  position: absolute;
-  top: 27px;
-  left: -23px;
-`;
-
-const VerticalRuleContainer = styled.div`
-  position: relative;
-`;
-
 const Row = styled.div`
   display: flex;
   ${StyledInput} {
@@ -49,6 +38,7 @@ const RegistrationForm: React.FC = () => {
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [emailInUse, setEmailInUse] = React.useState(false);
+  const { addToast } = useToasts();
 
   React.useEffect(() => {
     if (isValidEmail(emailAddress)) {
@@ -81,7 +71,16 @@ const RegistrationForm: React.FC = () => {
     const serialized = serializeFormData<IRegistrationForm>(event.currentTarget);
     const { username, password, emailAddress } = serialized;
     if (username && password && emailAddress) {
-      await firebaseStore.createUser(username, emailAddress, password);
+      try {
+        await firebaseStore.createUser(username, emailAddress, password);
+        addToast(Success.SIGNUP_SUCCESS, { appearance: "success" });
+      } catch (error) {
+        if (error.code) {
+          addToast(getSignupErrorMessage(error.code), { appearance: "error" });
+        } else {
+          addToast(getSignupErrorMessage(error.message), { appearance: "error" });
+        }
+      }
     }
   };
 

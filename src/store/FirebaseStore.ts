@@ -51,6 +51,7 @@ export enum Information {
 export enum Success {
   LOGOUT_SUCCESS = "Successfully logged out.",
   LOGIN_SUCCESS = "Sucessfully logged in.",
+  SIGNUP_SUCCESS = "Successfully created an account.",
   PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
 }
 
@@ -60,13 +61,25 @@ enum AuthErrorCode {
 
 const loginErrorMessageMap: Record<LoginErrorCode, string> = {
   [LoginErrorCode.NOT_FOUND]: "No user was found that matches these credentials.",
-  [LoginErrorCode.INVALID_EMAIL]: "The email address you entered is invalid.",
+  [LoginErrorCode.INVALID_EMAIL]: "The email address you provided is invalid.",
   [LoginErrorCode.WRONG_PASSWORD]: "The provided password is invalid.",
   [LoginErrorCode.USER_DISABLED]: "This user account has been disabled."
 };
 
+const registerErrorMessageMap: Record<SignupErrorCode, string> = {
+  [SignupErrorCode.EMAIL_IN_USE]: "The email address you tried to sign up for is already in use.",
+  [SignupErrorCode.INVALID_EMAIL]: "The email address you provided is invalid.",
+  [SignupErrorCode.NOT_ALLOWED]: "You are not allowed to create an account.",
+  [SignupErrorCode.WEAK_PASSWORD]:
+    "Weak password, the password must be at least 8 characters long, have a special character and a number."
+};
+
 export const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
   return loginErrorMessageMap[errorCode];
+};
+
+export const getSignupErrorMessage = (errorCode: SignupErrorCode) => {
+  return registerErrorMessageMap[errorCode];
 };
 
 interface IFirebaseUser {
