@@ -14,6 +14,10 @@ const sortByNewest = (arr: IShopItem[]) => {
   return _.orderBy(arr, ["updatedAt"], "asc");
 };
 
+const sortByPopularity = (arr: IShopItem[]) => {
+  return _.orderBy(arr, ["wishlists"], "desc");
+};
+
 type IItemSortMap = {
   [key in SortTypes]?: (arr: IShopItem[]) => IShopItem[];
 };
@@ -21,7 +25,8 @@ type IItemSortMap = {
 const sortItemsMap: IItemSortMap = {
   [SortTypes.HIGHEST_PRICE]: sortByPriceDesc,
   [SortTypes.LOWEST_PRICE]: sortByPriceAsc,
-  [SortTypes.NEWEST]: sortByNewest
+  [SortTypes.NEWEST]: sortByNewest,
+  [SortTypes.POPULAR]: sortByPopularity
 };
 
 const getSortedItems = (key: SortTypes, arr: IShopItem[]): IShopItem[] => {
