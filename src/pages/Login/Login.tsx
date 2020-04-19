@@ -14,6 +14,11 @@ const LoginPageContainer = styled(Container)`
   flex-wrap: wrap;
 `;
 
+const VerticalRule = styled.div`
+  display: inline-block;
+  border-left: 1px solid ${props => props.theme.darkGray};
+`;
+
 const Login = observer(() => {
   const { firebaseStore } = useStores();
 
@@ -24,6 +29,7 @@ const Login = observer(() => {
   return (
     <LoginPageContainer>
       <LoginForm />
+      <VerticalRule />
       <RegistrationForm />
     </LoginPageContainer>
   );

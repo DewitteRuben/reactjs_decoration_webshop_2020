@@ -13,6 +13,7 @@ import Profile from "./pages/Profile/Profile";
 import NewItem from "./pages/NewItem/NewItem";
 import User from "./pages/User/User";
 import Checkout from "./pages/Checkout/Checkout";
+import { ToastProvider } from "react-toast-notifications";
 
 onlyFocusOnTab();
 
@@ -20,49 +21,51 @@ function App() {
   return (
     <Router>
       <ThemeProvider theme={themes.primary}>
-        <Header />
-        <Navbar />
-        <Switch>
-          <Route exact path="/">
-            <Redirect to="/decoration" />
-          </Route>
+        <ToastProvider placement="top-center" autoDismiss>
+          <Header />
+          <Navbar />
+          <Switch>
+            <Route exact path="/">
+              <Redirect to="/decoration" />
+            </Route>
 
-          <Route exact path="/new">
-            <NewItem />
-          </Route>
+            <Route exact path="/new">
+              <NewItem />
+            </Route>
 
-          <Route exact path="/profile">
-            <Profile />
-          </Route>
+            <Route exact path="/profile">
+              <Profile />
+            </Route>
 
-          <Route exact path="/login">
-            <Login />
-          </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
 
-          <Route exact path="/user/:id">
-            <User />
-          </Route>
+            <Route exact path="/user/:id">
+              <User />
+            </Route>
 
-          <Route exact path="/checkout">
-            <Checkout />
-          </Route>
+            <Route exact path="/checkout">
+              <Checkout />
+            </Route>
 
-          {/* Detail Route */}
-          <Route path="/:category/:subCategory/:itemCategory/:specificCategory/detail/:id">
-            <Container>
-              <Detail />
-            </Container>
-          </Route>
+            {/* Detail Route */}
+            <Route path="/:category/:subCategory/:itemCategory/:specificCategory/detail/:id">
+              <Container>
+                <Detail />
+              </Container>
+            </Route>
 
-          {/* Feed Route */}
-          <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
-            <Main />
-          </Route>
+            {/* Feed Route */}
+            <Route path="/:category/:subCategory?/:itemCategory?/:specificCategory?">
+              <Main />
+            </Route>
 
-          <Route path="*">
-            <Redirect to="/decoration" />
-          </Route>
-        </Switch>
+            <Route path="*">
+              <Redirect to="/decoration" />
+            </Route>
+          </Switch>
+        </ToastProvider>
       </ThemeProvider>
     </Router>
   );

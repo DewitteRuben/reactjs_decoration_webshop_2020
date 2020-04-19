@@ -16,7 +16,7 @@ const StyledCheckbox = styled(Checkbox)``;
 const InputContainer = styled.div`
   margin-bottom: 16px;
   ${StyledInput} {
-    margin-top: 15px;
+    margin-top: 16px;
   }
 
   ${StyledCheckbox} {
@@ -91,49 +91,46 @@ const RegistrationForm: React.FC = () => {
         No account? Register now
       </Typography>
       <InputContainer>
-        <VerticalRuleContainer>
-          <VerticalRule />
-          <Row>
-            <StyledInput required name="username" label="Username" />
-          </Row>
-          <Row>
-            <StyledInput
-              onChangeText={onEmailAddressChange}
-              type="text" // type text to avoid email trimming bug in CTRL+backspace https://github.com/facebook/react/issues/11881
-              onValidate={handleOnValidateEmail}
-              errorMessage={emailInUse ? "This email address is already in use." : "Invalid email address."}
-              name="emailAddress"
-              required
-              label="Email Address"
-            />
-            <StyledInput
-              onValidate={validateEqualValue(emailAddress)}
-              errorMessage="This email address must match the previous field."
-              required
-              label="Confirm Email Address"
-            />
-          </Row>
-          <Row>
-            <StyledInput
-              required
-              errorMessage="The password must be at least 8 characters long, have a special character and a number."
-              onChangeText={onPasswordChange}
-              name="password"
-              onValidate={validatePassword}
-              label="Password"
-              minLength={8}
-              maxLength={30}
-              type="password"
-            />
-            <StyledInput
-              required
-              onValidate={validateEqualValue(password)}
-              errorMessage="This password must match the previous field."
-              label="Confirm Password"
-              type="password"
-            />
-          </Row>
-        </VerticalRuleContainer>
+        <Row>
+          <StyledInput required name="username" label="Username" />
+        </Row>
+        <Row>
+          <StyledInput
+            onChangeText={onEmailAddressChange}
+            type="text" // type text to avoid email trimming bug in CTRL+backspace https://github.com/facebook/react/issues/11881
+            onValidate={handleOnValidateEmail}
+            errorMessage={emailInUse ? "This email address is already in use." : "Invalid email address."}
+            name="emailAddress"
+            required
+            label="Email Address"
+          />
+          <StyledInput
+            onValidate={validateEqualValue(emailAddress)}
+            errorMessage="This email address must match the previous field."
+            required
+            label="Confirm Email Address"
+          />
+        </Row>
+        <Row>
+          <StyledInput
+            required
+            errorMessage="The password must be at least 8 characters long, have a special character and a number."
+            onChangeText={onPasswordChange}
+            name="password"
+            onValidate={validatePassword}
+            label="Password"
+            minLength={8}
+            maxLength={30}
+            type="password"
+          />
+          <StyledInput
+            required
+            onValidate={validateEqualValue(password)}
+            errorMessage="This password must match the previous field."
+            label="Confirm Password"
+            type="password"
+          />
+        </Row>
         <Row>
           <StyledCheckbox required name="terms">
             I have read, understood and agreed to the <u>Terms of Use</u> and the <u>Privacy Policy</u>.

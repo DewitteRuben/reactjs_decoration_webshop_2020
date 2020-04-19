@@ -18,6 +18,8 @@ import _ from "lodash";
 import { useStores } from "../../hooks/use-stores";
 import moment from "moment";
 import ButtonFileInput from "../ButtonFileInput/ButtonFileInput";
+import { useToasts } from "react-toast-notifications";
+import { Information, Success } from "../../store/FirebaseStore";
 
 interface IUserActionCardProps {
   user: Omit<firebase.User, "phoneNumber" | "photoURL"> & Partial<IUser>;
@@ -51,10 +53,22 @@ interface IUserProfileForm {
   photoURL: File[];
 }
 
-const UserActionCard: React.FC<IUserActionCardProps> = ({ user }) => {
+const keyLabelMap: Record<string, string> = {
+  username: "Username",
+  firstName: "First name",
+  lastName: "Last name",
+  gender: "Gender",
+  birthdate: "Birth date",
+  phoneNumber: "Phone number",
+  address: "Address information",
+  photoURL: "Profile picture"
+};
+
+const ProfileUserDataForm: React.FC<IUserActionCardProps> = ({ user }) => {
   const { username, emailAddress, firstName, lastName, gender, birthdate, phoneNumber, address, photoURL } = user;
   const [imgPreviewData, setImgPreviewData] = React.useState("");
   const { firebaseStore } = useStores();
+  const { addToast } = useToasts();
 
   const initialData = _.mapValues(
     {
@@ -64,7 +78,7 @@ const UserActionCard: React.FC<IUserActionCardProps> = ({ user }) => {
       gender,
       birthdate,
       phoneNumber,
-      photoURL: _.filter([photoURL], url => url),
+      photoURL: [],
       address: _.mapValues(
         {
           street: address?.street,
@@ -89,12 +103,25 @@ const UserActionCard: React.FC<IUserActionCardProps> = ({ user }) => {
     const nestedAddressFormData = { ...rest, address: { street, postalCode, city, country } };
 
     const diff = deepDiffObj(initialDataRef.current, nestedAddressFormData);
-    if (diff.photoURL) {
+    if (diff.photoURL && diff.photoURL.length > 0) {
       const uploadedUrls = await firebaseStore.uploadFiles(diff.photoURL);
       diff.photoURL = uploadedUrls;
     }
 
-    await firebaseStore.updateUserData(diff);
+    if (_.isEmpty(diff)) {
+      return addToast(Information.PROFILE_NO_CHANGES, { appearance: "info" });
+    }
+
+    try {
+      const items = Object.keys(diff).map(item => keyLabelMap[item]);
+      addToast(`${Information.PROFILE_PROCESSING_CHANGES} ${items.join(",")}`, { appearance: "info" });
+      await firebaseStore.updateUserData(diff);
+      addToast(Success.PROFILE_UPDATE_SUCCESS, { appearance: "success" });
+
+      initialDataRef.current = { ...initialDataRef.current, ...diff };
+    } catch (error) {
+      addToast(error.message, { appearance: "error" });
+    }
   };
 
   return (
@@ -213,4 +240,4 @@ const UserActionCard: React.FC<IUserActionCardProps> = ({ user }) => {
   );
 };
 
-export default UserActionCard;
+export default ProfileUserDataForm;

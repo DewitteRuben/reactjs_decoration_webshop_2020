@@ -43,9 +43,30 @@ enum LoginErrorCode {
   WRONG_PASSWORD = "auth/wrong-password"
 }
 
+export enum Information {
+  PROFILE_PROCESSING_CHANGES = "Please wait while we update the following item(s):",
+  PROFILE_NO_CHANGES = "No changes were made to your profile."
+}
+
+export enum Success {
+  LOGIN_SUCCESS = "Sucessfully logged in.",
+  PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
+}
+
 enum AuthErrorCode {
   NOT_LOGGED_IN = "auth/not-logged-in"
 }
+
+const loginErrorMessageMap: Record<LoginErrorCode, string> = {
+  [LoginErrorCode.NOT_FOUND]: "No user was found that matches these credentials.",
+  [LoginErrorCode.INVALID_EMAIL]: "The email address you entered is invalid.",
+  [LoginErrorCode.WRONG_PASSWORD]: "The provided password is invalid.",
+  [LoginErrorCode.USER_DISABLED]: "This user account has been disabled."
+};
+
+export const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
+  return loginErrorMessageMap[errorCode];
+};
 
 interface IFirebaseUser {
   user: firebase.User | null;
@@ -84,7 +105,14 @@ class FirebaseStore {
 
   async updateUserData(data: Partial<INewUser>) {
     const token = await this.getJWTToken();
-    return updateUser(data, token);
+    await updateUser(data, token);
+
+    // Update photoURL of image in state if the user uploaded a new one.
+    if (data?.photoURL && data?.photoURL.length > 0) {
+      if (this.user.data) {
+        this.user.data.photoURL = data.photoURL[0];
+      }
+    }
   }
 
   async createUser(username: string, emailAddress: string, password: string) {
