@@ -49,6 +49,7 @@ export enum Information {
 }
 
 export enum Success {
+  LOGOUT_SUCCESS = "Successfully logged out.",
   LOGIN_SUCCESS = "Sucessfully logged in.",
   PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
 }

@@ -10,6 +10,8 @@ import Dropdown, { closeDropdownCurry } from "../Dropdown/Dropdown";
 import ButtonUnstyled from "../ButtonUnstyled/ButtonUnstyled";
 import { useHistory } from "react-router-dom";
 import Skeleton from "react-loading-skeleton";
+import { useToasts } from "react-toast-notifications";
+import { Success } from "../../store/FirebaseStore";
 
 const DropdownContainer = styled.div`
   position: relative;
@@ -22,6 +24,7 @@ const StyledRouterLink = styled(RouterLink)`
 
 const LoginDropdown = observer(() => {
   const { firebaseStore } = useStores();
+  const { addToast } = useToasts();
   const history = useHistory();
 
   const [isVisible, setVisibility] = React.useState(false);
@@ -34,7 +37,16 @@ const LoginDropdown = observer(() => {
     setVisibility(prev => !prev);
   };
 
-  const handleLogout = closeDropdownCallback(() => firebaseStore.logout());
+  const handleLogout = closeDropdownCallback(async () => {
+    try {
+      await firebaseStore.logout();
+      history.push("/");
+      addToast(Success.LOGOUT_SUCCESS, { appearance: "success" });
+    } catch (error) {
+      addToast(error.message, { appearance: "error" });
+    }
+  });
+
   const handleProfileSettings = closeDropdownCallback(() => history.push("/profile"));
   const handleMyProfile = (userId: string) => closeDropdownCallback(() => history.push(`/user/${userId}`));
 
