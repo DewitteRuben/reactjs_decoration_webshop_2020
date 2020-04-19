@@ -10,6 +10,7 @@ import { useStores } from "../../hooks/use-stores";
 import Typography from "../Typography/Typography";
 import UserInfoCard from "../UserInfoCard/UserInfoCard";
 import { observer } from "mobx-react";
+import moment from "moment";
 
 type IItemDetailProps = {
   item: IShopItem;
@@ -66,10 +67,10 @@ const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
       <Typography fontSize="largest">{name}</Typography>
       <ItemMainInfo as="div" fontWeight="bold" fontSize="small" color="darkGray">
         <ItemDetailIcon name="clock" />
-        <span>{createdAt?.toLocaleString()}</span>
+        <span>{moment(createdAt).format("LLL")}</span>
         <ItemDetailIcon name="condition-label" />
         <span>{_.capitalize(condition)}</span>
-        <ItemDetailIcon name="heart-fill" />
+        <ItemDetailIcon name="heart" />
         <span>{item.wishlists}</span>
       </ItemMainInfo>
       <ItemDetailPrice as="div" fontWeight="bold" fontSize="large">
