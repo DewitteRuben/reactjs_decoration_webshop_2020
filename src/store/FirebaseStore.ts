@@ -1,5 +1,5 @@
 import { isRight } from "fp-ts/lib/Either";
-import { IUserPartialRuntime, INewUser } from "./../io-ts-types/index";
+import { IUserPartialRuntime, INewUser, IShopItem } from "./../io-ts-types/index";
 import { dateReviver } from "./../utils/string";
 import { IUploadStatus } from "../utils/FirebaseUploadManager";
 import * as firebase from "firebase/app";
@@ -10,7 +10,13 @@ import "firebase/storage";
 
 import { observable, computed, flow, action } from "mobx";
 import FirebaseUploadManager from "../utils/FirebaseUploadManager";
-import { addUser, getUserByToken, updateUser, getUserById as apiGetUserById } from "../api/api";
+import {
+  addUser,
+  getUserByToken,
+  updateUser,
+  getUserById as apiGetUserById,
+  updateItemById as apiUpdateItemById
+} from "../api/api";
 import { IUser } from "../io-ts-types";
 import _ from "lodash";
 
@@ -45,13 +51,15 @@ enum LoginErrorCode {
 
 export enum Information {
   PROFILE_PROCESSING_CHANGES = "Please wait while we update the following item(s):",
-  PROFILE_NO_CHANGES = "No changes were made to your profile."
+  PROFILE_NO_CHANGES = "No changes were made to your profile.",
+  ITEM_NO_CHANGES = "No changes were made to the shopitem."
 }
 
 export enum Success {
   LOGOUT_SUCCESS = "Successfully logged out.",
   LOGIN_SUCCESS = "Sucessfully logged in.",
   SIGNUP_SUCCESS = "Successfully created an account.",
+  ITEM_UPDATE_SUCCESS = "Successfully updated the item",
   PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
 }
 
@@ -187,6 +195,11 @@ class FirebaseStore {
     }
 
     return this.currentUser.uid;
+  }
+
+  async updateItemById(id: string, updates: Partial<IShopItem>) {
+    const token = await this.getJWTToken();
+    return apiUpdateItemById(token, id, updates);
   }
 
   async doesUserExist(emailAddress: string) {

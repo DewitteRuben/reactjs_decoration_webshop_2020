@@ -1,4 +1,4 @@
-import { INewShopItem, INewUser } from "./../io-ts-types/index";
+import { INewShopItem, INewUser, IShopItem } from "./../io-ts-types/index";
 import { ICategoryQuery } from "../store/ItemStore";
 import _ from "lodash";
 const baseURL = process.env["REACT_APP_BASE_URL"] || "http://localhost:3000/api";
@@ -93,6 +93,11 @@ const updateWishlistCount = (shopItemId: string, decr?: boolean) => {
   return request("shopitem", "PUT", filters);
 };
 
+const updateItemById = (token: string, id: string, updates: Partial<IShopItem>) => {
+  const filters: IParams[] = [{ key: "id", value: id }];
+  return request("shopitem", "PUT", filters, updates, getAuthorizationOptions(token));
+};
+
 export {
   getItemByCategory,
   getItemsWithFilters,
@@ -103,5 +108,6 @@ export {
   getUserById,
   updateUser,
   getPartialUserById,
-  updateWishlistCount
+  updateWishlistCount,
+  updateItemById
 };

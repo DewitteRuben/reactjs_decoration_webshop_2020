@@ -5,6 +5,7 @@ import IconLink from "../IconLink/IconLink";
 import { useStores } from "../../hooks/use-stores";
 import Skeleton from "react-loading-skeleton";
 import { observer } from "mobx-react";
+import { Link } from "react-router-dom";
 
 const UserInfoCardContainer = styled.div`
   padding: 15px;
@@ -20,9 +21,10 @@ const UserInfoCardContainer = styled.div`
 
 interface IItemDetailActionProps {
   userId: string;
+  itemId: string;
 }
 
-const ItemDetailAction: React.FC<IItemDetailActionProps> = observer(({ userId }) => {
+const ItemDetailAction: React.FC<IItemDetailActionProps> = observer(({ userId, itemId }) => {
   const { firebaseStore } = useStores();
   const loaded = firebaseStore.authStatus.loaded;
   const isLoggedIn = firebaseStore.isLoggedIn;
@@ -36,7 +38,7 @@ const ItemDetailAction: React.FC<IItemDetailActionProps> = observer(({ userId })
     <UserInfoCardContainer>
       {loaded ? (
         <>
-          <IconLink>
+          <IconLink to={`/edit/${itemId}`} as={Link}>
             <IconWithLabel name="edit">Edit</IconWithLabel>
           </IconLink>
           <IconLink>
