@@ -1,10 +1,19 @@
-import styled, { css } from "styled-components";
+import styled, { css, FlattenSimpleInterpolation } from "styled-components";
 import { rem } from "polished";
 
 export type FontWeightTypes = "normal" | "semibold" | "bold" | "extrabold";
 export type FontSizes = "smallest" | "small" | "normal" | "large" | "x2" | "x3" | "larger" | "largest";
 export type Colors = "white" | "gray" | "black" | "darkGray" | "opacityGray" | "red";
 export type AlignmentTypes = "inherit" | "left" | "center" | "right" | "justify";
+export type Types = "title";
+
+const titleStyle = css`
+  margin-bottom: 25px;
+`;
+
+const typeMap: Record<Types, FlattenSimpleInterpolation> = {
+  title: titleStyle
+};
 
 const fontWeightMap: Record<FontWeightTypes, number> = {
   normal: 400,
@@ -49,6 +58,7 @@ export interface ITypographyProps {
   color?: Colors;
   align?: AlignmentTypes;
   fullWidth?: boolean;
+  type?: Types;
 }
 
 const fullWidth = css`
@@ -59,6 +69,8 @@ const fullWidth = css`
 const Typography = styled.span<ITypographyProps>`
   padding: 0;
   margin: 0;
+
+  ${props => props.type && typeMap[props.type]}
 
   color: ${props => (props.color ? getColors(props.color) : getColors("black"))};
   font-size: ${props => (props.fontSize ? getFontSize(props.fontSize) : getFontSize("normal"))};
