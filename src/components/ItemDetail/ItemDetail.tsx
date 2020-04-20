@@ -13,9 +13,11 @@ import { observer } from "mobx-react";
 import moment from "moment";
 import ItemDetailAction from "../ItemDetailAction/ItemDetailAction";
 import { Spacer } from "../Layout";
+import Skeleton from "react-loading-skeleton";
 
 type IItemDetailProps = {
-  item: IShopItem;
+  item?: IShopItem;
+  loading?: boolean;
 };
 
 const ItemDetailIcon = styled(Icon)`
@@ -56,48 +58,56 @@ const ActionContainer = styled.div`
   right: 0;
 `;
 
-const ItemDetail: React.FC<IItemDetailProps> = observer(({ item }) => {
-  const { name, createdAt, condition, price, description, userId } = item;
+const ItemDetail: React.FC<IItemDetailProps> = observer(({ item, loading }) => {
+  const { name, createdAt, condition, price, description, userId, id: itemId, wishlists } = item || {};
   const { cartStore, wishlistStore } = useStores();
-  const isWishlisted = wishlistStore.hasItem(item.id);
+
+  const isLoading = !item || loading;
+  const isWishlisted = itemId ? wishlistStore.hasItem(itemId) : false;
 
   const handleAddToCart = () => {
-    cartStore.addItem(item);
+    if (item) {
+      cartStore.addItem(item);
+    }
   };
 
   const handleAddToWishlist = () => {
-    wishlistStore.toggle(item);
+    if (item) {
+      wishlistStore.toggle(item);
+    }
   };
 
   return (
     <DetailContainer>
       <CategoryBreadcrumbs hideCurrent />
-      <Typography fontSize="largest">{name}</Typography>
+      <Typography fontSize="largest">{isLoading ? <Skeleton width={180} /> : name}</Typography>
       <ItemMainInfo as="div" fontWeight="bold" fontSize="small" color="darkGray">
         <ItemDetailIcon name="clock" />
-        <span>{moment(createdAt).format("LLL")}</span>
+        <span>{isLoading ? <Skeleton width={150} height={20} /> : moment(createdAt).format("LLL")}</span>
         <ItemDetailIcon name="condition-label" />
-        <span>{_.capitalize(condition)}</span>
+        <span>{isLoading ? <Skeleton width={35} height={20} /> : _.capitalize(condition)}</span>
         <ItemDetailIcon name="heart" />
-        <span>{item.wishlists}</span>
+        <span>{isLoading ? <Skeleton width={10} height={20} /> : wishlists}</span>
       </ItemMainInfo>
       <ItemDetailPrice as="div" fontWeight="bold" fontSize="large">
-        {price}
+        {isLoading ? <Skeleton width={50} /> : price}
       </ItemDetailPrice>
-      <Typography fontSize="large">{description}</Typography>
+      <Typography fontSize="large">{isLoading ? <Skeleton /> : _.truncate(description, { length: 500 })}</Typography>
       <ButtonContainer>
         <ButtonWithIcon onClick={handleAddToCart} iconName="add-shopping-cart">
-          Add to cart
+          {"Add to cart"}
         </ButtonWithIcon>
         <ButtonWithIcon onClick={handleAddToWishlist} iconName={isWishlisted ? "heart-fill" : "heart"}>
           {isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
         </ButtonWithIcon>
       </ButtonContainer>
-      <ActionContainer>
-        <UserInfoCard userId={userId} />
-        <Spacer />
-        <ItemDetailAction userId={userId} />
-      </ActionContainer>
+      {userId && (
+        <ActionContainer>
+          <UserInfoCard userId={userId} />
+          <Spacer />
+          {itemId && <ItemDetailAction itemId={itemId} userId={userId} />}
+        </ActionContainer>
+      )}
     </DetailContainer>
   );
 });

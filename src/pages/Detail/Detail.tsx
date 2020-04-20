@@ -6,6 +6,7 @@ import ItemDetail from "../../components/ItemDetail/ItemDetail";
 import Carousel from "../../components/Carousel/Carousel";
 import styled from "styled-components";
 import { rem } from "polished";
+import Container from "../../components/Container/Container";
 
 const DetailContainer = styled.div`
   display: flex;
@@ -19,24 +20,25 @@ const Detail: React.FC = observer(() => {
   const { detailStore } = useStores();
   const status = detailStore.status.state;
   const error = detailStore.status.error;
+  const isLoading = status === "pending" || status === "inactive";
 
   React.useEffect(() => {
-    detailStore.fetchItem(id as string);
+    if (id) {
+      detailStore.fetchItem(id);
+    }
   }, [detailStore, id]);
 
   if (status === "error") {
     return <p>{error.message}</p>;
   }
 
-  if (status === "pending" || status === "inactive") {
-    return <p>Loading...</p>;
-  }
-
   return (
-    <DetailContainer>
-      {detailStore.item && <Carousel images={detailStore.item.images} />}
-      {detailStore.item && <ItemDetail item={detailStore.item} />}
-    </DetailContainer>
+    <Container>
+      <DetailContainer>
+        <Carousel loading={isLoading} images={detailStore.item?.images} />
+        <ItemDetail loading={isLoading} item={detailStore.item} />
+      </DetailContainer>
+    </Container>
   );
 });
 

@@ -5,10 +5,12 @@ import { CarouselProvider, Slider, Slide, ImageWithZoom, Dot, CarouselContext } 
 import "pure-react-carousel/dist/react-carousel.es.css";
 import Icon from "../Icon/Icon";
 import { IShopItemImage } from "../../io-ts-types";
+import Skeleton from "react-loading-skeleton";
 
 interface ICarouselProps {
-  images: IShopItemImage[];
+  images?: IShopItemImage[];
   step?: number;
+  loading?: boolean;
 }
 
 const ItemImageContainer = styled.div`
@@ -145,25 +147,35 @@ const CarouselControls: React.FC<ICarouselControlsProps> = ({ maxLength, step = 
   );
 };
 
-const ItemImages: React.FC<ICarouselProps> = ({ images, step }) => {
+const ItemImages: React.FC<ICarouselProps> = ({ images, step, loading }) => {
+  const isLoading = loading || !images;
+
   return (
     <ItemImageContainer>
-      <CarouselProvider naturalSlideWidth={702} naturalSlideHeight={500} totalSlides={images.length}>
+      <CarouselProvider naturalSlideWidth={702} naturalSlideHeight={500} totalSlides={images?.length || 3}>
         <SliderContainer>
           <Slider>
-            {images.map((image: IShopItemImage, index: number) => (
-              <Slide index={index} key={`image-${index}`}>
-                <MainImage src={image.full} />
-              </Slide>
-            ))}
+            {isLoading ? (
+              <Skeleton width={702} height={500} />
+            ) : (
+              images?.map((image: IShopItemImage, index: number) => (
+                <Slide index={index} key={`image-${index}`}>
+                  <MainImage src={image.full} />
+                </Slide>
+              ))
+            )}
           </Slider>
-          <CarouselControls step={step} maxLength={images.length} />
+          <CarouselControls step={step} maxLength={images?.length || 3} />
         </SliderContainer>
-        {images.map((image: IShopItemImage, index: number) => (
-          <ImageDot key={`image-${index}`} slide={index}>
-            <OtherImage src={image.thumb} />
-          </ImageDot>
-        ))}
+        {isLoading ? (
+          <Skeleton width={124} height={128} />
+        ) : (
+          images?.map((image: IShopItemImage, index: number) => (
+            <ImageDot key={`image-${index}`} slide={index}>
+              <OtherImage src={image.thumb} />
+            </ImageDot>
+          ))
+        )}
       </CarouselProvider>
     </ItemImageContainer>
   );
