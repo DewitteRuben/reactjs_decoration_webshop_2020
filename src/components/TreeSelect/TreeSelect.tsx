@@ -60,12 +60,20 @@ interface ITreeNode {
 
 interface ITreeSelectProps extends Omit<React.ComponentPropsWithoutRef<"input">, "onChange"> {
   rootNode: ITreeNode;
+  defaultValue?: string;
   delimiter?: string;
   onChange?: (selected: ITreeNode[]) => void;
 }
 
 const changeVisibility = (setVisibility: React.Dispatch<React.SetStateAction<boolean>>, visible: boolean) => () => {
   setVisibility(visible);
+};
+
+const traverseInOrder = (node: ITreeNode, cb: (node: ITreeNode) => void) => {
+  if (!node) return;
+
+  cb(node);
+  node.nodes?.forEach(node => traverseInOrder(node, cb));
 };
 
 const TreeSelect: React.FC<ITreeSelectProps> = ({
@@ -76,6 +84,7 @@ const TreeSelect: React.FC<ITreeSelectProps> = ({
   onChange,
   required,
   placeholder,
+  defaultValue,
   ...props
 }) => {
   const [prevNode, setPrevNode] = React.useState<ITreeNode[]>([]);
@@ -86,6 +95,22 @@ const TreeSelect: React.FC<ITreeSelectProps> = ({
   const showDropdown = changeVisibility(setVisibility, true);
 
   const containerRef = useClickOutside<HTMLDivElement>(hideDropdown);
+
+  React.useEffect(() => {
+    if (defaultValue) {
+      const categories = defaultValue.split(",");
+      const nodes: ITreeNode[] = [];
+      traverseInOrder(rootNode, (node: ITreeNode) => {
+        if (categories.includes(node.key)) {
+          nodes.push(node);
+        }
+      });
+
+      setPrevNode(nodes.slice(0, -2));
+      setCurrentNode(nodes[nodes.length - 2]);
+      setSelectedValues(nodes.slice());
+    }
+  }, [defaultValue, rootNode]);
 
   const renderNext = (key: string, name: string) => () => {
     const next = _.filter(currentNode?.nodes, { key })[0];
