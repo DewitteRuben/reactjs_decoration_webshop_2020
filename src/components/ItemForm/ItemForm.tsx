@@ -2,13 +2,9 @@ import React from "react";
 import styled from "styled-components";
 import MediaSelect from "../MediaSelect/MediaSelect";
 import Button from "../Button/Button";
-import { serializeFormData } from "../../utils/forms";
-import { useStores } from "../../hooks/use-stores";
 import data from "../TreeSelect/data.json";
-import { Condition, INewShopItem } from "../../io-ts-types";
-import { addItem } from "../../api/api";
-import { parseCategoryString } from "../../utils/string";
-import { useHistory } from "react-router-dom";
+import { Condition } from "../../io-ts-types";
+
 import {
   InputCard,
   InputContainer,
@@ -20,21 +16,24 @@ import {
   FormSelect,
   FormButtonContainer
 } from "../FormBuilderComponents";
-import Typography from "../Typography/Typography";
 
-const NewItemContainer = styled.form`
+const ItemFormContainer = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
-
-  width: 1140px;
 `;
 
-const Title = styled(Typography)`
-  margin-bottom: 20px;
-`;
+interface IItemFormProps {
+  name: string;
+  images: string[];
+  description: string;
+  categories: string;
+  condition: string;
+  price: number;
+  submitLabel: string;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
 
-interface INewItemForm {
+export interface IItemForm {
   name: string;
   images: File[];
   description: string;
@@ -43,56 +42,30 @@ interface INewItemForm {
   price: number;
 }
 
-const NewItemForm: React.FC = () => {
-  const { firebaseStore } = useStores();
-  const history = useHistory();
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const { name, images, description, categories, condition, price } = serializeFormData<INewItemForm>(event.currentTarget);
-    const token = await firebaseStore.getJWTToken();
-
-    // if not logged in (no token) go to login page
-    if (!token) {
-      history.push("/login");
-      return false;
-    }
-
-    if (images && name && categories && description && condition && price) {
-      const imageURLs = await firebaseStore.uploadFiles(images);
-      const parsedCondition: Condition = condition as Condition;
-      const namedCategories = parseCategoryString(categories);
-
-      const newShopitem: INewShopItem = {
-        condition: parsedCondition,
-        description,
-        name,
-        images: imageURLs,
-        price,
-        ...namedCategories
-      };
-
-      await addItem(newShopitem, token);
-    }
-  };
-
+const ItemForm: React.FC<Partial<IItemFormProps>> = ({
+  name,
+  images,
+  description,
+  categories,
+  submitLabel,
+  condition,
+  price,
+  onSubmit
+}) => {
   const conditionValues = React.useMemo(() => Object.values(Condition), []);
 
   return (
-    <NewItemContainer onSubmit={handleSubmit}>
-      <Title fontSize="largest" fontWeight="bold" as="h2">
-        Sell an item
-      </Title>
+    <ItemFormContainer onSubmit={onSubmit}>
       <InputCard>
         <InputContainer>
           <InputLabel htmlFor="name" as="label" fontWeight="extrabold" fontSize="large">
             Title
           </InputLabel>
-          <FormInput required name="name" placeholder="For example 'Sturdy keramic vase'" id="name" />
+          <FormInput required name="name" defaultValue={name} placeholder="For example 'Sturdy keramic vase'" id="name" />
         </InputContainer>
       </InputCard>
       <InputCard>
-        <MediaSelect required name="images" />
+        <MediaSelect required name="images" defaultValue={images} />
       </InputCard>
       <InputCard>
         <InputContainer>
@@ -100,6 +73,7 @@ const NewItemForm: React.FC = () => {
             Description
           </InputLabel>
           <FormTextarea
+            defaultValue={description}
             placeholder="Describe the item you are selling"
             required
             name="description"
@@ -113,7 +87,14 @@ const NewItemForm: React.FC = () => {
           <InputLabel htmlFor="categories" as="label" fontWeight="extrabold" fontSize="large">
             Category
           </InputLabel>
-          <FormTreeSelect placeholder="Select a category" required id="category" name="categories" rootNode={data} />
+          <FormTreeSelect
+            defaultValue={categories}
+            placeholder="Select a category"
+            required
+            id="category"
+            name="categories"
+            rootNode={data}
+          />
         </InputContainer>
         <Seperator />
         <InputContainer>
@@ -121,6 +102,7 @@ const NewItemForm: React.FC = () => {
             Condition
           </InputLabel>
           <FormSelect
+            defaultValue={condition}
             required
             id="condition"
             name="condition"
@@ -134,14 +116,22 @@ const NewItemForm: React.FC = () => {
           <InputLabel htmlFor="price" as="label" fontWeight="extrabold" fontSize="large">
             Price
           </InputLabel>
-          <FormInput placeholder="Enter a price" required step="0.01" type="number" name="price" id="price" />
+          <FormInput
+            defaultValue={price}
+            placeholder="Enter a price"
+            required
+            step="0.01"
+            type="number"
+            name="price"
+            id="price"
+          />
         </InputContainer>
       </InputCard>
       <FormButtonContainer>
-        <Button type="submit">Save item</Button>
+        <Button type="submit">{submitLabel}</Button>
       </FormButtonContainer>
-    </NewItemContainer>
+    </ItemFormContainer>
   );
 };
 
-export default NewItemForm;
+export default ItemForm;
