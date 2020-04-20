@@ -54,15 +54,21 @@ const UserInfoCard: React.FC<IUserInfoCardProps> = observer(({ userId, ...other 
   const [userData, setUserData] = React.useState<IUserStripped>();
 
   React.useEffect(() => {
+    let isCancelled = false;
+
     async function fetchUser() {
       const response = await getPartialUserById(userId);
       const data = await response.json();
-      if (isRight(IUserStrippedRuntime.decode(data))) {
+      if (isRight(IUserStrippedRuntime.decode(data)) && !isCancelled) {
         setUserData(data);
       }
     }
 
     fetchUser();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [userId]);
 
   return (
