@@ -42,8 +42,21 @@ const FileInput = styled.input`
   opacity: 0;
 `;
 
-const MediaSelect: React.FC<React.ComponentPropsWithRef<"input">> = React.forwardRef(({ ...props }, ref) => {
+type MediaSelectProps = {
+  defaultValue?: string[];
+} & Omit<React.ComponentPropsWithRef<"input">, "defaultValue">;
+
+const MediaSelect: React.FC<MediaSelectProps> = React.forwardRef(({ defaultValue, required, ...props }, ref) => {
   const [media, setMedia] = React.useState<IMediaItem[]>([]);
+  const [defaultImages, setDefaults] = React.useState<string[]>();
+
+  React.useEffect(() => {
+    if (defaultValue) {
+      setDefaults(defaultValue);
+      const parsedDefaultValue = defaultValue?.map(item => ({ name: item, src: item }));
+      setMedia(prev => _.merge(prev, parsedDefaultValue));
+    }
+  }, [defaultValue]);
 
   const onDrop = useCallback(files => {
     files.forEach((file: File) => {
@@ -66,6 +79,9 @@ const MediaSelect: React.FC<React.ComponentPropsWithRef<"input">> = React.forwar
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: "image/*" });
 
   const handleOnClose = (name: string) => {
+    if (defaultImages) {
+      setDefaults(prev => prev?.filter(src => src !== name));
+    }
     setMedia(prev => prev.filter(media => media.name !== name));
   };
 
@@ -75,7 +91,14 @@ const MediaSelect: React.FC<React.ComponentPropsWithRef<"input">> = React.forwar
   return (
     <MediaSelectContainer>
       <Dropzone {...getRootProps()}>
-        <FileInput data-included={includedFiles} ref={ref} {...getInputProps()} {...props} />
+        <FileInput
+          data-default={defaultImages}
+          data-included={includedFiles}
+          ref={ref}
+          {...getInputProps()}
+          required={(required && !defaultImages) || (required && defaultImages && defaultImages.length === 0)}
+          {...props}
+        />
         {isDragActive ? <p>Drop the files here ...</p> : <p>Drag and drop images here, or click to select files</p>}
       </Dropzone>
       <PreviewGrid>
