@@ -15,7 +15,8 @@ import {
   getUserByToken,
   updateUser,
   getUserById as apiGetUserById,
-  updateItemById as apiUpdateItemById
+  updateItemById as apiUpdateItemById,
+  deleteItemById as apideleteItemById
 } from "../api/api";
 import { IUser } from "../io-ts-types";
 import _ from "lodash";
@@ -52,14 +53,16 @@ enum LoginErrorCode {
 export enum Information {
   PROFILE_PROCESSING_CHANGES = "Please wait while we update the following item(s):",
   PROFILE_NO_CHANGES = "No changes were made to your profile.",
-  ITEM_NO_CHANGES = "No changes were made to the shopitem."
+  ITEM_NO_CHANGES = "No changes were made to the shopitem.",
+  ITEM_PROCESSING_DELETE = "Please wait while we attempt to remove the item..."
 }
 
 export enum Success {
   LOGOUT_SUCCESS = "Successfully logged out.",
   LOGIN_SUCCESS = "Sucessfully logged in.",
   SIGNUP_SUCCESS = "Successfully created an account.",
-  ITEM_UPDATE_SUCCESS = "Successfully updated the item",
+  ITEM_UPDATE_SUCCESS = "Successfully updated the item.",
+  ITEM_DELETE_SUCCESS = "Successfully deleted the item.",
   PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
 }
 
@@ -135,6 +138,11 @@ class FirebaseStore {
         this.user.data.photoURL = data.photoURL[0];
       }
     }
+  }
+
+  async deleteItemById(id: string) {
+    const token = await this.getJWTToken();
+    return apideleteItemById(token, id);
   }
 
   async createUser(username: string, emailAddress: string, password: string) {

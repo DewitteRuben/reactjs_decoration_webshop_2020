@@ -18,7 +18,7 @@ const getAuthorizationOptions = (token: string) => {
 
 const request = (
   endpoint: string,
-  method: "GET" | "POST" | "PUT" = "GET",
+  method: "GET" | "POST" | "PUT" | "DELETE" = "GET",
   params: IParams[] = [],
   data: object = {},
   options: RequestInit = {}
@@ -98,6 +98,11 @@ const updateItemById = (token: string, id: string, updates: Partial<IShopItem>) 
   return request("shopitem", "PUT", filters, updates, getAuthorizationOptions(token));
 };
 
+const deleteItemById = (token: string, id: string) => {
+  const filters: IParams[] = [{ key: "id", value: id }];
+  return request("shopitem", "DELETE", filters, undefined, getAuthorizationOptions(token));
+};
+
 export {
   getItemByCategory,
   getItemsWithFilters,
@@ -109,5 +114,6 @@ export {
   updateUser,
   getPartialUserById,
   updateWishlistCount,
-  updateItemById
+  updateItemById,
+  deleteItemById
 };
