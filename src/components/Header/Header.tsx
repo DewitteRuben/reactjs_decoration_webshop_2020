@@ -8,9 +8,9 @@ import HeaderIcons from "../HeaderIcons/HeaderIcons";
 
 const StyledHeader = styled(Container)`
   height: ${rem(95)};
-
   align-items: center;
   margin-top: 0;
+  margin-bottom: 0;
 `;
 
 const StyledTypography = styled(Typography)`
