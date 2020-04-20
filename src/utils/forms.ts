@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 interface IFormEntry {
-  [x: string]: FormDataEntryValue | boolean | number | File[] | Date;
+  [x: string]: FormDataEntryValue | boolean | number | File[] | Date | (string | File)[];
   [x: number]: FormDataEntryValue;
 }
 
@@ -9,11 +9,11 @@ const filterFileEntries = (input: HTMLInputElement) => {
   if (!input.files) return [];
 
   const files = Array.from(input.files);
-  const included = input.dataset.included?.split(",");
-  if (included) {
-    return files.filter(file => included.includes(file.name));
-  }
-  return files;
+  const included = input.dataset.included ? _.split(input.dataset.included, ",") : [];
+  const defaultImages = input.dataset.default ? _.split(input.dataset.default, ",") : [];
+  const filtered = files.filter(file => included?.includes(file.name));
+
+  return [...defaultImages, ...filtered];
 };
 
 const serializeFormData = <T extends {}>(form: HTMLFormElement): Partial<T> => {
