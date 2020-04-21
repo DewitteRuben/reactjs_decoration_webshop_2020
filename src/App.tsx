@@ -5,7 +5,6 @@ import Header from "./components/Header/Header";
 import Navbar from "./components/Navbar/Navbar";
 import themes from "./styles/theme";
 import Detail from "./pages/Detail/Detail";
-import Container from "./components/Container/Container";
 import { onlyFocusOnTab } from "./utils/accessibility";
 import Login from "./pages/Login/Login";
 import Main from "./pages/Main/Main";

@@ -4,7 +4,6 @@ import Typography from "../Typography/Typography";
 import { default as ReactModal } from "react-modal";
 import Button from "../Button/Button";
 import { Spacer } from "../Layout";
-import _ from "lodash";
 
 interface IModalProps {
   title: string;

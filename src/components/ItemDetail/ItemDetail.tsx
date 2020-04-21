@@ -14,7 +14,6 @@ import moment from "moment";
 import ItemDetailAction from "../ItemDetailAction/ItemDetailAction";
 import { Spacer } from "../Layout";
 import Skeleton from "react-loading-skeleton";
-import ConfirmationModal from "../ConfirmationModal/ConfirmationModal";
 
 type IItemDetailProps = {
   item?: IShopItem;
