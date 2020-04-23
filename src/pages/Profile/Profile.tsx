@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import { observer } from "mobx-react";
 import DropdownItem from "../../components/Dropdown/DropdownItem/DropdownItem";
 import { getFontSize } from "../../components/Typography/Typography";
-import ProfileActionCard from "../../components/ProfileUserDataForm/ProfileUserDataForm";
+import ProfileUserDataForm from "../../components/ProfileUserDataForm/ProfileUserDataForm";
 import { BackgroundContainer } from "../../components/FormBuilderComponents";
 
 const ProfileContainer = styled(Container)`
@@ -56,7 +56,7 @@ const Profile = observer(() => {
             User information
           </ProfileNavigationItem>
         </ProfileNavigation>
-        <ProfileActionCard user={user} />
+        <ProfileUserDataForm user={user} />
       </ProfileContainer>
     </BackgroundContainer>
   );

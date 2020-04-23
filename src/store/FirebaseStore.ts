@@ -55,7 +55,8 @@ export enum Information {
   PROFILE_NO_CHANGES = "No changes were made to your profile.",
   ITEM_NO_CHANGES = "No changes were made to the shopitem.",
   ITEM_PROCESSING_DELETE = "Please wait while we're removing the item...",
-  ITEM_PROCESSING_ADD = "Please wait while we're adding the item..."
+  ITEM_PROCESSING_ADD = "Please wait while we're adding the item...",
+  ITEM_PROCESSING_EDIT = "Please wait while we update the item..."
 }
 
 export enum Success {
