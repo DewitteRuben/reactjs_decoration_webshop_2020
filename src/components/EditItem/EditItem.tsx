@@ -13,6 +13,8 @@ import { parseCategoryString } from "../../utils/string";
 import { useToasts } from "react-toast-notifications";
 import { Success, Information } from "../../store/FirebaseStore";
 import _ from "lodash";
+import RouterLink from "../Link/RouterLink/RouterLink";
+import { getLocationFromShopItem } from "../../utils/navigation";
 
 const EditItemContainer = styled(Container)`
   flex-direction: column;
@@ -24,6 +26,15 @@ const EditItem = observer(() => {
   const { firebaseStore } = useStores();
   const [item, setItem] = React.useState<IShopItem>();
   const { addToast } = useToasts();
+
+  const { name, description, price, category, subCategory, specificCategory, itemCategory, condition, images } = item || {};
+
+  const parsedCategories = React.useMemo(
+    () => ["categories", category, subCategory, specificCategory, itemCategory].join(","),
+    [category, itemCategory, specificCategory, subCategory]
+  );
+
+  const parsedImages = React.useMemo(() => images?.map(image => image.full), [images]);
 
   React.useEffect(() => {
     async function fetchItem() {
@@ -72,6 +83,7 @@ const EditItem = observer(() => {
     }
 
     try {
+      addToast(Information.ITEM_PROCESSING_EDIT, { appearance: "info" });
       setItem(prev => ({ ...prev, ...updates }));
       await firebaseStore.updateItemById(id, updates);
       addToast(Success.ITEM_UPDATE_SUCCESS, { appearance: "success" });
@@ -80,14 +92,19 @@ const EditItem = observer(() => {
     }
   };
 
-  const { name, description, price, category, subCategory, specificCategory, itemCategory, condition, images } = item;
-
-  const parsedCategories = ["categories", category, subCategory, specificCategory, itemCategory].join(",");
-  const parsedImages = images.map(image => image.full);
   return (
     <EditItemContainer>
       <Typography type="title" fontWeight="bold" fontSize="larger">
-        Editing item: {name}
+        Editing item:{" "}
+        {
+          <RouterLink to={getLocationFromShopItem(item)}>
+            {
+              <Typography type="title" fontWeight="bold" fontSize="larger">
+                {name}
+              </Typography>
+            }
+          </RouterLink>
+        }
       </Typography>
       <ItemForm
         onSubmit={onSubmit}
