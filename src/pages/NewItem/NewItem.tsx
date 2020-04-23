@@ -13,6 +13,7 @@ import { addItem } from "../../api/api";
 import Container from "../../components/Container/Container";
 import { useToasts } from "react-toast-notifications";
 import { Information, Success } from "../../store/FirebaseStore";
+import { getLocationFromShopItem } from "../../utils/navigation";
 
 const NewItemContainer = styled(Container)`
   width: 1140px;
@@ -50,7 +51,9 @@ const NewItem: React.FC = () => {
 
       try {
         addToast(Information.ITEM_PROCESSING_ADD, { appearance: "info" });
-        await addItem(newShopitem, token);
+        const resp = await addItem(newShopitem, token);
+        const shopItem = (await resp.json()).storeItem;
+        history.push(getLocationFromShopItem(shopItem));
         addToast(Success.ITEM_CREATE_SUCCESS, { appearance: "success" });
       } catch (error) {
         addToast(error.message, { appearance: "error" });
