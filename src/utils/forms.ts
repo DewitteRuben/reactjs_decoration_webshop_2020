@@ -7,18 +7,10 @@ interface IFormEntry {
 }
 
 const filterFileEntries = (input: IMediaSelectHTMLElement | HTMLInputElement) => {
-  if (!input.files) return [];
-
   if ("media" in input) {
     return input.media ? input.media : [];
   }
-
-  const files = Array.from(input.files);
-  const included = input.dataset.included ? _.split(input.dataset.included, ",") : [];
-  const defaultImages = input.dataset.default ? _.split(input.dataset.default, ",") : [];
-  const filtered = files.filter(file => included?.includes(file.name));
-
-  return [...defaultImages, ...filtered];
+  return input.files ? Array.from(input.files) : [];
 };
 
 const serializeFormData = <T extends {}>(form: HTMLFormElement): Partial<T> => {
