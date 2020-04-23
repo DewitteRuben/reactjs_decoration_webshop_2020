@@ -54,13 +54,15 @@ export enum Information {
   PROFILE_PROCESSING_CHANGES = "Please wait while we update the following item(s):",
   PROFILE_NO_CHANGES = "No changes were made to your profile.",
   ITEM_NO_CHANGES = "No changes were made to the shopitem.",
-  ITEM_PROCESSING_DELETE = "Please wait while we attempt to remove the item..."
+  ITEM_PROCESSING_DELETE = "Please wait while we're removing the item...",
+  ITEM_PROCESSING_ADD = "Please wait while we're adding the item..."
 }
 
 export enum Success {
   LOGOUT_SUCCESS = "Successfully logged out.",
   LOGIN_SUCCESS = "Sucessfully logged in.",
   SIGNUP_SUCCESS = "Successfully created an account.",
+  ITEM_CREATE_SUCCESS = "Successfully created the item.",
   ITEM_UPDATE_SUCCESS = "Successfully updated the item.",
   ITEM_DELETE_SUCCESS = "Successfully deleted the item.",
   PROFILE_UPDATE_SUCCESS = "Profile successfully updated."

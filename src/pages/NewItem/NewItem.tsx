@@ -11,6 +11,8 @@ import { Condition, INewShopItem } from "../../io-ts-types";
 import { parseCategoryString } from "../../utils/string";
 import { addItem } from "../../api/api";
 import Container from "../../components/Container/Container";
+import { useToasts } from "react-toast-notifications";
+import { Information, Success } from "../../store/FirebaseStore";
 
 const NewItemContainer = styled(Container)`
   width: 1140px;
@@ -20,6 +22,7 @@ const NewItemContainer = styled(Container)`
 const NewItem: React.FC = () => {
   const { firebaseStore } = useStores();
   const history = useHistory();
+  const { addToast } = useToasts();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,7 +39,6 @@ const NewItem: React.FC = () => {
       const imageURLs = await firebaseStore.uploadFiles(images);
       const parsedCondition: Condition = condition as Condition;
       const namedCategories = parseCategoryString(categories);
-
       const newShopitem: INewShopItem = {
         condition: parsedCondition,
         description,
@@ -46,7 +48,13 @@ const NewItem: React.FC = () => {
         ...namedCategories
       };
 
-      await addItem(newShopitem, token);
+      try {
+        addToast(Information.ITEM_PROCESSING_ADD, { appearance: "info" });
+        await addItem(newShopitem, token);
+        addToast(Success.ITEM_CREATE_SUCCESS, { appearance: "success" });
+      } catch (error) {
+        addToast(error.message, { appearance: "error" });
+      }
     }
   };
 
