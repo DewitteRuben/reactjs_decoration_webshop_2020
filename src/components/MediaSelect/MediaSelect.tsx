@@ -4,9 +4,8 @@ import styled from "styled-components";
 import _ from "lodash";
 import PreviewImage from "./PreviewImage/PreviewImage";
 
-interface IMediaItem {
-  name: string;
-  src: string;
+interface IMediaItem extends File {
+  preview: string;
 }
 
 const MediaSelectContainer = styled.div`
@@ -46,69 +45,69 @@ type MediaSelectProps = {
   defaultValue?: string[];
 } & Omit<React.ComponentPropsWithRef<"input">, "defaultValue">;
 
-const MediaSelect: React.FC<MediaSelectProps> = React.forwardRef(({ defaultValue, required, ...props }, ref) => {
+export interface IMediaSelectHTMLElement extends HTMLInputElement {
+  media: File[] | undefined;
+}
+
+const MediaSelect: React.FC<MediaSelectProps> = ({ defaultValue, required, ...props }) => {
   const [media, setMedia] = React.useState<IMediaItem[]>([]);
-  const [defaultImages, setDefaults] = React.useState<string[]>();
+
+  const onDrop = useCallback(files => {
+    const newFiles = files.map((file: File) =>
+      Object.assign(file, {
+        preview: URL.createObjectURL(file)
+      })
+    );
+    setMedia(prevMedia => _.uniqBy([...prevMedia, ...newFiles], "name"));
+  }, []);
+
+  const { getRootProps, getInputProps, isDragActive, inputRef } = useDropzone({ onDrop, accept: "image/*" });
 
   React.useEffect(() => {
     if (defaultValue) {
-      setDefaults(defaultValue);
-      const parsedDefaultValue = defaultValue?.map(item => ({ name: item, src: item }));
+      const parsedDefaultValue = defaultValue?.map(item => ({ name: item, preview: item }));
       setMedia(prev => _.merge(prev, parsedDefaultValue));
     }
   }, [defaultValue]);
 
-  const onDrop = useCallback(files => {
-    setMedia([]);
-    files.forEach((file: File) => {
-      const reader = new FileReader();
+  React.useEffect(() => {
+    return () => media.forEach((file: IMediaItem) => URL.revokeObjectURL(file.preview));
+  });
 
-      reader.onload = () => {
-        setMedia(media => {
-          const exists = _.find(media, ["name", file.name]);
-          if (exists) return media;
-          return [...media, { src: reader.result as string, name: file.name }];
-        });
-      };
-
-      if (file) {
-        reader.readAsDataURL(file);
+  React.useEffect(() => {
+    if (inputRef.current) {
+      const input = inputRef.current as IMediaSelectHTMLElement;
+      if (input?.media) {
+        delete input.media;
       }
-    });
-  }, []);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: "image/*" });
+      Object.defineProperty(input, "media", {
+        value: media,
+        writable: false,
+        enumerable: true,
+        configurable: true
+      });
+    }
+  }, [inputRef, media]);
 
   const handleOnClose = (name: string) => {
-    if (defaultImages) {
-      setDefaults(prev => prev?.filter(src => src !== name));
-    }
     setMedia(prev => prev.filter(media => media.name !== name));
   };
-
-  // Since we can't manipulate the FileList array, we will filter based on the image name
-  const includedFiles = media.map(item => item.name);
 
   return (
     <MediaSelectContainer>
       <Dropzone {...getRootProps()}>
-        <FileInput
-          data-default={defaultImages}
-          data-included={includedFiles}
-          ref={ref}
-          {...getInputProps()}
-          required={(required && !defaultImages) || (required && defaultImages && defaultImages.length === 0)}
-          {...props}
-        />
+        <FileInput {...props} ref={inputRef} {...getInputProps()} />
         {isDragActive ? <p>Drop the files here ...</p> : <p>Drag and drop images here, or click to select files</p>}
+        {required && media.length === 0 && <FileInput type="file" multiple required />}
       </Dropzone>
       <PreviewGrid>
-        {media.map(({ name, src }) => (
-          <PreviewImage key={name} src={src} onClose={handleOnClose} name={name} />
+        {media.map(({ name, preview }) => (
+          <PreviewImage key={name} src={preview} onClose={handleOnClose} name={name} />
         ))}
       </PreviewGrid>
     </MediaSelectContainer>
   );
-});
+};
 
 export default MediaSelect;

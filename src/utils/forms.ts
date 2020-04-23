@@ -1,3 +1,4 @@
+import { IMediaSelectHTMLElement } from "./../components/MediaSelect/MediaSelect";
 import _ from "lodash";
 
 interface IFormEntry {
@@ -5,8 +6,12 @@ interface IFormEntry {
   [x: number]: FormDataEntryValue;
 }
 
-const filterFileEntries = (input: HTMLInputElement) => {
+const filterFileEntries = (input: IMediaSelectHTMLElement | HTMLInputElement) => {
   if (!input.files) return [];
+
+  if ("media" in input) {
+    return input.media ? input.media : [];
+  }
 
   const files = Array.from(input.files);
   const included = input.dataset.included ? _.split(input.dataset.included, ",") : [];
