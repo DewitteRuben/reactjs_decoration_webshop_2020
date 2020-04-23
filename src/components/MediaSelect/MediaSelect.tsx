@@ -59,6 +59,7 @@ const MediaSelect: React.FC<MediaSelectProps> = React.forwardRef(({ defaultValue
   }, [defaultValue]);
 
   const onDrop = useCallback(files => {
+    setMedia([]);
     files.forEach((file: File) => {
       const reader = new FileReader();
 
