@@ -4,8 +4,9 @@ import styled from "styled-components";
 import _ from "lodash";
 import PreviewImage from "./PreviewImage/PreviewImage";
 
-interface IMediaItem extends File {
+interface IMediaItem extends Partial<File> {
   preview: string;
+  preloaded?: boolean;
 }
 
 const MediaSelectContainer = styled.div`
@@ -61,12 +62,16 @@ const MediaSelect: React.FC<MediaSelectProps> = ({ defaultValue, required, ...pr
     setMedia(prevMedia => _.uniqBy([...prevMedia, ...newFiles], "name"));
   }, []);
 
+  const handleOnClose = (name: string) => {
+    setMedia(prev => prev.filter(media => media.name !== name));
+  };
+
   const { getRootProps, getInputProps, isDragActive, inputRef } = useDropzone({ onDrop, accept: "image/*" });
 
   React.useEffect(() => {
     if (defaultValue) {
-      const parsedDefaultValue = defaultValue?.map(item => ({ name: item, preview: item }));
-      setMedia(prev => _.merge(prev, parsedDefaultValue));
+      const parsedDefaultValue = defaultValue?.map(item => ({ name: item, preview: item, preloaded: true }));
+      setMedia(prev => [...prev, ...parsedDefaultValue]);
     }
   }, [defaultValue]);
 
@@ -81,18 +86,15 @@ const MediaSelect: React.FC<MediaSelectProps> = ({ defaultValue, required, ...pr
         delete input.media;
       }
 
+      const mediaWithDefaults = media.map(item => (item.preloaded ? item.preview : item));
       Object.defineProperty(input, "media", {
-        value: media,
+        value: mediaWithDefaults,
         writable: false,
         enumerable: true,
         configurable: true
       });
     }
   }, [inputRef, media]);
-
-  const handleOnClose = (name: string) => {
-    setMedia(prev => prev.filter(media => media.name !== name));
-  };
 
   return (
     <MediaSelectContainer>
@@ -102,9 +104,10 @@ const MediaSelect: React.FC<MediaSelectProps> = ({ defaultValue, required, ...pr
         {required && media.length === 0 && <FileInput type="file" multiple required />}
       </Dropzone>
       <PreviewGrid>
-        {media.map(({ name, preview }) => (
-          <PreviewImage key={name} src={preview} onClose={handleOnClose} name={name} />
-        ))}
+        {media.map(
+          ({ name, preview }) =>
+            name && preview && <PreviewImage key={name} src={preview} onClose={handleOnClose} name={name} />
+        )}
       </PreviewGrid>
     </MediaSelectContainer>
   );
