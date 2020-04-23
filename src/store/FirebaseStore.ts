@@ -72,6 +72,14 @@ enum AuthErrorCode {
   NOT_LOGGED_IN = "auth/not-logged-in"
 }
 
+export enum UpdateErrorCode {
+  INVALID_PHONE_NUMBER = "auth/invalid-phone-number"
+}
+
+const updateErrorMessageMap: Record<UpdateErrorCode, string> = {
+  [UpdateErrorCode.INVALID_PHONE_NUMBER]: "The phone number you entered is in valid."
+};
+
 const loginErrorMessageMap: Record<LoginErrorCode, string> = {
   [LoginErrorCode.NOT_FOUND]: "No user was found that matches these credentials.",
   [LoginErrorCode.INVALID_EMAIL]: "The email address you provided is invalid.",
@@ -93,6 +101,10 @@ export const getLoginErrorMessage = (errorCode: LoginErrorCode) => {
 
 export const getSignupErrorMessage = (errorCode: SignupErrorCode) => {
   return registerErrorMessageMap[errorCode];
+};
+
+export const getUpdateErrorMessage = (errorCode: UpdateErrorCode) => {
+  return updateErrorMessageMap[errorCode];
 };
 
 interface IFirebaseUser {
@@ -132,7 +144,13 @@ class FirebaseStore {
 
   async updateUserData(data: Partial<INewUser>) {
     const token = await this.getJWTToken();
-    await updateUser(data, token);
+
+    const resp = await updateUser(data, token);
+    const respData = await resp.json();
+
+    if (respData?.error) {
+      throw new Error(getUpdateErrorMessage(respData.error.code));
+    }
 
     // Update photoURL of image in state if the user uploaded a new one.
     if (data?.photoURL && data?.photoURL.length > 0) {
