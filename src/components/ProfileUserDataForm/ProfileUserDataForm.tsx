@@ -188,7 +188,12 @@ const ProfileUserDataForm: React.FC<IUserActionCardProps> = ({ user }) => {
           <InputLabel htmlFor="birthdate" as="label" fontWeight="extrabold" fontSize="large">
             Birthday
           </InputLabel>
-          <FormInput type="date" defaultValue={moment(birthdate).format("YYYY-MM-DD")} name="birthdate" id="birthdate" />
+          <FormInput
+            type="date"
+            defaultValue={birthdate ? moment(birthdate).format("YYYY-MM-DD") : undefined}
+            name="birthdate"
+            id="birthdate"
+          />
         </InputContainer>
         <Seperator />
         <InputContainer>

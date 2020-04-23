@@ -60,7 +60,9 @@ const user = t.interface({
   })
 });
 
-const userbirthdateDateField = t.interface({ birthdate: date });
+const Nullable = t.union([t.null, t.undefined]);
+
+const userbirthdateDateField = t.interface({ birthdate: t.union([date, Nullable]) });
 const userbirthdateStringField = t.interface({ birthdate: t.string });
 
 const shopItemImageFromServer = t.interface({
