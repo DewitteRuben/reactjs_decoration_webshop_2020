@@ -42,4 +42,9 @@ export class CartStore {
   get hasItem() {
     return this.items.length > 0;
   }
+
+  @action
+  clear() {
+    this.items = [];
+  }
 }

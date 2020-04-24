@@ -66,7 +66,8 @@ export enum Success {
   ITEM_CREATE_SUCCESS = "Successfully created the item.",
   ITEM_UPDATE_SUCCESS = "Successfully updated the item.",
   ITEM_DELETE_SUCCESS = "Successfully deleted the item.",
-  PROFILE_UPDATE_SUCCESS = "Profile successfully updated."
+  PROFILE_UPDATE_SUCCESS = "Profile successfully updated.",
+  PAYMENT_SUCCESS = "Your payment was successful, the items will be delivered to the shipping address."
 }
 
 enum AuthErrorCode {

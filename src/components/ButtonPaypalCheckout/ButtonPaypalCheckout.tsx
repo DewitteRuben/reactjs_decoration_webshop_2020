@@ -32,12 +32,13 @@ const StyledPaypalButton = styled.div`
 
 interface IButtonPaypalCheckoutProps {
   currency?: "USD" | "EUR";
+  onApprove?: (details: any) => void;
   data: ICustomerData;
 }
 
 class ButtonPaypalCheckout extends React.Component<IButtonPaypalCheckoutProps> {
   async componentDidMount() {
-    const { currency, data: customerData } = this.props;
+    const { currency, data: customerData, onApprove } = this.props;
     const price = customerData.items.reduce((acc, cur) => acc + cur.price, 0);
 
     await loadPaypalSDK(currency ?? "EUR");
@@ -80,7 +81,9 @@ class ButtonPaypalCheckout extends React.Component<IButtonPaypalCheckoutProps> {
 
         onApprove: function(data: any, actions: any) {
           return actions.order.capture().then(function(details: any) {
-            alert("Transaction completed by " + details.payer.name.given_name + "!");
+            if (onApprove) {
+              onApprove(details);
+            }
           });
         }
       })

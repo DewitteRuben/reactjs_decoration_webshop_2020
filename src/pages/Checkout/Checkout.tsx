@@ -4,12 +4,14 @@ import Container from "../../components/Container/Container";
 import { observer } from "mobx-react";
 import styled from "styled-components";
 import { BackgroundContainer } from "../../components/FormBuilderComponents";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import { SpacerVertical, Spacer } from "../../components/Layout";
 import Typography from "../../components/Typography/Typography";
 import CheckoutForm, { ICheckoutFormData } from "../../components/CheckoutForm/CheckoutForm";
 import CheckoutCart from "../../components/CheckoutCart/CheckoutCart";
 import ButtonPaypalCheckout, { ICustomerData } from "../../components/ButtonPaypalCheckout/ButtonPaypalCheckout";
+import { useToasts } from "react-toast-notifications";
+import { Success } from "../../store/FirebaseStore";
 
 const CheckoutContainer = styled(Container)`
   width: 1140px;
@@ -33,6 +35,8 @@ const Header = styled.div`
 
 const Checkout: React.FC = observer(() => {
   const { firebaseStore, cartStore } = useStores();
+  const { addToast } = useToasts();
+  const history = useHistory();
   const [addresInformation, setInformation] = React.useState<ICustomerData>();
   const user = firebaseStore.currentUser;
 
@@ -65,6 +69,12 @@ const Checkout: React.FC = observer(() => {
     setInformation(customerData);
   };
 
+  const handleOnApprove = (details: any) => {
+    cartStore.clear();
+    history.push("/");
+    addToast(Success.PAYMENT_SUCCESS, { appearance: "success" });
+  };
+
   return (
     <BackgroundContainer>
       <CheckoutContainer>
@@ -78,7 +88,7 @@ const Checkout: React.FC = observer(() => {
           <PaymentContainer>
             <CheckoutCart />
             <SpacerVertical />
-            <ButtonPaypalCheckout data={addresInformation} />
+            <ButtonPaypalCheckout onApprove={handleOnApprove} data={addresInformation} />
           </PaymentContainer>
         ) : (
           <MainContainer>
