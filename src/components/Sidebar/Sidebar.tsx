@@ -29,19 +29,13 @@ const Sidebar: React.FC = observer(() => {
     <SidebarContainer>
       <SidebarBlock>
         <SidebarBlockTitle>General</SidebarBlockTitle>
-        <Typography>
-          {itemStore.isLoading ? (
-            <Skeleton width={70} />
-          ) : (
-            `Item${itemStore.amount === 0 || itemStore.amount > 1 ? "s" : ""}: ${itemStore.amount}`
-          )}
-        </Typography>
+        <Typography>{`Item${itemStore.amount === 0 || itemStore.amount > 1 ? "s" : ""}: ${itemStore.amount}`}</Typography>
       </SidebarBlock>
       <Spacer />
-      {itemStore.amount > 0 && (
+      {itemStore.minPrice && itemStore.maxPrice && (
         <SidebarBlock>
-          <SidebarBlockTitle>{itemStore.isLoading ? <Skeleton width={70} /> : "Price"}</SidebarBlockTitle>
-          {itemStore.isLoading ? <Skeleton /> : <Priceslider />}
+          <SidebarBlockTitle>Price</SidebarBlockTitle>
+          <Priceslider />
         </SidebarBlock>
       )}
     </SidebarContainer>
