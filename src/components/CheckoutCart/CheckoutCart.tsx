@@ -7,6 +7,7 @@ import ShoppingCartItem from "../ShoppingCartItem/ShoppingCartItem";
 import Typography from "../Typography/Typography";
 import { useStores } from "../../hooks/use-stores";
 import { observer } from "mobx-react";
+import { Redirect } from "react-router-dom";
 
 const handleOnDelete = (cartStore: CartStore) => (item: IShopItem) => {
   cartStore.removeItem(item._id);
@@ -24,6 +25,10 @@ const ShoppingCartContainer = styled.div`
 
 const CheckoutCart: React.FC = observer(() => {
   const { cartStore } = useStores();
+
+  if (!cartStore.hasItem) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <ShopItemContainer as="ul">

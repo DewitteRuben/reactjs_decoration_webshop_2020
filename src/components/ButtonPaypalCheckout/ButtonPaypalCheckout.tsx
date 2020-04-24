@@ -1,27 +1,46 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import React from "react";
+import styled from "styled-components";
 
-const loadPaypalSDK = () => {
+const loadPaypalSDK = (currency: string) => {
   return new Promise((resolve, reject) => {
     const scriptTag = document.createElement("script");
     scriptTag.addEventListener("load", resolve);
     scriptTag.addEventListener("error", reject);
-    scriptTag.src =
-      "https://www.paypal.com/sdk/js?client-id=AasTy7GEmrE2-PCRHJtEVUSR83u2AJ0oo7N_DzR8y4tlsaP5fMw6BG4hWCFTp-1FHE7B2DbvCRDYc9GN";
+    scriptTag.src = `https://www.paypal.com/sdk/js?client-id=AasTy7GEmrE2-PCRHJtEVUSR83u2AJ0oo7N_DzR8y4tlsaP5fMw6BG4hWCFTp-1FHE7B2DbvCRDYc9GN&currency=${currency}`;
     document.body.append(scriptTag);
   });
 };
 
+export interface ICustomerData {
+  firstName: string;
+  lastName: string;
+  items: { name: string; price: number }[];
+  address: {
+    street: string;
+    city: string;
+    postCode: string;
+    countryCode: string;
+  };
+}
+
+const StyledPaypalButton = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 100%;
+`;
+
 interface IButtonPaypalCheckoutProps {
   currency?: "USD" | "EUR";
-  price: number;
+  data: ICustomerData;
 }
 
 class ButtonPaypalCheckout extends React.Component<IButtonPaypalCheckoutProps> {
   async componentDidMount() {
-    const { currency, price } = this.props;
+    const { currency, data: customerData } = this.props;
+    const price = customerData.items.reduce((acc, cur) => acc + cur.price, 0);
 
-    await loadPaypalSDK();
+    await loadPaypalSDK(currency ?? "EUR");
 
     (window as any).paypal
       .Buttons({
@@ -29,9 +48,30 @@ class ButtonPaypalCheckout extends React.Component<IButtonPaypalCheckoutProps> {
           return actions.order.create({
             purchase_units: [
               {
+                payer: {
+                  name: {
+                    given_name: customerData.firstName,
+                    surname: customerData.lastName
+                  }
+                },
                 amount: {
                   value: price.toFixed(2),
-                  currency: currency || "EUR"
+                  breakdown: {
+                    item_total: { value: price.toFixed(2), currency_code: currency ?? "EUR" }
+                  }
+                },
+                items: customerData.items.map(({ name, price }) => ({
+                  name,
+                  unit_amount: { value: price.toFixed(2), currency_code: currency ?? "EUR" },
+                  quantity: "1"
+                })),
+                shipping: {
+                  address: {
+                    address_line_1: customerData.address.street,
+                    admin_area_2: customerData.address.city,
+                    postal_code: customerData.address.postCode,
+                    country_code: customerData.address.countryCode
+                  }
                 }
               }
             ]
@@ -47,7 +87,7 @@ class ButtonPaypalCheckout extends React.Component<IButtonPaypalCheckoutProps> {
       .render("#paypal-button-container");
   }
   render() {
-    return <div id="paypal-button-container"></div>;
+    return <StyledPaypalButton id="paypal-button-container" />;
   }
 }
 

@@ -38,6 +38,7 @@ const DropdownOverflowContainer = styled.div`
   max-height: 200px;
   overflow-y: auto;
   padding: 2px;
+  z-index: 10;
 `;
 
 const StyledDropdown = styled(Dropdown)`

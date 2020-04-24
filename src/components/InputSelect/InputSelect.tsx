@@ -70,7 +70,7 @@ const InputSelect: React.FC<IInputSelectProps> = ({
         const value = typeof item === "string" ? item : item.value;
         const key = typeof item === "string" ? item : item.key;
         return (
-          <option value={value} key={key}>
+          <option value={key} key={key}>
             {capitalizeValue ? _.capitalize(value) : value}
           </option>
         );

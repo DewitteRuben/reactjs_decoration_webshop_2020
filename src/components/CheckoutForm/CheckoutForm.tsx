@@ -12,9 +12,11 @@ import {
 import Button from "../Button/Button";
 import countries from "../../data/countries.json";
 import { IUser } from "../../io-ts-types";
+import { serializeFormData } from "../../utils/forms";
 
 interface ICheckoutFormProps {
   user: Omit<firebase.User, "phoneNumber" | "photoURL"> & Partial<IUser>;
+  onSubmit?: (data: ICheckoutFormData) => void;
 }
 
 const CheckoutFormContainer = styled.form`
@@ -23,22 +25,39 @@ const CheckoutFormContainer = styled.form`
   flex: 1;
 `;
 
-const CheckoutForm: React.FC<ICheckoutFormProps> = ({ user }) => {
+export interface ICheckoutFormData {
+  city: string;
+  country: string;
+  firstName: string;
+  lastName: string;
+  postalCode: string;
+  street: string;
+}
+
+const CheckoutForm: React.FC<ICheckoutFormProps> = ({ user, onSubmit }) => {
+  const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const serializedData = serializeFormData<ICheckoutFormData>(event.currentTarget);
+    if (onSubmit) {
+      onSubmit(serializedData as ICheckoutFormData);
+    }
+  };
+
   return (
-    <CheckoutFormContainer>
+    <CheckoutFormContainer onSubmit={handleOnSubmit}>
       <InputCard>
         <InputContainer>
           <InputLabel htmlFor="firstName" as="label" fontWeight="extrabold" fontSize="large">
             First name
           </InputLabel>
-          <FormInput defaultValue={user?.firstName} name="firstName" id="firstName" />
+          <FormInput required defaultValue={user?.firstName} name="firstName" id="firstName" />
         </InputContainer>
         <Seperator />
         <InputContainer>
           <InputLabel htmlFor="lastName" as="label" fontWeight="extrabold" fontSize="large">
             Last name
           </InputLabel>
-          <FormInput defaultValue={user?.lastName} name="lastName" id="lastName" />
+          <FormInput required defaultValue={user?.lastName} name="lastName" id="lastName" />
         </InputContainer>
       </InputCard>
       <InputCard>
@@ -46,21 +65,21 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = ({ user }) => {
           <InputLabel htmlFor="street" as="label" fontWeight="extrabold" fontSize="large">
             Street Address
           </InputLabel>
-          <FormInput defaultValue={user?.address?.street} name="street" id="street" />
+          <FormInput required defaultValue={user?.address?.street} name="street" id="street" />
         </InputContainer>
         <Seperator />
         <InputContainer>
           <InputLabel htmlFor="city" as="label" fontWeight="extrabold" fontSize="large">
             City
           </InputLabel>
-          <FormInput defaultValue={user?.address?.city} name="city" id="city" />
+          <FormInput required defaultValue={user?.address?.city} name="city" id="city" />
         </InputContainer>
         <Seperator />
         <InputContainer>
           <InputLabel htmlFor="postalCode" as="label" fontWeight="extrabold" fontSize="large">
             Postal code
           </InputLabel>
-          <FormInput defaultValue={user?.address?.postalCode} name="postalCode" id="postalCode" />
+          <FormInput required defaultValue={user?.address?.postalCode} name="postalCode" id="postalCode" />
         </InputContainer>
         <Seperator />
         <InputContainer>
@@ -72,6 +91,7 @@ const CheckoutForm: React.FC<ICheckoutFormProps> = ({ user }) => {
             placeholder="Select your country"
             defaultValue={user?.address?.country || ""}
             name="country"
+            required
             id="country"
           />
         </InputContainer>
