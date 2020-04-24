@@ -51,15 +51,25 @@ class UserFeed extends Component<IUserFeedProps, {}> {
 
   render() {
     const { itemStore } = this.context;
-    const isLoading = itemStore.status.state !== "done";
 
     return (
       <FeedContainer>
         <ActionContainer>
-          <Typography>{isLoading ? <Skeleton width={70} /> : `Item(s): ${itemStore.amount}`}</Typography>
+          <Typography>
+            {itemStore.isLoading ? (
+              <Skeleton width={70} />
+            ) : (
+              `Item${itemStore.amount === 0 || itemStore.amount > 1 ? "s" : ""}: ${itemStore.amount}`
+            )}
+          </Typography>
           <SortBySelect />
         </ActionContainer>
-        <ItemList items={itemStore.getItems()} loading={isLoading} amount={itemStore.amount} />
+        <ItemList
+          emptyMessage="This user is currently not selling any items."
+          items={itemStore.getItems()}
+          loading={itemStore.isLoading}
+          amount={itemStore.amount}
+        />
       </FeedContainer>
     );
   }

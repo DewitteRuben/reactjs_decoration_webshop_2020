@@ -147,6 +147,11 @@ export default class ItemStore {
     return this.shopItemData.maxPrice;
   }
 
+  @computed
+  get isLoading() {
+    return this.status.state !== "done";
+  }
+
   @action
   clear() {
     this.status = { state: "inactive", error: {} };

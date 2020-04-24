@@ -55,9 +55,8 @@ class Feed extends Component<RouteComponentProps<IRouteProps>, {}> {
 
   render() {
     const { itemStore } = this.context;
-    const isLoading = itemStore.status.state !== "done";
 
-    return <ItemList loading={isLoading} amount={itemStore.amount} items={itemStore.getItems()} />;
+    return <ItemList loading={itemStore.isLoading} amount={itemStore.amount} items={itemStore.getItems()} />;
   }
 }
 
