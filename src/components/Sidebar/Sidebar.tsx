@@ -38,10 +38,12 @@ const Sidebar: React.FC = observer(() => {
         </Typography>
       </SidebarBlock>
       <Spacer />
-      <SidebarBlock>
-        <SidebarBlockTitle>Price</SidebarBlockTitle>
-        {itemStore.isLoading ? <Skeleton width={70} /> : <Priceslider />}
-      </SidebarBlock>
+      {itemStore.amount > 0 && (
+        <SidebarBlock>
+          <SidebarBlockTitle>{itemStore.isLoading ? <Skeleton width={70} /> : "Price"}</SidebarBlockTitle>
+          {itemStore.isLoading ? <Skeleton /> : <Priceslider />}
+        </SidebarBlock>
+      )}
     </SidebarContainer>
   );
 });
