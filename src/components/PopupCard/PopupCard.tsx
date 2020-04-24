@@ -26,6 +26,7 @@ export interface ICategory {
 
 interface IProps {
   category?: ICategory;
+  onClick?: () => void;
 }
 
 const PopupCard = React.forwardRef(
@@ -33,7 +34,8 @@ const PopupCard = React.forwardRef(
     props: IProps & React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
     ref: React.Ref<HTMLDivElement | null>
   ) => {
-    const { onMouseLeave, className, category } = props;
+    const { onClick, onMouseLeave, className, category } = props;
+
     return (
       <StyledPopupCard
         ref={ref as ((instance: HTMLDivElement | null) => void) | React.RefObject<HTMLDivElement> | null | undefined}
@@ -42,7 +44,9 @@ const PopupCard = React.forwardRef(
       >
         {category?.subcategories.map(subcategory => (
           <div key={subcategory.key}>
-            <RouterLink to={`/${category.key}/${subcategory.key}`}>{subcategory.name}</RouterLink>
+            <RouterLink onClick={onClick} to={`/${category.key}/${subcategory.key}`}>
+              {subcategory.name}
+            </RouterLink>
           </div>
         ))}
       </StyledPopupCard>

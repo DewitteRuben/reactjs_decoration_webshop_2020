@@ -1,11 +1,20 @@
 import { action, observable } from "mobx";
 import navData from "../data/nav.json";
 
+export interface INavData {
+  name: string;
+  key: string;
+  subcategories: {
+    name: string;
+    key: string;
+  }[];
+}
+
 export default class NavigationStore {
-  @observable data = navData;
+  @observable data: INavData[] = navData;
   @observable navElement: HTMLElement | undefined = undefined;
   @observable hoverElement: HTMLElement | undefined = undefined;
-  @observable hoverState: boolean = false;
+  @observable hoverState = false;
 
   @observable current = { category: "", subcategory: "" };
 

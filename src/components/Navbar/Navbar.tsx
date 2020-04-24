@@ -7,6 +7,7 @@ import NavigationStore from "../../store/NavigationStore";
 import NavPositionCircle from "../NavPositionCircle/NavPositionCircle";
 import PopupCard from "../PopupCard/PopupCard";
 import NavbarLink from "../Link/NavbarLink/NavbarLink";
+import { useLocation } from "react-router-dom";
 
 const StyledNavbar = styled.nav`
   height: ${rem(50)};
@@ -69,27 +70,15 @@ const handleOnMouseEnter = (store: NavigationStore) => (event: React.MouseEvent<
   store.setHoverElement(event.target as HTMLElement);
 };
 
-const data2li = (store: NavigationStore) =>
-  store.data.map(e => (
-    <li key={e.key}>
-      <NavbarLink
-        onMouseOver={handleOnMouseEnter(store)}
-        data-item={e.key}
-        selected={store.getCurrentSelectedPosition() === e.key}
-        to={`/${e.key}`}
-        onClick={handleNavChange(store)}
-      >
-        {e.name}
-      </NavbarLink>
-    </li>
-  ));
-
 const Navbar: React.FC = observer(() => {
   const { navStore } = useStores();
   const navRef = React.useRef<HTMLUListElement | null>(null);
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const [circleOffset, setCircleOffset] = React.useState(0);
   const [popupOffset, setPopupOffset] = React.useState(0);
+  const data = navStore.data;
+  const location = useLocation();
+  const currentLocation = location.pathname;
 
   React.useEffect(() => {
     const hoverAreaXOffset = -60;
@@ -148,16 +137,42 @@ const Navbar: React.FC = observer(() => {
     };
   }, [navStore.hoverElement, navStore.navElement]);
 
+  const handleOnSubitemClick = () => {
+    if (navStore.hoverElement) {
+      setCircleOffset(computeCenterPosOfElement(navStore.hoverElement));
+      navStore.setSelectedElement(navStore.hoverElement);
+    }
+  };
+
+  const storeData = React.useMemo(() => {
+    return data.map(e => {
+      return (
+        <li key={e.key}>
+          <NavbarLink
+            onMouseOver={handleOnMouseEnter(navStore)}
+            data-item={e.key}
+            selected={currentLocation.includes(`/${e.key}`)}
+            to={`/${e.key}`}
+            onClick={handleNavChange(navStore)}
+          >
+            {e.name}
+          </NavbarLink>
+        </li>
+      );
+    });
+  }, [data, navStore, currentLocation]);
+
   return (
     <StyledNavContainer>
       <StyledNavbar>
-        <NavUL ref={navRef}>{data2li(navStore)}</NavUL>
+        <NavUL ref={navRef}>{storeData}</NavUL>
       </StyledNavbar>
       <StyledCircle offset={circleOffset} />
       <StyledPopupCard
         ref={popupRef}
         display={navStore.hoverState}
         offset={popupOffset}
+        onClick={handleOnSubitemClick}
         category={navStore.getHoveredCategory()}
       />
     </StyledNavContainer>
