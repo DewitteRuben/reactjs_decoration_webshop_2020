@@ -59,7 +59,7 @@ const ItemBody = styled.div`
 
 const ItemDescription = styled(Typography)`
   color: ${props => props.theme.darkGray};
-  width: ${rem(185)};
+  width: ${rem(170)};
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
