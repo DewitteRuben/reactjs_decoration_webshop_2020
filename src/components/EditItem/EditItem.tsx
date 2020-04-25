@@ -15,6 +15,7 @@ import { Success, Information } from "../../store/FirebaseStore";
 import _ from "lodash";
 import RouterLink from "../Link/RouterLink/RouterLink";
 import { getLocationFromShopItem } from "../../utils/navigation";
+import FullPageSpinner from "../FullPageSpinner/FullPageSpinner";
 
 const EditItemContainer = styled(Container)`
   flex-direction: column;
@@ -52,7 +53,7 @@ const EditItem = observer(() => {
   }
 
   if (!firebaseStore.authStatus.loaded) {
-    return <p>Loading...</p>;
+    return <FullPageSpinner />;
   }
 
   if (firebaseStore.authStatus.loaded && firebaseStore.isLoggedIn) {

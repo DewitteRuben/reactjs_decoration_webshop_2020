@@ -12,6 +12,7 @@ import CheckoutCart from "../../components/CheckoutCart/CheckoutCart";
 import ButtonPaypalCheckout, { ICustomerData } from "../../components/ButtonPaypalCheckout/ButtonPaypalCheckout";
 import { useToasts } from "react-toast-notifications";
 import { Success } from "../../store/FirebaseStore";
+import FullPageSpinner from "../../components/FullPageSpinner/FullPageSpinner";
 
 const CheckoutContainer = styled(Container)`
   width: 1140px;
@@ -42,7 +43,7 @@ const Checkout: React.FC = observer(() => {
 
   // TODO: proper loading handling
   if (!firebaseStore.authStatus.loaded) {
-    return <p>Loading...</p>;
+    return <FullPageSpinner />;
   }
 
   if (firebaseStore.authStatus.error) {

@@ -8,6 +8,7 @@ import DropdownItem from "../../components/Dropdown/DropdownItem/DropdownItem";
 import { getFontSize } from "../../components/Typography/Typography";
 import ProfileUserDataForm from "../../components/ProfileUserDataForm/ProfileUserDataForm";
 import { BackgroundContainer } from "../../components/FormBuilderComponents";
+import FullPageSpinner from "../../components/FullPageSpinner/FullPageSpinner";
 
 const ProfileContainer = styled(Container)`
   display: flex;
@@ -37,7 +38,7 @@ const Profile = observer(() => {
 
   // TODO: proper loading handling
   if (!firebaseStore.authStatus.loaded) {
-    return <p>Loading...</p>;
+    return <FullPageSpinner />;
   }
 
   if (firebaseStore.authStatus.error) {
