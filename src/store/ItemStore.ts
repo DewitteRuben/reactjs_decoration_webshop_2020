@@ -93,6 +93,24 @@ export default class ItemStore {
   });
 
   @action
+  fetchItemsBySearchString = flow(function*(this: ItemStore, search: string) {
+    const searchParam = { key: "search", value: search };
+
+    try {
+      this.status.state = "pending";
+      const itemsResponse = yield getItemsWithFilters([searchParam]);
+      const JSONString = yield itemsResponse.text();
+      const shopItemData = JSON.parse(JSONString, dateReviver);
+      if (isRight(IShopItemDataRuntime.decode(shopItemData))) {
+        this.shopItemData = shopItemData;
+      }
+      this.status.state = "done";
+    } catch (error) {
+      this.status = { state: "error", error };
+    }
+  });
+
+  @action
   setSortType = (sortType: SortTypes) => {
     this.sortType = sortType;
   };
