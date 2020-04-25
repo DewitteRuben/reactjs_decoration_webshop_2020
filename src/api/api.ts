@@ -103,6 +103,14 @@ const deleteItemById = (token: string, id: string) => {
   return request("shopitem", "DELETE", filters, undefined, getAuthorizationOptions(token));
 };
 
+const isValidURL = async (url: string) => {
+  return new Promise((resolve, reject) => {
+    fetch(url)
+      .then(resp => resolve(resp.ok))
+      .catch(err => resolve(false));
+  });
+};
+
 export {
   getItemByCategory,
   getItemsWithFilters,
@@ -115,5 +123,6 @@ export {
   getPartialUserById,
   updateWishlistCount,
   updateItemById,
-  deleteItemById
+  deleteItemById,
+  isValidURL
 };

@@ -7,9 +7,9 @@ import Typography from "../../components/Typography/Typography";
 import { useStores } from "../../hooks/use-stores";
 import { useHistory } from "react-router-dom";
 import { serializeFormData } from "../../utils/forms";
-import { Condition, INewShopItem } from "../../io-ts-types";
+import { Condition, INewShopItem, IShopItem } from "../../io-ts-types";
 import { parseCategoryString } from "../../utils/string";
-import { addItem } from "../../api/api";
+import { addItem, isValidURL } from "../../api/api";
 import Container from "../../components/Container/Container";
 import { useToasts } from "react-toast-notifications";
 import { Information, Success } from "../../store/FirebaseStore";
@@ -52,9 +52,19 @@ const NewItem: React.FC = () => {
       try {
         addToast(Information.ITEM_PROCESSING_ADD, { appearance: "info" });
         const resp = await addItem(newShopitem, token);
-        const shopItem = (await resp.json()).storeItem;
-        history.push(getLocationFromShopItem(shopItem));
-        addToast(Success.ITEM_CREATE_SUCCESS, { appearance: "success" });
+        const shopItem: IShopItem = (await resp.json()).storeItem;
+
+        addToast(Information.ITEM_PROCESSING_IMAGES, { appearance: "info" });
+        const firstImage = shopItem.images[0].regular;
+
+        const interval = setInterval(async () => {
+          const doesImageExist = await isValidURL(firstImage);
+          if (doesImageExist) {
+            clearInterval(interval);
+            history.push(getLocationFromShopItem(shopItem));
+            addToast(Success.ITEM_CREATE_SUCCESS, { appearance: "success" });
+          }
+        }, 500);
       } catch (error) {
         addToast(error.message, { appearance: "error" });
       }
