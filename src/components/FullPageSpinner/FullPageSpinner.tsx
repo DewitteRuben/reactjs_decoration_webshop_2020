@@ -2,6 +2,7 @@ import React from "react";
 import Container from "../Container/Container";
 import styled from "styled-components";
 import PulseLoader from "react-spinners/PulseLoader";
+import { getColors } from "../Typography/Typography";
 
 const StyledContainer = styled(Container)`
   flex: 1;
@@ -13,7 +14,7 @@ const StyledContainer = styled(Container)`
 const FullPageSpinner: React.FC = () => {
   return (
     <StyledContainer>
-      <PulseLoader color="#000000" size={15} />
+      <PulseLoader color={getColors("black")} size={15} />
     </StyledContainer>
   );
 };
