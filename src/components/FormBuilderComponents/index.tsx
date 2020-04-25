@@ -58,6 +58,10 @@ export const FormButtonContainer = styled.div`
 `;
 
 export const BackgroundContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+
   padding-top: 25px;
   background-color: ${props => props.theme.gray};
   min-height: 100%;

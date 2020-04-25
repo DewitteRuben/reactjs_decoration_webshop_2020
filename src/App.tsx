@@ -20,6 +20,7 @@ onlyFocusOnTab();
 const StyledAppContainer = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const AppContainer: React.FC = ({ children }) => {
