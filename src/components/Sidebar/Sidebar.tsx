@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import Priceslider from "../Priceslider/Priceslider";
 import Typography from "../Typography/Typography";
-import Skeleton from "react-loading-skeleton";
 import { useStores } from "../../hooks/use-stores";
 import { observer } from "mobx-react";
 import { Spacer } from "../Layout";
