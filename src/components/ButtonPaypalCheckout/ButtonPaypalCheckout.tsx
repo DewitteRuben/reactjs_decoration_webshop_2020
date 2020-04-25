@@ -27,6 +27,7 @@ export interface ICustomerData {
 const StyledPaypalButton = styled.div`
   display: flex;
   justify-content: center;
+  z-index: 2;
   width: 100%;
 `;
 
