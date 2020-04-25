@@ -86,9 +86,9 @@ const Checkout: React.FC = observer(() => {
         <Spacer />
         {addresInformation ? (
           <PaymentContainer>
-            <CheckoutCart />
-            <SpacerVertical />
             <ButtonPaypalCheckout onApprove={handleOnApprove} data={addresInformation} />
+            <SpacerVertical />
+            <CheckoutCart />
           </PaymentContainer>
         ) : (
           <MainContainer>
