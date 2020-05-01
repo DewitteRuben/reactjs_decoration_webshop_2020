@@ -21,17 +21,53 @@
                 {
                   "name": "Keramic vase",
                   "key": "keramic-vase"
+                },
+                {
+                  "name": "Glass vase",
+                  "key": "glass-vase"
+                },
+                {
+                  "name": "Balloon vase",
+                  "key": "balloon-vase"
+                },
+                {
+                  "name": "Small vases till 15cm",
+                  "key": "small-vase"
+                },
+                {
+                  "name": "Medium-sized vases from 16cm",
+                  "key": "medium-vase"
+                },
+                {
+                  "name": "Large vases from 40cm",
+                  "key": "large-vase"
                 }
               ]
             },
             {
               "name": "Flowers",
               "key": "flowers",
-              "nodesTitle": "Specific category",
+              "nodesTitle": "Item category",
               "nodes": [
                 {
-                  "name": "Fake flower",
-                  "key": "fake-flower"
+                  "name": "Regular flowers",
+                  "key": "regular flowers"
+                },
+                {
+                  "name": "Dried flowers",
+                  "key": "dried-flowers"
+                },
+                {
+                  "name": "Silk flowers",
+                  "key": "silk-flowers"
+                },
+                {
+                  "name": "Silk plants",
+                  "key": "silk-plants"
+                },
+                {
+                  "name": "Wreath",
+                  "key": "wreath"
                 }
               ]
             }
@@ -40,7 +76,32 @@
         {
           "name": "Fabrics & pillows",
           "key": "fabrics-and-pillows",
-          "nodesTitle": "Specific category"
+          "nodesTitle": "Specific category",
+          "nodes": [
+            {
+              "name": "Pillows",
+              "key": "pillows",
+              "nodesTitle": "Item category",
+              "nodes": [
+                {
+                  "name": "Sofa pillows",
+                  "key": "sofa-pillows"
+                },
+                {
+                  "name": "Pillow cases",
+                  "key": "pillow-cases"
+                },
+                {
+                  "name": "Velvet pillows",
+                  "key": "velvet-pillows"
+                },
+                {
+                  "name": "Seat cushion",
+                  "key": "seat-cushion"
+                }
+              ]
+            }
+          ]
         },
         {
           "name": "Wall decoration",
