@@ -2,13 +2,13 @@
 
 ## Introduction
 
-Read more about this project and its development on <a href="https://www.rubendewitte.com/projects/deco-webapp" rel="noopener noreferrer" target="_blank">my website</a>.
+Read more about this project and its development on [my website](https://www.rubendewitte.com/projects/deco-webapp).
 
 View the backend of this project [here](https://github.com/DewitteRuben/nodejs_decoration_webshop_2020).
 
 ## Setup
 
-*This project uses <a href="https://github.com/facebook/create-react-app" rel="noopener noreferrer" target="_blank">Create React App</a> under the hood, CRA requires `.env` keys to be prepended with `REACT_APP_` before they can be accessed with `process.env`.*
+*This project uses [Create React App](https://github.com/facebook/create-react-app) under the hood, CRA requires `.env` keys to be prepended with `REACT_APP_` before they can be accessed with `process.env`.*
 
 ### API
 
@@ -35,7 +35,7 @@ REACT_APP_APP_ID=
 REACT_APP_MEASUREMENT_ID=
 ```
 
-Read more on the Firebase config object <a href="https://firebase.google.com/docs/web/setup?hl=nl#config-object" rel="noopener noreferrer" target="_blank">here</a>.
+Read more on the Firebase config object [here](https://firebase.google.com/docs/web/setup?hl=nl#config-object).
 
 ## Build
 
